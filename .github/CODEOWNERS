@@ -1,0 +1,43 @@
+# CODEOWNERS file defines who is responsible for code in this repository
+# Each line is a file pattern followed by one or more owners
+
+# Default owners for everything in the repo
+* @1JR4
+
+# CI/CD and GitHub configurations
+/.github/ @1JR4
+/.github/workflows/ @1JR4
+
+# Core documentation and AI context
+/.claude/ @1JR4
+/CLAUDE.md @1JR4
+/README.md @1JR4
+
+# Architecture and core business logic
+/src/core/ @1JR4
+/src/api/ @1JR4
+
+# Provider implementations need careful review
+/src/providers/ @1JR4
+
+# Security-sensitive files
+*.env* @1JR4
+*secret* @1JR4
+*credential* @1JR4
+/src/auth/ @1JR4
+/src/security/ @1JR4
+
+# Database and migrations
+/migrations/ @1JR4
+/src/database/ @1JR4
+
+# Testing
+/tests/ @1JR4
+*.test.ts @1JR4
+*.spec.ts @1JR4
+
+# Build and deployment
+/scripts/ @1JR4
+package.json @1JR4
+package-lock.json @1JR4
+tsconfig.json @1JR4

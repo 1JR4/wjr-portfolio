@@ -1,0 +1,41 @@
+{
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": ["@context7/mcp-server"],
+      "env": {
+        "CONTEXT7_API_KEY": "{{CONTEXT7_API_KEY}}"
+      }
+    },
+    "browser": {
+      "command": "npx", 
+      "args": ["browser-mcp-server"],
+      "env": {
+        "HEADLESS": "true",
+        "BROWSER": "chromium"
+      }
+    },
+    "supabase": {
+      "command": "npx",
+      "args": ["@supabase/mcp-server"], 
+      "env": {
+        "SUPABASE_URL": "{{SUPABASE_URL}}",
+        "SUPABASE_KEY": "{{SUPABASE_KEY}}"
+      }
+    },
+    "taskmaster": {
+      "command": "npx",
+      "args": ["taskmaster-mcp"],
+      "env": {
+        "GITHUB_TOKEN": "{{GITHUB_TOKEN}}"
+      }
+    },
+    "exa": {
+      "command": "npx",
+      "args": ["@exa-labs/mcp"],
+      "env": {
+        "EXA_API_KEY": "{{EXA_API_KEY}}"
+      }
+    }
+  }
+}
