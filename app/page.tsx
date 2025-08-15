@@ -19,13 +19,14 @@ import {
   Moon,
   Coffee,
   Twitter,
-  X
+  X,
+  Rocket
 } from "lucide-react";
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
-import { Badge } from "../components/ui/badge";
-import { Button } from "../components/ui/button";
-import { Separator } from "../components/ui/separator";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 
 export default function Portfolio() {
   const [isDark, setIsDark] = useState(false);
@@ -81,7 +82,7 @@ export default function Portfolio() {
       title: "WBD Sports Platform",
       description: "Co-owned strategic vision for sports CMS, video distribution, and analytics across Bleacher Report and MAX. Built GraphQL APIs and microservices architecture.",
       technologies: ["GraphQL", "Microservices", "Kafka", "AWS", "Drupal", "Analytics"],
-      github: "#",
+      github: "https://github.com/1JR4/wbd-sports-platform",
       demo: "https://bleacherreport.com",
       image: "/project1.jpg"
     },
@@ -89,7 +90,7 @@ export default function Portfolio() {
       title: "Bitnbolt Consumer Apps",
       description: "AI-powered consumer applications built through orchestrated agentic AI workflow. Fast iterative development using CLI and MCPs for concept to operation.",
       technologies: ["AI/ML", "Claude Code", "CLI", "MCPs", "Cloud Services", "Automation"],
-      github: "https://bitnbolt.com",
+      github: "https://github.com/1JR4/bitnbolt-apps",
       demo: "https://bitnbolt.com",
       image: "/project2.jpg"
     },
@@ -97,8 +98,8 @@ export default function Portfolio() {
       title: "Matech B2B Platform",
       description: "Led offline-to-online transition of B2B matchmaking platform, reducing costs by 38% and expanding reach by 45x with 32% boost in user interaction.",
       technologies: ["B2B Platform", "MVP Development", "Analytics", "Automation", "Agile"],
-      github: "#",
-      demo: "#",
+      github: "https://github.com/1JR4/matech-b2b-platform",
+      demo: "https://github.com/1JR4/matech-b2b-platform",
       image: "/project3.jpg"
     }
   ];
@@ -277,7 +278,7 @@ export default function Portfolio() {
       {/* Floating Navigation */}
       <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50">
         <motion.nav 
-          className={`flex items-center gap-1 p-1 rounded-full backdrop-blur-lg border shadow-lg ${isDark ? 'bg-gray-800/80 border-gray-700' : 'bg-white/80 border-gray-200'}`}
+          className={`flex items-center gap-1 p-1 rounded-full shadow-lg ${isDark ? 'liquid-glass-nav-dark' : 'liquid-glass-nav'}`}
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -349,22 +350,29 @@ export default function Portfolio() {
             >
               <img src="/profile.jpg" alt="Wonjae Ra" className="w-full h-full object-cover" />
             </motion.div>
-            <motion.h1 
-              className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white drop-shadow-lg"
+            <motion.div
+              className="liquid-glass-text mb-8"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              Hey, I'm Wonjae
-            </motion.h1>
-            <motion.p 
-              className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto text-white/90 drop-shadow"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-            >
-              Technical Product Manager with 7+ years of experience bridging technical and business needs, transforming chaos into clarity.
-            </motion.p>
+              <motion.h1 
+                className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white drop-shadow-lg"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.5 }}
+              >
+                Hey, I'm Wonjae
+              </motion.h1>
+              <motion.p 
+                className="text-xl md:text-2xl max-w-2xl mx-auto text-white drop-shadow"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+              >
+                Technical Product Manager with 7+ years of experience bridging technical and business needs, transforming chaos into clarity.
+              </motion.p>
+            </motion.div>
             <motion.div 
               className="flex flex-col sm:flex-row gap-4 justify-center items-center"
               initial={{ opacity: 0, y: 30 }}
@@ -378,7 +386,7 @@ export default function Portfolio() {
               >
                 <a href="#projects">
                   View My Work
-                  <ExternalLink className="ml-2 w-4 h-4" />
+                  <Rocket className="ml-2 w-4 h-4" />
                 </a>
               </Button>
               <Button variant="outline" size="lg" className="px-8 py-3 rounded-full bg-white/10 backdrop-blur-sm text-white border-white/20 hover:bg-white/20" asChild>
@@ -398,7 +406,7 @@ export default function Portfolio() {
               {[
                 { icon: Github, href: "https://github.com/1JR4" },
                 { icon: Mail, href: "mailto:rawonjae94@gmail.com" },
-                { icon: Linkedin, href: "https://linkedin.com/in/wjr" }
+                { icon: Linkedin, href: "https://www.linkedin.com/in/wjr" }
               ].map(({ icon: Icon, href }, index) => (
                 <motion.a
                   key={index}
@@ -440,7 +448,7 @@ export default function Portfolio() {
           >
             {projects.map((project, index) => (
               <motion.div key={index} variants={fadeInUp}>
-                <Card className={`h-full hover:shadow-lg transition-shadow duration-300 ${isDark ? 'bg-gray-800 border-gray-700' : ''}`}>
+                <Card className={`h-full hover:shadow-xl transition-all duration-300 ${isDark ? 'liquid-glass-card-dark' : 'liquid-glass-card'} border-0`}>
                   <CardHeader>
                     <CardTitle className="flex items-center justify-between">
                       {project.title}
@@ -542,7 +550,7 @@ export default function Portfolio() {
                   <div className="hidden md:block w-px h-full bg-slate-200 mt-4"></div>
                 </div>
                 <div className="md:w-3/4">
-                  <Card className={isDark ? 'bg-gray-700 border-gray-600' : ''}>
+                  <Card className={`${isDark ? 'liquid-glass-card-dark' : 'liquid-glass-card'} border-0`}>
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
                         <Briefcase className="h-5 w-5 text-blue-600" />
@@ -591,7 +599,7 @@ export default function Portfolio() {
             {blogPosts.map((post, index) => (
               <motion.div key={index} variants={fadeInUp}>
                 <Card 
-                  className={`h-full hover:shadow-lg transition-shadow duration-300 cursor-pointer ${isDark ? 'bg-gray-800 border-gray-700' : ''}`}
+                  className={`h-full hover:shadow-xl transition-all duration-300 cursor-pointer ${isDark ? 'liquid-glass-card-dark' : 'liquid-glass-card'} border-0`}
                   onClick={() => setSelectedArticle(post)}
                 >
                   <CardHeader>
@@ -652,22 +660,25 @@ export default function Portfolio() {
                 </a>
               </Button>
 
-              <Button variant="outline" size="lg" className="px-8 py-3 rounded-full">
-                <Coffee className="mr-2 w-4 h-4" />
-                Grab Coffee
+              <Button variant="outline" size="lg" className="px-8 py-3 rounded-full" asChild>
+                <a href="https://calendly.com/lumambo/30min" target="_blank" rel="noopener noreferrer">
+                  <Coffee className="mr-2 w-4 h-4" />
+                  Grab Coffee
+                </a>
               </Button>
             </div>
 
             <div className="flex justify-center gap-6">
               {[
-                { icon: Github, label: "GitHub" },
-                { icon: Twitter, label: "Twitter" },
-                { icon: Linkedin, label: "LinkedIn" },
-                { icon: Mail, label: "Email" }
-              ].map(({ icon: Icon, label }, index) => (
+                { icon: Github, label: "GitHub", href: "https://github.com/1JR4" },
+                { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/in/wjr" },
+                { icon: Mail, label: "Email", href: "mailto:rawonjae94@gmail.com" }
+              ].map(({ icon: Icon, label, href }, index) => (
                 <motion.a
                   key={label}
-                  href="#"
+                  href={href}
+                  target={href.startsWith('http') ? '_blank' : undefined}
+                  rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
                   className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors ${isDark ? 'bg-gray-800/50 hover:bg-gray-700 text-gray-300' : 'bg-gray-100/50 hover:bg-gray-200 text-gray-600'}`}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
