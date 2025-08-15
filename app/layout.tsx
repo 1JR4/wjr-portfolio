@@ -5,11 +5,15 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Portfolio - Professional Developer',
-  description: 'A showcase of my work, skills, and professional journey',
-  keywords: ['portfolio', 'developer', 'web development', 'software engineer'],
-  authors: [{ name: 'Your Name' }],
-  viewport: 'width=device-width, initial-scale=1',
+  title: 'Wonjae Ra - Technical Product Manager',
+  description: 'Technical Product Manager with 7+ years of experience bridging technical and business needs, transforming chaos into clarity.',
+  keywords: ['technical product manager', 'product management', 'AI/ML', 'GraphQL', 'microservices', 'portfolio'],
+  authors: [{ name: 'Wonjae Ra' }],
+}
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
 }
 
 export default function RootLayout({
