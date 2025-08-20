@@ -124,8 +124,10 @@ export function ProductsSection({ className }: ProductsSectionProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const checkIsMobile = () => setIsMobile(window.innerWidth < 768);
     checkIsMobile();
     window.addEventListener('resize', checkIsMobile);
@@ -156,7 +158,7 @@ export function ProductsSection({ className }: ProductsSectionProps) {
     return "glass text-white";
   };
 
-  const visibleProducts = isMobile ? productsData : productsData.slice(currentIndex, currentIndex + itemsPerPage);
+  const visibleProducts = mounted && isMobile ? productsData : productsData.slice(currentIndex, currentIndex + itemsPerPage);
 
   return (
     <>

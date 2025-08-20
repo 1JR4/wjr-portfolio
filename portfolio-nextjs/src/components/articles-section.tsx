@@ -86,9 +86,11 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
   const [activeSection, setActiveSection] = useState<string>("");
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    setMounted(true);
     const checkIsMobile = () => setIsMobile(window.innerWidth < 768);
     checkIsMobile();
     window.addEventListener('resize', checkIsMobile);
@@ -203,7 +205,7 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
     }));
   };
 
-  const visibleArticles = isMobile ? articlesData : articlesData.slice(currentIndex, currentIndex + itemsPerPage);
+  const visibleArticles = mounted && isMobile ? articlesData : articlesData.slice(currentIndex, currentIndex + itemsPerPage);
 
   return (
     <>

@@ -32,12 +32,28 @@ export function HeroSection({ className }: HeroSectionProps) {
 
       {/* Hero background image overlay */}
       <div 
-        className="absolute inset-0 opacity-[0.4] md:opacity-[0.3] z-0 bg-center bg-no-repeat bg-contain md:bg-cover"
-        style={{
-          backgroundImage: 'url(/contents/background.png)',
-          animation: 'subtleZoom 20s ease-in-out infinite alternate'
-        }}
-      />
+        className="absolute inset-0 opacity-[0.4] md:opacity-[0.3] z-0 bg-center bg-no-repeat bg-cover"
+      >
+        {/* Desktop Background */}
+        <div 
+          className="hidden md:block absolute inset-0"
+          style={{
+            backgroundImage: 'url(/contents/background.png)',
+            animation: 'subtleZoom 20s ease-in-out infinite alternate'
+          }}
+        />
+        {/* Mobile Background */}
+        <div 
+          className="md:hidden absolute inset-0"
+          style={{
+            backgroundImage: 'url(/contents/background_mobile.png)',
+            animation: 'subtleZoom 20s ease-in-out infinite alternate'
+          }}
+        />
+      </div>
+      
+      {/* Mobile Gradient Overlay */}
+      <div className="md:hidden absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent z-[1]" />
 
       {/* Content container */}
       <div className="relative z-10 h-full flex items-center justify-center pt-16 md:pt-0">
@@ -61,21 +77,22 @@ export function HeroSection({ className }: HeroSectionProps) {
           >
             {RESUME_DATA.title}
           </motion.p>
+          {/* CTA Buttons - Hidden on Mobile */}
           <motion.div 
-            className="mt-8 md:mt-10 flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0"
+            className="hidden md:flex mt-10 items-center justify-center space-x-4"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
             <button 
               onClick={() => scrollToSection('articles')}
-              className="h-10 md:h-12 rounded-full bg-white px-6 md:px-8 text-sm md:text-base font-medium text-black hover:bg-white/90 transition-all duration-300"
+              className="h-12 rounded-full bg-white px-8 text-base font-medium text-black hover:bg-white/90 transition-all duration-300"
             >
               Read My Articles
             </button>
             <button 
               onClick={() => scrollToSection('products')}
-              className="h-10 md:h-12 rounded-full border border-gray-600 px-6 md:px-8 text-sm md:text-base font-medium text-white hover:bg-white/10 transition-all duration-300"
+              className="h-12 rounded-full border border-gray-600 px-8 text-base font-medium text-white hover:bg-white/10 transition-all duration-300"
             >
               View My Work
             </button>
