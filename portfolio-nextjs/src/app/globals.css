@@ -131,11 +131,29 @@
 }
 
 [data-theme="light"] {
-  /* Force dark theme - no light mode for clean black design */
-  --glass-bg: var(--glass-white);
-  --glass-bg-strong: var(--glass-white-strong);
-  --glass-border: var(--glass-border);
-  --glass-shadow: var(--glass-shadow);
+  /* Light mode with white background and dark glass elements */
+  --pure-black: #ffffff;
+  --glass-white: rgba(0, 0, 0, 0.08);
+  --glass-white-strong: rgba(0, 0, 0, 0.15);
+  --glass-border: rgba(0, 0, 0, 0.2);
+  --glass-border-strong: rgba(0, 0, 0, 0.3);
+  --text-primary: #000000;
+  --text-secondary: rgba(0, 0, 0, 0.8);
+  --text-muted: rgba(0, 0, 0, 0.6);
+  --glass-bg: rgba(0, 0, 0, 0.08);
+  --glass-bg-strong: rgba(0, 0, 0, 0.15);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+/* Light mode specific overrides */
+.light .glass {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.light .glass-strong {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 /* Custom animations */
