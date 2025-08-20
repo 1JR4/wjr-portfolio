@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Heart, Share2, FileText, Video, ExternalLink } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
 
 interface TableOfContentsItem {
@@ -94,28 +95,34 @@ export function ArticleModalSidebar({
 
   return (
     <div className={cn("space-y-4", className)}>
-      {/* Table of Contents */}
-      <div>
-        <h3 className="text-lg font-semibold text-white mb-3">Table of Contents</h3>
-        <nav className="space-y-0.5 max-h-[30vh] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
-          {tableOfContents.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => onTocClick(item.id)}
-              className={cn(
-                "w-full text-left px-3 py-2 rounded-lg text-sm transition-colors",
-                "hover:bg-white/10 hover:text-white",
-                item.level === 1 && "font-medium text-white",
-                item.level === 2 && "pl-6 text-white/70",
-                item.level === 3 && "pl-9 text-white/60",
-                activeSection === item.id && "bg-blue-500/20 text-blue-400 border-l-2 border-blue-400"
-              )}
-            >
-              {item.title}
-            </button>
-          ))}
-        </nav>
-      </div>
+      {/* Collapsible Table of Contents */}
+      <Accordion>
+        <AccordionItem>
+          <AccordionTrigger className="text-white hover:text-white/80 p-0 border-b border-white/20">
+            📋 Table of Contents
+          </AccordionTrigger>
+          <AccordionContent className="pt-2">
+            <nav className="space-y-0.5 max-h-[20vh] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
+              {tableOfContents.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => onTocClick(item.id)}
+                  className={cn(
+                    "w-full text-left px-3 py-2 rounded-lg text-sm transition-colors",
+                    "hover:bg-white/10 hover:text-white",
+                    item.level === 1 && "font-medium text-white",
+                    item.level === 2 && "pl-6 text-white/70",
+                    item.level === 3 && "pl-9 text-white/60",
+                    activeSection === item.id && "bg-blue-500/20 text-blue-400 border-l-2 border-blue-400"
+                  )}
+                >
+                  {item.title}
+                </button>
+              ))}
+            </nav>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
 
       {/* Social Actions */}
       <div>

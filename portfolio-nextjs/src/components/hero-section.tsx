@@ -32,12 +32,9 @@ export function HeroSection({ className }: HeroSectionProps) {
 
       {/* Hero background image overlay */}
       <div 
-        className="absolute inset-0 opacity-[0.4] md:opacity-[0.3] z-0"
+        className="absolute inset-0 opacity-[0.4] md:opacity-[0.3] z-0 bg-center bg-no-repeat bg-contain md:bg-cover"
         style={{
           backgroundImage: 'url(/contents/background.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center top',
-          backgroundRepeat: 'no-repeat',
           animation: 'subtleZoom 20s ease-in-out infinite alternate'
         }}
       />

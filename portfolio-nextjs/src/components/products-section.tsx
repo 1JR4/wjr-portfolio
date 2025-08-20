@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { ChevronLeft, ChevronRight, ExternalLink, Github, X, Menu, Rocket, Zap, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -123,6 +123,14 @@ export function ProductsSection({ className }: ProductsSectionProps) {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkIsMobile = () => setIsMobile(window.innerWidth < 768);
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
 
   const itemsPerPage = 3;
   const maxIndex = Math.max(0, productsData.length - itemsPerPage);
@@ -148,7 +156,7 @@ export function ProductsSection({ className }: ProductsSectionProps) {
     return "glass text-white";
   };
 
-  const visibleProducts = productsData.slice(currentIndex, currentIndex + itemsPerPage);
+  const visibleProducts = isMobile ? productsData : productsData.slice(currentIndex, currentIndex + itemsPerPage);
 
   return (
     <>
@@ -167,13 +175,13 @@ export function ProductsSection({ className }: ProductsSectionProps) {
               Featured Products
             </motion.h2>
 
-            {/* Carousel Controls */}
+            {/* Carousel Controls - Hidden on mobile since we use vertical layout */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="hidden md:flex gap-2"
+              className="hidden lg:flex gap-2"
             >
               <button
                 onClick={() => navigateCarousel(-1)}
@@ -192,8 +200,8 @@ export function ProductsSection({ className }: ProductsSectionProps) {
             </motion.div>
           </div>
 
-          {/* Products Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Products Grid - Mobile: Vertical, Desktop: Grid */}
+          <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {visibleProducts.map((product, index) => (
               <motion.div
                 key={product.id}
@@ -264,23 +272,6 @@ export function ProductsSection({ className }: ProductsSectionProps) {
             ))}
           </div>
 
-          {/* Mobile Navigation */}
-          <div className="flex justify-center gap-2 mt-8 md:hidden">
-            <button
-              onClick={() => navigateCarousel(-1)}
-              disabled={currentIndex === 0}
-              className="bg-black/10 dark:bg-white/10 backdrop-blur-xl border border-gray-300 dark:border-white/20 w-12 h-12 rounded-full flex items-center justify-center text-gray-700 dark:text-white transition-all duration-300 hover:bg-black/20 dark:hover:bg-white/20 disabled:opacity-50"
-            >
-              <ChevronLeft className="w-6 h-6" />
-            </button>
-            <button
-              onClick={() => navigateCarousel(1)}
-              disabled={currentIndex >= maxIndex}
-              className="bg-black/10 dark:bg-white/10 backdrop-blur-xl border border-gray-300 dark:border-white/20 w-12 h-12 rounded-full flex items-center justify-center text-gray-700 dark:text-white transition-all duration-300 hover:bg-black/20 dark:hover:bg-white/20 disabled:opacity-50"
-            >
-              <ChevronRight className="w-6 h-6" />
-            </button>
-          </div>
         </div>
       </section>
 

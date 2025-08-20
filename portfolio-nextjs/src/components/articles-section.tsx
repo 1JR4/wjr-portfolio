@@ -85,7 +85,15 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const checkIsMobile = () => setIsMobile(window.innerWidth < 768);
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
 
   const itemsPerPage = 3;
   const maxIndex = Math.max(0, articlesData.length - itemsPerPage);
@@ -195,7 +203,7 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
     }));
   };
 
-  const visibleArticles = articlesData.slice(currentIndex, currentIndex + itemsPerPage);
+  const visibleArticles = isMobile ? articlesData : articlesData.slice(currentIndex, currentIndex + itemsPerPage);
 
   return (
     <>
@@ -214,13 +222,13 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
               Latest Articles
             </motion.h2>
 
-            {/* Carousel Controls */}
+            {/* Carousel Controls - Hidden on mobile since we use vertical layout */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="hidden md:flex gap-2"
+              className="hidden lg:flex gap-2"
             >
               <button
                 onClick={() => navigateCarousel(-1)}
@@ -239,8 +247,8 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
             </motion.div>
           </div>
 
-          {/* Articles Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Articles Grid - Mobile: Vertical, Desktop: Grid */}
+          <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {visibleArticles.map((article, index) => (
               <motion.div
                 key={article.id}
@@ -289,23 +297,6 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
             ))}
           </div>
 
-          {/* Mobile Navigation */}
-          <div className="flex justify-center gap-2 mt-8 md:hidden">
-            <button
-              onClick={() => navigateCarousel(-1)}
-              disabled={currentIndex === 0}
-              className="bg-black/10 dark:bg-white/10 backdrop-blur-xl border border-gray-300 dark:border-white/20 w-12 h-12 rounded-full flex items-center justify-center text-gray-700 dark:text-white transition-all duration-300 hover:bg-black/20 dark:hover:bg-white/20 disabled:opacity-50"
-            >
-              <ChevronLeft className="w-6 h-6" />
-            </button>
-            <button
-              onClick={() => navigateCarousel(1)}
-              disabled={currentIndex >= maxIndex}
-              className="bg-black/10 dark:bg-white/10 backdrop-blur-xl border border-gray-300 dark:border-white/20 w-12 h-12 rounded-full flex items-center justify-center text-gray-700 dark:text-white transition-all duration-300 hover:bg-black/20 dark:hover:bg-white/20 disabled:opacity-50"
-            >
-              <ChevronRight className="w-6 h-6" />
-            </button>
-          </div>
         </div>
       </section>
 
@@ -355,17 +346,27 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
                     <p className="text-xl text-white/70 leading-relaxed">{selectedArticle.description}</p>
                   </div>
 
-                  {/* TL;DR Section */}
-                  <div className="mb-6 bg-black/20 backdrop-blur-xl border border-white/20 rounded-xl p-6 mx-2">
-                    <h2 className="text-lg font-semibold text-white mb-4">📝 TL;DR</h2>
-                    <ul className="space-y-2">
-                      {selectedArticle.tldr.map((point, index) => (
-                        <li key={index} className="text-white/80 flex items-start gap-2">
-                          <span className="text-blue-400 mt-1">•</span>
-                          <span>{point}</span>
-                        </li>
-                      ))}
-                    </ul>
+                  {/* Collapsible TL;DR Section */}
+                  <div className="mb-6">
+                    <Accordion>
+                      <AccordionItem>
+                        <AccordionTrigger className="text-white hover:text-white/80 p-0 border-b border-white/20">
+                          <span className="flex items-center gap-2">
+                            📝 TL;DR
+                          </span>
+                        </AccordionTrigger>
+                        <AccordionContent className="pt-4">
+                          <ul className="space-y-2">
+                            {selectedArticle.tldr.map((point, index) => (
+                              <li key={index} className="text-white/80 flex items-start gap-2">
+                                <span className="text-blue-400 mt-1">•</span>
+                                <span>{point}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
                   </div>
 
                   {/* Article Content */}
