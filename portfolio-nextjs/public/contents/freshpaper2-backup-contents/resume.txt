@@ -1,0 +1,40 @@
+Wonjae Ra Technical Product Manager / Certified Scrum Product Owner
+US Permanent Resident based in Atlanta, GA | Mobile: 470-461-5069 | Email: rawonjae94@gmail.com
+Hungry and curious product manager with 7+ years of experience across enterprise and startup worlds, capable of bridging technical and business needs. Fast learning and versatile, with a passion for transforming chaos into clarity.
+WORK EXPERIENCE
+PRODUCT CREATOR | Bitnbolt.com - ATLANTA, GA Feb 2023 – Present
+• Design, build, publish consumer apps through AI powered tools and cloud services to deliver high-impact solutions.
+• Use a fast, iterative planning and development by leveraging orchestrated agentic AI workflow via CLI and MCPs.
+• Integrated AI-driven automation and third-party solutions to accelerate concept to operation.
+TECHNICAL PRODUCT MANAGER | WARNER BROS. DISCOVERY (Sports) - ATLANTA, GA May 2023 – Feb 2025
+• Co-owned the strategic vision and product execution for the WBD Sports Platform, enabling sports CMS, video distribution,
+and analytics across Bleacher Report and MAX. Defined and tracked OKR/KPI to align business, product, and engineering.
+• Defined, self-hosted, and drove Sports Platform’s backend services and API layer using GraphQL (Content, Identity, Billing,
+Video, Social), microservices, and Kafka messaging for cross-org data enrichment across Search, Analytics, and
+Recommendations.
+• Served as the Sport’s Platform first user - validating end-to-end user experience across pipelines and data integration points,
+and coordinating with vendors (CDN, analytics, content ingestion) to scale and optimize media and data delivery.
+• Redesigned Bleacher Report’s backend to support Sports Platform by migrating legacy APIs, launching new microservices, and
+extending MAX’s event-driven Kafka messaging to improve communication between Sports and non-Sports systems.
+• Led Drupal CMS enhancements across programming, taxonomy, editorial, and navigation tools. Consolidated fragmented tooling
+and partnered cross-functionally to reduce maintenance costs and improve team workflows.
+PRODUCT MANAGER | MATECH - SEOUL, SOUTH KOREA Jan 2020 – May 2022
+• Drove product vision from ideation to MVP launch - partnered with C-suite stakeholders to identify customer pain points,
+secured $2MM in investor funding, and built a high-performing team of 7.
+• Spearheaded the oJline-to-online transition of Matech’s B2B matchmaking platform - shifted from in-person to virtual, reducing
+operational costs by 38%, expanding reach by 45x, and boosting user-to-user interaction by 32%.
+• Optimized cross-functional workflows by team coordination and managing complex project dependencies, successfully
+delivered the MVP on schedule by leveraging agile practices and fostering a collaborative environment.
+• Led strategic partnerships and implementation/management of vendor solutions, introduced automation that reduced
+customer-facing processes by 80%, improving operational e_iciency and raising NPS from 15 to 40.
+PRODUCT MANAGER / CO-FOUNDER | MITGOSA - Singapore Jul 2017 – Jan 2018
+• Developed a streamlined order-to-delivery system by collaborating with product suppliers, packaging teams, and logistics
+partners by automating key processes to reduce operational costs by 25% and cut delivery times by 70%.
+• Led a cross-functional team to optimize user flow and acquisition strategies through hands-on analytics, launching/operating
+two e-commerce platforms, increasing conversions by 32%, and reducing acquisition costs by 63%. TEAM CAPTAIN | REPUBLIC OF KOREA AIR FORCE- GJ, SOUTH KOREA Jun 2015 – Feb 2017
+MARKETING PROJECT MANAGER | COMMAS PR - KL, MALAYSIA Feb 2014 – Apr 2015 EDUCATION
+Bachelor of Engineering in Electronic Engineering | Northumbria University, UK/Singapore - 2019
+SKILLS
+Product - Technical docs, Streaming, Media, OKR,KPI, Roadmap, MVP, MarketFit, A/B Testing, Research, PRD Tech - AWS, Relational DB, Analytics, Microservices, Python, GraphQL, REST API, SQL, Kafka, C, ETL Software - GitHub, Claude Code, CLI, Drupal, MongoDB, Postman, JIRA, Snowflake, mParticle, Swagger Certifications -
+• Professional Graph Developer - Apollo (In-Progress) • Certified Scrum Product Owner – Scrum Alliance
+• AI Product Management – Duke University • Advanced Google Analytics – Google Interests - AI/ML, MCP, Agent, BaaS, Blockchain, SaaS, PaaS, E-Commerce, DTC, Streaming, AWS, CMS, IoT

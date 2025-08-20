@@ -78,7 +78,7 @@ export function FloatingNav({ className }: FloatingNavProps) {
       )}
     >
       <div className="relative">
-        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-full px-6 py-3">
+        <div className="bg-gray-600/40 dark:bg-white/10 backdrop-blur-xl border border-gray-400/50 dark:border-white/20 rounded-full px-6 py-3 shadow-lg">
           
           <div className="flex items-center gap-6">
             {navItems.map((item) => (
@@ -86,28 +86,28 @@ export function FloatingNav({ className }: FloatingNavProps) {
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
                 className={cn(
-                  "relative px-4 py-2 rounded-full font-medium text-sm transition-all duration-300",
+                  "relative px-4 py-2 rounded-full font-medium text-sm transition-all duration-300 z-10",
                   activeSection === item.id
-                    ? "text-white bg-white/20 backdrop-blur-xl border border-white/30"
-                    : "text-white/70 hover:text-white hover:bg-white/10 hover:backdrop-blur-sm hover:border hover:border-white/20"
+                    ? "text-white dark:text-white bg-white/20 dark:bg-white/20 backdrop-blur-xl border border-white/30 dark:border-white/30"
+                    : "text-white/80 dark:text-white/70 hover:text-white dark:hover:text-white hover:bg-white/10 dark:hover:bg-white/10 hover:backdrop-blur-sm hover:border hover:border-white/20 dark:hover:border-white/20"
                 )}
               >
                 {item.label}
                 {activeSection === item.id && (
                   <motion.div
                     layoutId="activeSection"
-                    className="absolute inset-0 bg-white/20 backdrop-blur-xl border border-white/30 rounded-full"
+                    className="absolute inset-0 bg-white/20 dark:bg-white/20 backdrop-blur-xl border border-white/30 dark:border-white/30 rounded-full -z-10"
                     transition={{ type: "spring", duration: 0.6 }}
                   />
                 )}
               </button>
             ))}
             
-            <div className="w-px h-6 bg-white/20" />
+            <div className="w-px h-6 bg-white/30 dark:bg-white/20" />
             
             <button
               onClick={toggleTheme}
-              className="p-2 text-white/70 hover:text-white transition-colors duration-300 rounded-full hover:bg-white/10 hover:backdrop-blur-sm hover:border hover:border-white/20"
+              className="p-2 text-white/80 dark:text-white/70 hover:text-white dark:hover:text-white transition-colors duration-300 rounded-full hover:bg-white/10 dark:hover:bg-white/10 hover:backdrop-blur-sm hover:border hover:border-white/20 dark:hover:border-white/20"
               title="Toggle theme"
             >
               {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}

@@ -1,0 +1,4 @@
+Nimbus - ai powered ultimate personality insight and fortune forcasting app
+Arcadia - ai poweredNews/Event aggregator and organizer for market research 
+BitnBolt - ai powered web building and conversational content management for small to medium business websites
+Conductor - enterprise software delivery management
