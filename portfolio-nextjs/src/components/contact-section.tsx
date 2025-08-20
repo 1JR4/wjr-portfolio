@@ -23,16 +23,33 @@ export function ContactSection({ className }: ContactSectionProps) {
     const email = RESUME_DATA.contact.split('|')[2]?.split(':')[1]?.trim() || 'rawonjae94@gmail.com';
     
     try {
-      await navigator.clipboard.writeText(email);
-      setIsEmailCopied(true);
+      // Check if clipboard API is available
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(email);
+        setIsEmailCopied(true);
+      } else {
+        // Fallback for mobile or non-secure contexts
+        const textArea = document.createElement('textarea');
+        textArea.value = email;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand('copy');
+        textArea.remove();
+        setIsEmailCopied(true);
+      }
       
       // Reset the button state after 2 seconds
       setTimeout(() => {
         setIsEmailCopied(false);
       }, 2000);
     } catch (err) {
-      // Fallback for browsers that don't support clipboard API
+      // Final fallback - open email client
       console.error('Failed to copy email:', err);
+      window.location.href = `mailto:${email}`;
     }
   };
 

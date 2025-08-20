@@ -334,9 +334,93 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
               <X className="w-5 h-5" />
             </button>
 
-            <div className="flex h-full overflow-hidden rounded-2xl">
+            {/* Mobile Layout: Stacked */}
+            <div className="lg:hidden flex flex-col h-full rounded-2xl">
+              {/* Mobile Main Content - 70% */}
+              <div className="flex-[0.7] overflow-y-auto p-6 border-b border-white/20" ref={contentRef}>
+                <div className="max-w-none mx-auto">
+                  {/* Header */}
+                  <div className="mb-6 px-2">
+                    <div className="flex items-center gap-4 mb-4">
+                      <Badge variant="info">{selectedArticle.category}</Badge>
+                      <span className="text-white/60 text-sm flex items-center gap-1">
+                        <Clock className="w-4 h-4" />
+                        {selectedArticle.readTime}
+                      </span>
+                      <span className="text-white/60 text-sm">{selectedArticle.date}</span>
+                    </div>
+                    
+                    <h1 className="text-3xl font-bold text-white mb-4">{selectedArticle.title}</h1>
+                    <p className="text-lg text-white/80 mb-4">By {selectedArticle.author}</p>
+                    <p className="text-xl text-white/70 leading-relaxed">{selectedArticle.description}</p>
+                  </div>
+
+                  {/* TL;DR Section */}
+                  <div className="mb-6 bg-black/20 backdrop-blur-xl border border-white/20 rounded-xl p-6 mx-2">
+                    <h2 className="text-lg font-semibold text-white mb-4">📝 TL;DR</h2>
+                    <ul className="space-y-2">
+                      {selectedArticle.tldr.map((point, index) => (
+                        <li key={index} className="text-white/80 flex items-start gap-2">
+                          <span className="text-blue-400 mt-1">•</span>
+                          <span>{point}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Article Content */}
+                  <div className="prose prose-invert prose-lg max-w-none px-2 pb-4">
+                    <div 
+                      className="text-white/80 leading-relaxed"
+                      dangerouslySetInnerHTML={{
+                        __html: selectedArticle.content
+                          .split('\n')
+                          .map(line => {
+                            if (line.startsWith('# ')) {
+                              const title = line.substring(2);
+                              const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+                              return `<h1 id="${id}" class="text-2xl font-bold text-white mt-6 mb-3 scroll-mt-6">${title}</h1>`;
+                            } else if (line.startsWith('## ')) {
+                              const title = line.substring(3);
+                              const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+                              return `<h2 id="${id}" class="text-xl font-semibold text-white mt-5 mb-2 scroll-mt-6">${title}</h2>`;
+                            } else if (line.startsWith('### ')) {
+                              const title = line.substring(4);
+                              const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+                              return `<h3 id="${id}" class="text-lg font-medium text-white mt-4 mb-2 scroll-mt-6">${title}</h3>`;
+                            } else if (line.startsWith('- ')) {
+                              return `<li class="text-white/70 ml-4">${line.substring(2)}</li>`;
+                            } else if (line.trim() === '') {
+                              return '<br>';
+                            } else {
+                              return `<p class="text-white/70 mb-3 leading-relaxed">${line}</p>`;
+                            }
+                          })
+                          .join('')
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Mobile Sidebar - 30% */}
+              <div className="flex-[0.3] bg-black/20 backdrop-blur-sm overflow-y-auto p-4">
+                <ArticleModalSidebar
+                  tableOfContents={selectedArticle.tableOfContents}
+                  resources={selectedArticle.resources}
+                  tags={selectedArticle.tags}
+                  socialMetrics={selectedArticle.socialMetrics}
+                  relatedArticles={getRelatedArticles(selectedArticle)}
+                  onTocClick={handleTocClick}
+                  activeSection={activeSection}
+                />
+              </div>
+            </div>
+
+            {/* Desktop Layout: Side by Side */}
+            <div className="hidden lg:flex h-full overflow-hidden rounded-2xl">
               {/* Desktop Sidebar */}
-              <div className="hidden lg:block w-80 border-r border-white/20 bg-black/20 backdrop-blur-sm h-full overflow-y-auto rounded-l-2xl">
+              <div className="w-80 border-r border-white/20 bg-black/20 backdrop-blur-sm h-full overflow-y-auto rounded-l-2xl">
                 <div className="p-6">
                   <ArticleModalSidebar
                     tableOfContents={selectedArticle.tableOfContents}
@@ -350,41 +434,9 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
                 </div>
               </div>
 
-              {/* Mobile Sidebar Overlay */}
-              {isMobileSidebarOpen && (
-                <div className="lg:hidden fixed inset-0 z-20 bg-black/50 backdrop-blur-sm" onClick={() => setIsMobileSidebarOpen(false)}>
-                  <motion.div
-                    initial={{ x: -320 }}
-                    animate={{ x: 0 }}
-                    exit={{ x: -320 }}
-                    className="w-80 h-full border-r border-white/20 bg-white/10 backdrop-blur-xl overflow-y-auto"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <div className="p-6">
-                      <ArticleModalSidebar
-                        tableOfContents={selectedArticle.tableOfContents}
-                        resources={selectedArticle.resources}
-                        tags={selectedArticle.tags}
-                        socialMetrics={selectedArticle.socialMetrics}
-                        relatedArticles={getRelatedArticles(selectedArticle)}
-                        onTocClick={handleTocClick}
-                        activeSection={activeSection}
-                      />
-                    </div>
-                  </motion.div>
-                </div>
-              )}
-
-              {/* Main Content */}
+              {/* Desktop Main Content */}
               <div className="flex-1 overflow-y-auto p-8 rounded-r-2xl" ref={contentRef}>
                 <div className="max-w-none mx-auto">
-                  {/* Mobile Menu Button */}
-                  <button
-                    onClick={() => setIsMobileSidebarOpen(true)}
-                    className="lg:hidden mb-4 bg-white/10 backdrop-blur-sm border border-white/20 p-2 rounded-lg hover:bg-white/20 transition-colors"
-                  >
-                    <Menu className="w-5 h-5 text-white" />
-                  </button>
                   
                   {/* Header */}
                   <div className="mb-8 px-2">

@@ -309,9 +309,97 @@ export function ProductsSection({ className }: ProductsSectionProps) {
               <X className="w-5 h-5" />
             </button>
 
-            <div className="flex h-full overflow-hidden rounded-2xl">
+            {/* Mobile Layout: Stacked */}
+            <div className="lg:hidden flex flex-col h-full rounded-2xl">
+              {/* Mobile Main Content - 70% */}
+              <div className="flex-[0.7] overflow-y-auto p-6 border-b border-white/20">
+                <div className="max-w-none mx-auto px-2">
+                  {/* Image Carousel */}
+                  {selectedProduct.gallery && selectedProduct.gallery.length > 0 && (
+                    <div className="mb-6">
+                      <div className="aspect-video overflow-hidden rounded-xl">
+                        <img
+                          src={selectedProduct.gallery[0]}
+                          alt={selectedProduct.title}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Title and Description */}
+                  <div className="mb-6 px-2">
+                    <h1 className="text-3xl font-bold text-white mb-4">{selectedProduct.title}</h1>
+                    <p className="text-xl text-white/80 leading-relaxed">{selectedProduct.description}</p>
+                  </div>
+
+                  {/* Expandable Content Sections */}
+                  <div className="px-2 pb-4">
+                    <Accordion>
+                      <AccordionItem defaultOpen>
+                        <AccordionTrigger>{selectedProduct.sections.description.title}</AccordionTrigger>
+                        <AccordionContent>
+                          <p className="text-white/70 leading-relaxed">{selectedProduct.sections.description.content}</p>
+                        </AccordionContent>
+                      </AccordionItem>
+
+                      <AccordionItem>
+                        <AccordionTrigger>{selectedProduct.sections.documents.title}</AccordionTrigger>
+                        <AccordionContent>
+                          <p className="text-white/70 leading-relaxed">{selectedProduct.sections.documents.content}</p>
+                        </AccordionContent>
+                      </AccordionItem>
+
+                      <AccordionItem>
+                        <AccordionTrigger>{selectedProduct.sections.technical.title}</AccordionTrigger>
+                        <AccordionContent>
+                          <p className="text-white/70 leading-relaxed">{selectedProduct.sections.technical.content}</p>
+                        </AccordionContent>
+                      </AccordionItem>
+
+                      <AccordionItem>
+                        <AccordionTrigger>{selectedProduct.sections.aiUsage.title}</AccordionTrigger>
+                        <AccordionContent>
+                          <p className="text-white/70 leading-relaxed">{selectedProduct.sections.aiUsage.content}</p>
+                        </AccordionContent>
+                      </AccordionItem>
+
+                      <AccordionItem>
+                        <AccordionTrigger>{selectedProduct.sections.results.title}</AccordionTrigger>
+                        <AccordionContent>
+                          <p className="text-white/70 leading-relaxed">{selectedProduct.sections.results.content}</p>
+                        </AccordionContent>
+                      </AccordionItem>
+
+                      <AccordionItem>
+                        <AccordionTrigger>{selectedProduct.sections.approach.title}</AccordionTrigger>
+                        <AccordionContent>
+                          <p className="text-white/70 leading-relaxed">{selectedProduct.sections.approach.content}</p>
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
+                  </div>
+                </div>
+              </div>
+
+              {/* Mobile Sidebar - 30% */}
+              <div className="flex-[0.3] bg-black/20 backdrop-blur-sm overflow-y-auto p-4">
+                <ProductModalSidebar
+                  status={selectedProduct.status}
+                  technologies={selectedProduct.technologies}
+                  kpis={selectedProduct.kpis}
+                  okrs={selectedProduct.okrs}
+                  link={selectedProduct.link}
+                  github={selectedProduct.github}
+                  resources={selectedProduct.resources}
+                />
+              </div>
+            </div>
+
+            {/* Desktop Layout: Side by Side */}
+            <div className="hidden lg:flex h-full overflow-hidden rounded-2xl">
               {/* Desktop Sidebar */}
-              <div className="hidden lg:block w-80 border-r border-white/20 bg-black/20 backdrop-blur-sm h-full overflow-y-auto rounded-l-2xl">
+              <div className="w-80 border-r border-white/20 bg-black/20 backdrop-blur-sm h-full overflow-y-auto rounded-l-2xl">
                 <div className="p-6">
                   <ProductModalSidebar
                     status={selectedProduct.status}
@@ -325,41 +413,9 @@ export function ProductsSection({ className }: ProductsSectionProps) {
                 </div>
               </div>
 
-              {/* Mobile Sidebar Overlay */}
-              {isMobileSidebarOpen && (
-                <div className="lg:hidden fixed inset-0 z-20 bg-black/50 backdrop-blur-sm" onClick={() => setIsMobileSidebarOpen(false)}>
-                  <motion.div
-                    initial={{ x: -320 }}
-                    animate={{ x: 0 }}
-                    exit={{ x: -320 }}
-                    className="w-80 h-full border-r border-white/20 bg-white/10 backdrop-blur-xl overflow-y-auto"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <div className="p-6">
-                      <ProductModalSidebar
-                        status={selectedProduct.status}
-                        technologies={selectedProduct.technologies}
-                        kpis={selectedProduct.kpis}
-                        okrs={selectedProduct.okrs}
-                        link={selectedProduct.link}
-                        github={selectedProduct.github}
-                        resources={selectedProduct.resources}
-                      />
-                    </div>
-                  </motion.div>
-                </div>
-              )}
-
-              {/* Main Content */}
+              {/* Desktop Main Content */}
               <div className="flex-1 overflow-y-auto p-8 rounded-r-2xl">
                 <div className="max-w-none mx-auto px-2">
-                  {/* Mobile Menu Button */}
-                  <button
-                    onClick={() => setIsMobileSidebarOpen(true)}
-                    className="lg:hidden mb-4 bg-white/10 backdrop-blur-sm border border-white/20 p-2 rounded-lg hover:bg-white/20 transition-colors"
-                  >
-                    <Menu className="w-5 h-5 text-white" />
-                  </button>
                   {/* Image Carousel */}
                   {selectedProduct.gallery && selectedProduct.gallery.length > 0 && (
                     <div className="mb-8">
