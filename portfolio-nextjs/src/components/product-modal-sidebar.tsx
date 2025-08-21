@@ -46,25 +46,21 @@ export function ProductModalSidebar({
       case "live":
         return { 
           variant: "success" as const, 
-          icon: "🟢", 
           label: "Live"
         };
       case "development":
         return { 
           variant: "info" as const, 
-          icon: "🔵", 
           label: "In Development"
         };
       case "concept":
         return { 
           variant: "warning" as const, 
-          icon: "🟡", 
           label: "Concept"
         };
       default:
         return { 
           variant: "glass" as const, 
-          icon: "⚪", 
           label: status
         };
     }
@@ -100,7 +96,6 @@ export function ProductModalSidebar({
       <div>
         <h3 className="text-lg font-semibold text-white mb-3">Status</h3>
         <Badge variant={statusConfig.variant} className="text-sm">
-          <span className="mr-2">{statusConfig.icon}</span>
           {statusConfig.label}
         </Badge>
       </div>

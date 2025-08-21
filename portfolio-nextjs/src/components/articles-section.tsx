@@ -204,6 +204,13 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
       slug: item.article.slug || `article-${item.article.id}`
     }));
   };
+  
+  const handleRelatedArticleClick = (articleId: number) => {
+    const relatedArticle = articlesData.find(a => a.id === articleId);
+    if (relatedArticle) {
+      openModal(relatedArticle);
+    }
+  };
 
   const visibleArticles = articlesData;
 
@@ -237,11 +244,11 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
                 className="flex-shrink-0 w-[85%] md:w-[45%] lg:w-[31%] group cursor-pointer snap-start"
                 onClick={() => openModal(article)}
               >
-                <div className="bg-black/5 dark:bg-white/10 backdrop-blur-xl border border-gray-200 dark:border-white/20 rounded-xl p-6 transition-all duration-300 hover:bg-black/10 dark:hover:bg-white/20 hover:translate-y-[-8px] h-full overflow-hidden">
+                <div className="bg-black/5 dark:bg-white/10 backdrop-blur-xl border border-gray-200 dark:border-white/20 rounded-xl p-4 transition-all duration-300 hover:bg-black/10 dark:hover:bg-white/20 hover:translate-y-[-8px] h-full overflow-hidden">
                   
                   <div className="relative z-10">
                     {/* Article Content */}
-                    <div className="p-6">
+                    <div className="p-2">
                       {/* Meta */}
                       <div className="flex items-center gap-3 mb-3">
                         <span className="px-3 py-1 bg-black/10 dark:bg-white/10 backdrop-blur-sm border border-gray-200 dark:border-white/20 text-gray-700 dark:text-white rounded-full text-xs font-medium">
@@ -326,27 +333,17 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
                     <p className="text-xl text-white/70 leading-relaxed">{selectedArticle.description}</p>
                   </div>
 
-                  {/* Mobile Table of Contents - Inline */}
+                  {/* Mobile Table of Contents Preview - One Line */}
                   <div className="mb-6 bg-black/20 backdrop-blur-xl border border-white/20 rounded-xl p-4">
                     <h3 className="text-lg font-semibold text-white mb-3">📋 Table of Contents</h3>
-                    <nav className="space-y-1">
-                      {selectedArticle.tableOfContents.map((item) => (
-                        <button
-                          key={item.id}
-                          onClick={() => handleTocClick(item.id)}
-                          className={cn(
-                            "w-full text-left px-3 py-2 rounded-lg text-sm transition-colors",
-                            "hover:bg-white/10 hover:text-white",
-                            item.level === 1 && "font-medium text-white",
-                            item.level === 2 && "pl-6 text-white/70",
-                            item.level === 3 && "pl-9 text-white/60",
-                            activeSection === item.id && "bg-blue-500/20 text-blue-400 border-l-2 border-blue-400"
-                          )}
-                        >
-                          {item.title}
-                        </button>
+                    <div className="text-sm text-white/70 truncate">
+                      {selectedArticle.tableOfContents.map((item, idx) => (
+                        <span key={item.id}>
+                          {item.title}{idx < selectedArticle.tableOfContents.length - 1 ? ' • ' : ''}
+                        </span>
                       ))}
-                    </nav>
+                      {selectedArticle.tableOfContents.length > 3 && '...'}
+                    </div>
                   </div>
 
                   {/* TL;DR Section */}
@@ -400,13 +397,15 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
               {/* Mobile - Social and Resources at bottom - 30% */}
               <div className="flex-[0.3] overflow-y-auto p-4 bg-black/20 backdrop-blur-sm border-t border-white/20">
                 <ArticleModalSidebar
-                  tableOfContents={[]} // Hide TOC since it's inline above
+                  tableOfContents={selectedArticle.tableOfContents} // Show full TOC here
                   resources={selectedArticle.resources}
                   tags={selectedArticle.tags}
                   socialMetrics={selectedArticle.socialMetrics}
                   relatedArticles={getRelatedArticles(selectedArticle)}
                   onTocClick={handleTocClick}
                   activeSection={activeSection}
+                  isMobile={true}
+                  onRelatedArticleClick={handleRelatedArticleClick}
                 />
               </div>
             </div>
@@ -424,6 +423,7 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
                     relatedArticles={getRelatedArticles(selectedArticle)}
                     onTocClick={handleTocClick}
                     activeSection={activeSection}
+                    onRelatedArticleClick={handleRelatedArticleClick}
                   />
                 </div>
               </div>

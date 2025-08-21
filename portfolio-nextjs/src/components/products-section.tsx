@@ -60,13 +60,20 @@ const getProductIcon = (index: number) => {
   return icons[index % icons.length];
 };
 
+// Generate placeholder images
+const generatePlaceholderImages = (count: number = 3) => {
+  return Array.from({ length: count }, (_, i) => 
+    `https://images.unsplash.com/photo-${1551288049 + i * 1000}?w=800&q=80`
+  );
+};
+
 // Convert products to the expected format
 const productsData: Product[] = PRODUCTS.map((product, index) => ({
   id: index + 1,
   title: product.name,
   description: product.description,
   image: `https://images.unsplash.com/photo-${1551288049 + index * 1000}?w=800&q=80`,
-  gallery: [`https://images.unsplash.com/photo-${1551288049 + index * 1000}?w=800&q=80`],
+  gallery: generatePlaceholderImages(5), // Generate 5 placeholder images
   technologies: ["AI/ML", "React", "TypeScript", "Next.js", "TailwindCSS"],
   status: index === 0 ? "live" as const : index === 1 ? "development" as const : "concept" as const,
   link: index === 0 ? "https://bitnbolt.com" : undefined,
@@ -295,50 +302,110 @@ export function ProductsSection({ className }: ProductsSectionProps) {
               {/* Mobile Main Content - 70% */}
               <div className="flex-[0.7] overflow-y-auto p-6 border-b border-white/20">
                 <div className="max-w-none mx-auto px-2">
-                  {/* Image Carousel */}
+                  {/* Image Carousel - Mobile: Scrollable, 3 visible at once */}
                   <div className="mb-6">
-                    {selectedProduct.gallery && selectedProduct.gallery.length > 0 ? (
-                      <div className="relative">
-                        <div className="aspect-[4/3] md:aspect-[16/9] overflow-hidden rounded-xl bg-gray-100 dark:bg-white/5">
-                          <div className="flex transition-transform duration-300"
-                               style={{ transform: `translateX(-${(imageIndices[selectedProduct.id] || 0) * 100}%)` }}>
-                            {selectedProduct.gallery.slice(0, 3).map((img, idx) => (
-                              <img
+                    <div className="relative">
+                      {/* Mobile: Scrollable carousel */}
+                      <div className="lg:hidden">
+                        <div className="overflow-x-auto scrollbar-hide">
+                          <div className="flex gap-2 pb-2">
+                            {(selectedProduct.gallery || generatePlaceholderImages()).map((img, idx) => (
+                              <div
                                 key={idx}
-                                src={img}
-                                alt={`${selectedProduct.title} ${idx + 1}`}
-                                className="w-full h-full object-cover flex-shrink-0"
-                              />
+                                className="flex-shrink-0 w-[30%] aspect-[4/3] overflow-hidden rounded-lg bg-gray-100 dark:bg-white/5"
+                              >
+                                <img
+                                  src={img}
+                                  alt={`${selectedProduct.title} ${idx + 1}`}
+                                  className="w-full h-full object-cover"
+                                  onError={(e) => {
+                                    const target = e.target as HTMLImageElement;
+                                    target.parentElement!.innerHTML = `
+                                      <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 dark:from-white/5 dark:to-white/10">
+                                        <div class="text-center">
+                                          <div class="w-8 h-8 mx-auto bg-white/20 rounded-lg flex items-center justify-center mb-2">
+                                            <svg class="w-4 h-4 text-gray-400 dark:text-white/40" fill="currentColor" viewBox="0 0 20 20">
+                                              <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                              <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                                            </svg>
+                                          </div>
+                                          <p class="text-xs text-gray-500 dark:text-white/50">Image</p>
+                                        </div>
+                                      </div>
+                                    `;
+                                  }}
+                                />
+                              </div>
                             ))}
                           </div>
                         </div>
-                        {selectedProduct.gallery.length > 1 && (
-                          <div className="flex justify-center gap-2 mt-3">
-                            {selectedProduct.gallery.slice(0, 3).map((_, idx) => (
-                              <button
-                                key={idx}
-                                onClick={() => setImageIndices({...imageIndices, [selectedProduct.id]: idx})}
-                                className={cn(
-                                  "w-2 h-2 rounded-full transition-all",
-                                  (imageIndices[selectedProduct.id] || 0) === idx
-                                    ? "bg-white w-6"
-                                    : "bg-white/40"
-                                )}
-                              />
-                            ))}
-                          </div>
-                        )}
                       </div>
-                    ) : (
-                      <div className="aspect-[4/3] md:aspect-[16/9] overflow-hidden rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 dark:from-white/5 dark:to-white/10 flex items-center justify-center">
-                        <div className="text-center">
-                          <div className="w-20 h-20 mx-auto bg-white/20 rounded-xl flex items-center justify-center mb-3">
-                            <Rocket className="w-10 h-10 text-gray-400 dark:text-white/40" />
-                          </div>
-                          <p className="text-sm text-gray-500 dark:text-white/50">Product Preview</p>
+                      
+                      {/* Desktop: Navigation with prev/next */}
+                      <div className="hidden lg:block">
+                        <div className="aspect-[16/9] overflow-hidden rounded-xl bg-gray-100 dark:bg-white/5 relative">
+                          <img
+                            src={(selectedProduct.gallery || generatePlaceholderImages())[(imageIndices[selectedProduct.id] || 0)]}
+                            alt={`${selectedProduct.title}`}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.parentElement!.innerHTML = `
+                                <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 dark:from-white/5 dark:to-white/10">
+                                  <div class="text-center">
+                                    <div class="w-24 h-24 mx-auto bg-white/20 rounded-xl flex items-center justify-center mb-4">
+                                      <svg class="w-12 h-12 text-gray-400 dark:text-white/40" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                        <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                                      </svg>
+                                    </div>
+                                    <p class="text-sm text-gray-500 dark:text-white/50">Product Preview</p>
+                                  </div>
+                                </div>
+                              `;
+                            }}
+                          />
+                          
+                          {/* Navigation arrows */}
+                          <button
+                            onClick={() => {
+                              const currentIndex = imageIndices[selectedProduct.id] || 0;
+                              const newIndex = currentIndex > 0 ? currentIndex - 1 : (selectedProduct.gallery || generatePlaceholderImages()).length - 1;
+                              setImageIndices({...imageIndices, [selectedProduct.id]: newIndex});
+                            }}
+                            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-all"
+                          >
+                            ←
+                          </button>
+                          <button
+                            onClick={() => {
+                              const currentIndex = imageIndices[selectedProduct.id] || 0;
+                              const newIndex = currentIndex < (selectedProduct.gallery || generatePlaceholderImages()).length - 1 ? currentIndex + 1 : 0;
+                              setImageIndices({...imageIndices, [selectedProduct.id]: newIndex});
+                            }}
+                            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-all"
+                          >
+                            →
+                          </button>
+                        </div>
+                        
+                        {/* Desktop indicators */}
+                        <div className="flex justify-center gap-2 mt-3">
+                          {(selectedProduct.gallery || generatePlaceholderImages()).map((_, idx) => (
+                            <button
+                              key={idx}
+                              onClick={() => setImageIndices({...imageIndices, [selectedProduct.id]: idx})}
+                              className={cn(
+                                "w-2 h-2 rounded-full transition-all",
+                                (imageIndices[selectedProduct.id] || 0) === idx
+                                  ? "bg-white w-6"
+                                  : "bg-white/40"
+                              )}
+                            />
+                          ))}
                         </div>
                       </div>
-                    )}
+                    </div>
                   </div>
 
                   {/* Title and Description */}
@@ -430,50 +497,71 @@ export function ProductsSection({ className }: ProductsSectionProps) {
               {/* Desktop Main Content */}
               <div className="flex-1 overflow-y-auto p-8 rounded-r-2xl">
                 <div className="max-w-none mx-auto px-2">
-                  {/* Image Carousel */}
+                  {/* Desktop Image Carousel with prev/next */}
                   <div className="mb-8">
-                    {selectedProduct.gallery && selectedProduct.gallery.length > 0 ? (
-                      <div className="relative">
-                        <div className="aspect-[16/9] overflow-hidden rounded-xl bg-gray-100 dark:bg-white/5">
-                          <div className="flex transition-transform duration-300"
-                               style={{ transform: `translateX(-${(imageIndices[selectedProduct.id] || 0) * 100}%)` }}>
-                            {selectedProduct.gallery.slice(0, 3).map((img, idx) => (
-                              <img
-                                key={idx}
-                                src={img}
-                                alt={`${selectedProduct.title} ${idx + 1}`}
-                                className="w-full h-full object-cover flex-shrink-0"
-                              />
-                            ))}
-                          </div>
-                        </div>
-                        {selectedProduct.gallery.length > 1 && (
-                          <div className="flex justify-center gap-2 mt-3">
-                            {selectedProduct.gallery.slice(0, 3).map((_, idx) => (
-                              <button
-                                key={idx}
-                                onClick={() => setImageIndices({...imageIndices, [selectedProduct.id]: idx})}
-                                className={cn(
-                                  "w-2 h-2 rounded-full transition-all",
-                                  (imageIndices[selectedProduct.id] || 0) === idx
-                                    ? "bg-white w-6"
-                                    : "bg-white/40"
-                                )}
-                              />
-                            ))}
-                          </div>
-                        )}
+                    <div className="relative">
+                      <div className="aspect-[16/9] overflow-hidden rounded-xl bg-gray-100 dark:bg-white/5 relative">
+                        <img
+                          src={(selectedProduct.gallery || generatePlaceholderImages())[(imageIndices[selectedProduct.id] || 0)]}
+                          alt={`${selectedProduct.title}`}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.parentElement!.innerHTML = `
+                              <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 dark:from-white/5 dark:to-white/10">
+                                <div class="text-center">
+                                  <div class="w-24 h-24 mx-auto bg-white/20 rounded-xl flex items-center justify-center mb-4">
+                                    <svg class="w-12 h-12 text-gray-400 dark:text-white/40" fill="currentColor" viewBox="0 0 20 20">
+                                      <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                      <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                  </div>
+                                  <p class="text-sm text-gray-500 dark:text-white/50">Product Preview</p>
+                                </div>
+                              </div>
+                            `;
+                          }}
+                        />
+                        
+                        {/* Navigation arrows */}
+                        <button
+                          onClick={() => {
+                            const currentIndex = imageIndices[selectedProduct.id] || 0;
+                            const newIndex = currentIndex > 0 ? currentIndex - 1 : (selectedProduct.gallery || generatePlaceholderImages()).length - 1;
+                            setImageIndices({...imageIndices, [selectedProduct.id]: newIndex});
+                          }}
+                          className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-all"
+                        >
+                          ←
+                        </button>
+                        <button
+                          onClick={() => {
+                            const currentIndex = imageIndices[selectedProduct.id] || 0;
+                            const newIndex = currentIndex < (selectedProduct.gallery || generatePlaceholderImages()).length - 1 ? currentIndex + 1 : 0;
+                            setImageIndices({...imageIndices, [selectedProduct.id]: newIndex});
+                          }}
+                          className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-all"
+                        >
+                          →
+                        </button>
                       </div>
-                    ) : (
-                      <div className="aspect-[16/9] overflow-hidden rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 dark:from-white/5 dark:to-white/10 flex items-center justify-center">
-                        <div className="text-center">
-                          <div className="w-24 h-24 mx-auto bg-white/20 rounded-xl flex items-center justify-center mb-4">
-                            <Rocket className="w-12 h-12 text-gray-400 dark:text-white/40" />
-                          </div>
-                          <p className="text-sm text-gray-500 dark:text-white/50">Product Preview</p>
-                        </div>
+                      
+                      {/* Desktop indicators */}
+                      <div className="flex justify-center gap-2 mt-3">
+                        {(selectedProduct.gallery || generatePlaceholderImages()).map((_, idx) => (
+                          <button
+                            key={idx}
+                            onClick={() => setImageIndices({...imageIndices, [selectedProduct.id]: idx})}
+                            className={cn(
+                              "w-2 h-2 rounded-full transition-all",
+                              (imageIndices[selectedProduct.id] || 0) === idx
+                                ? "bg-white w-6"
+                                : "bg-white/40"
+                            )}
+                          />
+                        ))}
                       </div>
-                    )}
+                    </div>
                   </div>
 
                   {/* Title and Description */}

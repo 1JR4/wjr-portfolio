@@ -34,32 +34,21 @@ export function HeroSection({ className }: HeroSectionProps) {
 
   return (
     <section className={cn("relative min-h-screen md:h-[80vh] overflow-hidden bg-black", className)}>
-      {/* Gradient background with grain effect */}
-      <div className="flex flex-col items-end absolute -right-60 -top-10 blur-xl z-0">
-        <div className="h-[10rem] rounded-full w-[60rem] z-1 bg-gradient-to-b blur-[6rem] from-purple-600 to-sky-600"></div>
-        <div className="h-[10rem] rounded-full w-[90rem] z-1 bg-gradient-to-b blur-[6rem] from-pink-900 to-yellow-400"></div>
-        <div className="h-[10rem] rounded-full w-[60rem] z-1 bg-gradient-to-b blur-[6rem] from-yellow-600 to-sky-500"></div>
-      </div>
-
-      {/* Hero background image overlay */}
+      {/* Hero background image - behind everything */}
       {mounted && (
         <>
           {isMobile ? (
             // Mobile Background
-            <>
-              <div 
-                className="absolute inset-0 opacity-[0.5] z-0"
-                style={{
-                  backgroundImage: 'url(/contents/background_mobile.png)',
-                  backgroundSize: 'contain',
-                  backgroundPosition: 'center center',
-                  backgroundRepeat: 'no-repeat',
-                  animation: 'subtleZoom 20s ease-in-out infinite alternate'
-                }}
-              />
-              {/* Mobile Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent z-[1]" />
-            </>
+            <div 
+              className="absolute inset-0 opacity-[0.4] z-0"
+              style={{
+                backgroundImage: 'url(/contents/background_mobile.png)',
+                backgroundSize: 'contain',
+                backgroundPosition: 'center center',
+                backgroundRepeat: 'no-repeat',
+                animation: 'subtleZoom 20s ease-in-out infinite alternate'
+              }}
+            />
           ) : (
             // Desktop Background
             <div 
@@ -90,9 +79,19 @@ export function HeroSection({ className }: HeroSectionProps) {
           }}
         />
       )}
+      
+      {/* Gradient overlay on top of background */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent z-[1]" />
+      
+      {/* Gradient background with grain effect */}
+      <div className="flex flex-col items-end absolute -right-60 -top-10 blur-xl z-[2]">
+        <div className="h-[10rem] rounded-full w-[60rem] z-1 bg-gradient-to-b blur-[6rem] from-purple-600 to-sky-600"></div>
+        <div className="h-[10rem] rounded-full w-[90rem] z-1 bg-gradient-to-b blur-[6rem] from-pink-900 to-yellow-400"></div>
+        <div className="h-[10rem] rounded-full w-[60rem] z-1 bg-gradient-to-b blur-[6rem] from-yellow-600 to-sky-500"></div>
+      </div>
 
       {/* Content container */}
-      <div className="relative z-10 h-full flex items-center justify-center pt-16 md:pt-0">
+      <div className="relative z-[10] h-full flex items-center justify-center pt-16 md:pt-0">
 
         {/* Hero section */}
         <div className="container mx-auto px-4 text-center">

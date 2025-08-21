@@ -35,6 +35,8 @@ interface ArticleModalSidebarProps {
   onTocClick: (id: string) => void;
   activeSection?: string;
   className?: string;
+  isMobile?: boolean;
+  onRelatedArticleClick?: (articleId: number) => void;
 }
 
 export function ArticleModalSidebar({
@@ -45,7 +47,9 @@ export function ArticleModalSidebar({
   relatedArticles,
   onTocClick,
   activeSection,
-  className
+  className,
+  isMobile = false,
+  onRelatedArticleClick
 }: ArticleModalSidebarProps) {
   const [isLiked, setIsLiked] = useState(false);
 
@@ -94,12 +98,39 @@ export function ArticleModalSidebar({
 
   return (
     <div className={cn("space-y-4", className)}>
-      {/* Table of Contents - Desktop scrollable box */}
+      {/* Mobile: Combined engagement at top */}
+      {isMobile && (
+        <div className="flex gap-2 mb-4">
+          <Button
+            variant={isLiked ? "gradient" : "glass"}
+            size="sm"
+            className="flex-1 text-xs"
+            onClick={handleLike}
+          >
+            <Heart className={cn("w-3 h-3 mr-1", isLiked && "fill-current")} />
+            {isLiked ? socialMetrics.likes + 1 : socialMetrics.likes} Like
+          </Button>
+          <Button
+            variant="glass"
+            size="sm"
+            className="flex-1 text-xs"
+            onClick={handleShare}
+          >
+            <Share2 className="w-3 h-3 mr-1" />
+            {socialMetrics.shares} Share
+          </Button>
+        </div>
+      )}
+      
+      {/* Table of Contents */}
       {tableOfContents.length > 0 && (
         <div>
           <h3 className="text-lg font-semibold text-white mb-3">📋 Table of Contents</h3>
-          <div className="bg-black/20 backdrop-blur-sm border border-white/20 rounded-lg p-3">
-            <nav className="space-y-0.5 max-h-[33vh] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
+          <div className={cn(
+            "bg-black/20 backdrop-blur-sm border border-white/20 rounded-lg p-3",
+            isMobile ? "max-h-[25vh]" : "max-h-[33vh]"
+          )}>
+            <nav className="space-y-0.5 overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
               {tableOfContents.map((item) => (
                 <button
                   key={item.id}
@@ -121,45 +152,47 @@ export function ArticleModalSidebar({
         </div>
       )}
 
-      {/* Social Actions */}
-      <div>
-        <h3 className="text-lg font-semibold text-white mb-3">Engagement</h3>
-        <div className="space-y-3">
-          {/* Social Metrics */}
-          <div className="grid grid-cols-2 gap-3">
-            <div className="bg-black/20 rounded-lg p-3 text-center border border-white/20">
-              <div className="text-white font-semibold">{isLiked ? socialMetrics.likes + 1 : socialMetrics.likes}</div>
-              <div className="text-white/70 text-xs">Likes</div>
+      {/* Desktop: Social Actions */}
+      {!isMobile && (
+        <div>
+          <h3 className="text-lg font-semibold text-white mb-3">Engagement</h3>
+          <div className="space-y-3">
+            {/* Social Metrics */}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-black/20 rounded-lg p-3 text-center border border-white/20">
+                <div className="text-white font-semibold">{isLiked ? socialMetrics.likes + 1 : socialMetrics.likes}</div>
+                <div className="text-white/70 text-xs">Likes</div>
+              </div>
+              <div className="bg-black/20 rounded-lg p-3 text-center border border-white/20">
+                <div className="text-white font-semibold">{socialMetrics.shares}</div>
+                <div className="text-white/70 text-xs">Shares</div>
+              </div>
             </div>
-            <div className="bg-black/20 rounded-lg p-3 text-center border border-white/20">
-              <div className="text-white font-semibold">{socialMetrics.shares}</div>
-              <div className="text-white/70 text-xs">Shares</div>
-            </div>
-          </div>
 
-          {/* Action Buttons */}
-          <div className="flex gap-2">
-            <Button
-              variant={isLiked ? "gradient" : "glass"}
-              size="sm"
-              className="flex-1"
-              onClick={handleLike}
-            >
-              <Heart className={cn("w-4 h-4 mr-2", isLiked && "fill-current")} />
-              {isLiked ? "Liked" : "Like"}
-            </Button>
-            <Button
-              variant="glass"
-              size="sm"
-              className="flex-1"
-              onClick={handleShare}
-            >
-              <Share2 className="w-4 h-4 mr-2" />
-              Share
-            </Button>
+            {/* Action Buttons */}
+            <div className="flex gap-2">
+              <Button
+                variant={isLiked ? "gradient" : "glass"}
+                size="sm"
+                className="flex-1"
+                onClick={handleLike}
+              >
+                <Heart className={cn("w-4 h-4 mr-2", isLiked && "fill-current")} />
+                {isLiked ? "Liked" : "Like"}
+              </Button>
+              <Button
+                variant="glass"
+                size="sm"
+                className="flex-1"
+                onClick={handleShare}
+              >
+                <Share2 className="w-4 h-4 mr-2" />
+                Share
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Related Articles */}
       {relatedArticles.length > 0 && (
@@ -169,6 +202,7 @@ export function ArticleModalSidebar({
             {relatedArticles.map((article) => (
               <button
                 key={article.id}
+                onClick={() => onRelatedArticleClick?.(article.id)}
                 className="w-full p-3 rounded-lg bg-black/20 hover:bg-black/30 transition-colors border border-white/20 hover:border-white/30 text-left"
               >
                 <div className="text-white/80 text-sm hover:text-white font-medium mb-1">
