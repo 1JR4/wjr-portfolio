@@ -51,10 +51,9 @@ export function HeroSection({ className }: HeroSectionProps) {
                 className="absolute inset-0 opacity-[0.5] z-0"
                 style={{
                   backgroundImage: 'url(/contents/background_mobile.png)',
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center top',
+                  backgroundSize: 'contain',
+                  backgroundPosition: 'center center',
                   backgroundRepeat: 'no-repeat',
-                  backgroundAttachment: 'fixed',
                   animation: 'subtleZoom 20s ease-in-out infinite alternate'
                 }}
               />

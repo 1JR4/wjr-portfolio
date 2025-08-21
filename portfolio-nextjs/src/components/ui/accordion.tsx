@@ -50,7 +50,7 @@ const AccordionItem = ({ children, className, defaultOpen = false }: AccordionIt
 
   return (
     <AccordionContext.Provider value={{ isOpen, toggle }}>
-      <div className={cn("border border-white/10 rounded-lg overflow-hidden bg-white/5 backdrop-blur-sm", className)}>
+      <div className={cn("border-b border-white/10 last:border-0", className)}>
         {children}
       </div>
     </AccordionContext.Provider>
@@ -64,14 +64,14 @@ const AccordionTrigger = ({ children, className }: AccordionTriggerProps) => {
     <button
       onClick={toggle}
       className={cn(
-        "flex w-full items-center justify-between p-4 text-left font-medium text-white hover:bg-white/5 transition-colors",
+        "flex w-full items-center justify-between py-4 px-2 text-left font-medium text-white hover:text-white/80 transition-colors",
         className
       )}
     >
       {children}
       <ChevronDown
         className={cn(
-          "h-4 w-4 shrink-0 transition-transform duration-200",
+          "h-4 w-4 shrink-0 transition-transform duration-200 text-white/60",
           isOpen && "rotate-180"
         )}
       />
@@ -92,7 +92,7 @@ const AccordionContent = ({ children, className }: AccordionContentProps) => {
           transition={{ duration: 0.3, ease: "easeInOut" }}
           style={{ overflow: "hidden" }}
         >
-          <div className={cn("p-4 pt-0 text-white/80", className)}>
+          <div className={cn("px-2 pb-4 text-white/80", className)}>
             {children}
           </div>
         </motion.div>

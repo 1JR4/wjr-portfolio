@@ -224,41 +224,17 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
               Latest Articles
             </motion.h2>
 
-            {/* Carousel Controls */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="flex gap-2"
-            >
-              <button
-                onClick={() => navigateCarousel(-1)}
-                disabled={currentIndex === 0}
-                className="bg-black/10 dark:bg-white/10 backdrop-blur-xl border border-gray-300 dark:border-white/20 w-12 h-12 rounded-full flex items-center justify-center text-gray-700 dark:text-white transition-all duration-300 hover:bg-black/20 dark:hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <ChevronLeft className="w-6 h-6" />
-              </button>
-              <button
-                onClick={() => navigateCarousel(1)}
-                disabled={currentIndex >= maxIndex}
-                className="bg-black/10 dark:bg-white/10 backdrop-blur-xl border border-gray-300 dark:border-white/20 w-12 h-12 rounded-full flex items-center justify-center text-gray-700 dark:text-white transition-all duration-300 hover:bg-black/20 dark:hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <ChevronRight className="w-6 h-6" />
-              </button>
-            </motion.div>
+            {/* Remove carousel controls - using scroll instead */}
           </div>
 
-          {/* Articles Carousel */}
-          <div className="relative overflow-hidden">
-            <div 
-              className="flex gap-6 transition-transform duration-300 ease-in-out"
-              style={{ transform: `translateX(-${currentIndex * (100 / itemsPerPage)}%)` }}
-            >
+          {/* Articles Carousel - Scrollable */}
+          <div className="relative -mx-4 px-4">
+            <div className="overflow-x-auto scrollbar-hide">
+              <div className="flex gap-4 pb-4">
             {visibleArticles.map((article, index) => (
               <motion.div
                 key={article.id}
-                className="flex-shrink-0 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] group cursor-pointer"
+                className="flex-shrink-0 w-[85%] md:w-[45%] lg:w-[31%] group cursor-pointer snap-start"
                 onClick={() => openModal(article)}
               >
                 <div className="bg-black/5 dark:bg-white/10 backdrop-blur-xl border border-gray-200 dark:border-white/20 rounded-xl p-6 transition-all duration-300 hover:bg-black/10 dark:hover:bg-white/20 hover:translate-y-[-8px] h-full overflow-hidden">
@@ -297,6 +273,7 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
                 </div>
               </motion.div>
             ))}
+              </div>
             </div>
           </div>
 
@@ -330,8 +307,8 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
 
             {/* Mobile Layout: Stacked */}
             <div className="lg:hidden flex flex-col h-full rounded-2xl">
-              {/* Mobile Main Content */}
-              <div className="flex-1 overflow-y-auto p-6" ref={contentRef}>
+              {/* Mobile Main Content - 70% */}
+              <div className="flex-[0.7] overflow-y-auto p-6" ref={contentRef}>
                 <div className="max-w-none mx-auto">
                   {/* Header */}
                   <div className="mb-6 px-2">
@@ -420,8 +397,8 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
                 </div>
               </div>
 
-              {/* Mobile - Social and Resources at bottom */}
-              <div className="p-4 bg-black/20 backdrop-blur-sm">
+              {/* Mobile - Social and Resources at bottom - 30% */}
+              <div className="flex-[0.3] overflow-y-auto p-4 bg-black/20 backdrop-blur-sm border-t border-white/20">
                 <ArticleModalSidebar
                   tableOfContents={[]} // Hide TOC since it's inline above
                   resources={selectedArticle.resources}
