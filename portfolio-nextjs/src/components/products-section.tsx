@@ -194,18 +194,116 @@ export function ProductsSection({ className }: ProductsSectionProps) {
               Featured Products
             </motion.h2>
 
-            {/* Remove carousel controls - using scroll instead */}
+            {/* Desktop Carousel Controls */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="hidden lg:flex gap-2"
+            >
+              <button
+                onClick={() => navigateCarousel(-1)}
+                disabled={currentIndex === 0}
+                className="bg-black/10 dark:bg-white/10 backdrop-blur-xl border border-gray-300 dark:border-white/20 w-12 h-12 rounded-full flex items-center justify-center text-gray-700 dark:text-white transition-all duration-300 hover:bg-black/20 dark:hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+              <button
+                onClick={() => navigateCarousel(1)}
+                disabled={currentIndex >= maxIndex}
+                className="bg-black/10 dark:bg-white/10 backdrop-blur-xl border border-gray-300 dark:border-white/20 w-12 h-12 rounded-full flex items-center justify-center text-gray-700 dark:text-white transition-all duration-300 hover:bg-black/20 dark:hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+            </motion.div>
           </div>
 
-          {/* Products Carousel - Scrollable */}
-          <div className="relative -mx-4 px-4">
-            <div className="overflow-x-auto scrollbar-hide">
-              <div className="flex gap-4 pb-4">
+          {/* Products Carousel */}
+          <div className="relative">
+            {/* Mobile: Scrollable */}
+            <div className="lg:hidden -mx-4 px-4">
+              <div className="overflow-x-auto scrollbar-hide">
+                <div className="flex gap-4 pb-4">
+                  {visibleProducts.map((product, index) => (
+                    <motion.div
+                      key={product.id}
+                      className="flex-shrink-0 w-[85%] md:w-[45%] group cursor-pointer snap-start"
+                      onClick={() => openModal(product)}
+                    >
+                      <div className="bg-black/5 dark:bg-white/10 backdrop-blur-xl border border-gray-200 dark:border-white/20 rounded-xl p-6 transition-all duration-300 hover:bg-black/10 dark:hover:bg-white/20 hover:translate-y-[-8px] h-full overflow-hidden">
+                        <div className="relative z-10 flex items-start gap-4 h-full">
+                          {/* App Icon */}
+                          <div className="flex-shrink-0">
+                            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                              {(() => {
+                                const IconComponent = getProductIcon(index);
+                                return <IconComponent className="w-8 h-8 text-white" />;
+                              })()}
+                            </div>
+                          </div>
+
+                          {/* Product Details */}
+                          <div className="flex-1 min-w-0">
+                            {/* Header with Title and Status */}
+                            <div className="flex items-start justify-between mb-2">
+                              <h3 className="text-lg font-semibold text-gray-900 dark:text-white line-clamp-1 transition-colors duration-300">
+                                {product.title}
+                              </h3>
+                              <span className={cn(
+                                "px-2 py-1 rounded-full text-xs font-medium ml-2 flex-shrink-0",
+                                "bg-black/10 dark:bg-white/10 backdrop-blur-sm border border-gray-200 dark:border-white/20 text-gray-700 dark:text-white"
+                              )}>
+                                {getStatusText(product.status)}
+                              </span>
+                            </div>
+
+                            {/* Description */}
+                            <p className="text-gray-600 dark:text-white/70 text-sm line-clamp-2 mb-3">
+                              {product.description}
+                            </p>
+
+                            {/* Technologies */}
+                            <div className="flex flex-wrap gap-1 mb-3">
+                              {product.technologies.slice(0, 2).map((tech) => (
+                                <span
+                                  key={tech}
+                                  className="px-2 py-1 bg-black/10 dark:bg-white/10 backdrop-blur-sm border border-gray-200 dark:border-white/20 text-gray-700 dark:text-white/80 rounded text-xs"
+                                >
+                                  {tech}
+                                </span>
+                              ))}
+                              {product.technologies.length > 2 && (
+                                <span className="px-2 py-1 bg-black/10 dark:bg-white/10 backdrop-blur-sm border border-gray-200 dark:border-white/20 text-gray-700 dark:text-white/80 rounded text-xs">
+                                  +{product.technologies.length - 2}
+                                </span>
+                              )}
+                            </div>
+
+                            {/* Footer */}
+                            <div className="flex justify-end">
+                              <ExternalLink className="w-4 h-4 text-white/60 group-hover:text-white transition-colors duration-300" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            
+            {/* Desktop: Controlled carousel */}
+            <div className="hidden lg:block overflow-hidden">
+              <div 
+                className="flex gap-6 transition-transform duration-300 ease-in-out"
+                style={{ transform: `translateX(-${currentIndex * (100 / itemsPerPage)}%)` }}
+              >
             {visibleProducts.map((product, index) => (
-              <motion.div
-                key={product.id}
-                className="flex-shrink-0 w-[85%] md:w-[45%] lg:w-[31%] group cursor-pointer snap-start"
-                onClick={() => openModal(product)}
+                <motion.div
+                  key={product.id}
+                  className="flex-shrink-0 w-full lg:w-[calc(33.333%-16px)] group cursor-pointer"
+                  onClick={() => openModal(product)}
               >
                 <div className="bg-black/5 dark:bg-white/10 backdrop-blur-xl border border-gray-200 dark:border-white/20 rounded-xl p-6 transition-all duration-300 hover:bg-black/10 dark:hover:bg-white/20 hover:translate-y-[-8px] h-full overflow-hidden">
                   <div className="relative z-10 flex items-start gap-4 h-full">
@@ -264,7 +362,7 @@ export function ProductsSection({ className }: ProductsSectionProps) {
                   </div>
                 </div>
               </motion.div>
-            ))}
+              ))}
               </div>
             </div>
           </div>

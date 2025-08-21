@@ -231,18 +231,93 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
               Latest Articles
             </motion.h2>
 
-            {/* Remove carousel controls - using scroll instead */}
+            {/* Desktop Carousel Controls */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="hidden lg:flex gap-2"
+            >
+              <button
+                onClick={() => navigateCarousel(-1)}
+                disabled={currentIndex === 0}
+                className="bg-black/10 dark:bg-white/10 backdrop-blur-xl border border-gray-300 dark:border-white/20 w-12 h-12 rounded-full flex items-center justify-center text-gray-700 dark:text-white transition-all duration-300 hover:bg-black/20 dark:hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+              <button
+                onClick={() => navigateCarousel(1)}
+                disabled={currentIndex >= maxIndex}
+                className="bg-black/10 dark:bg-white/10 backdrop-blur-xl border border-gray-300 dark:border-white/20 w-12 h-12 rounded-full flex items-center justify-center text-gray-700 dark:text-white transition-all duration-300 hover:bg-black/20 dark:hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+            </motion.div>
           </div>
 
-          {/* Articles Carousel - Scrollable */}
-          <div className="relative -mx-4 px-4">
-            <div className="overflow-x-auto scrollbar-hide">
-              <div className="flex gap-4 pb-4">
+          {/* Articles Carousel */}
+          <div className="relative">
+            {/* Mobile: Scrollable */}
+            <div className="lg:hidden -mx-4 px-4">
+              <div className="overflow-x-auto scrollbar-hide">
+                <div className="flex gap-4 pb-4">
+                  {visibleArticles.map((article, index) => (
+                    <motion.div
+                      key={article.id}
+                      className="flex-shrink-0 w-[85%] md:w-[45%] group cursor-pointer snap-start"
+                      onClick={() => openModal(article)}
+                    >
+                      <div className="bg-black/5 dark:bg-white/10 backdrop-blur-xl border border-gray-200 dark:border-white/20 rounded-xl p-4 transition-all duration-300 hover:bg-black/10 dark:hover:bg-white/20 hover:translate-y-[-8px] h-full overflow-hidden">
+                        <div className="relative z-10">
+                          {/* Article Content */}
+                          <div className="p-2">
+                            {/* Meta */}
+                            <div className="flex items-center gap-3 mb-3">
+                              <span className="px-3 py-1 bg-black/10 dark:bg-white/10 backdrop-blur-sm border border-gray-200 dark:border-white/20 text-gray-700 dark:text-white rounded-full text-xs font-medium">
+                                {article.category}
+                              </span>
+                              <span className="text-gray-600 dark:text-white/60 text-xs flex items-center gap-1">
+                                <Clock className="w-3 h-3" />
+                                {article.readTime}
+                              </span>
+                            </div>
+
+                            {/* Title */}
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 line-clamp-2 transition-colors duration-300">
+                              {article.title}
+                            </h3>
+
+                            {/* Description */}
+                            <p className="text-gray-600 dark:text-white/70 text-sm line-clamp-3 mb-4">
+                              {article.description}
+                            </p>
+
+                            {/* Footer */}
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-500 dark:text-white/60 text-xs">{article.date}</span>
+                              <ExternalLink className="w-4 h-4 text-white/60 group-hover:text-white transition-colors duration-300" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            
+            {/* Desktop: Controlled carousel */}
+            <div className="hidden lg:block overflow-hidden">
+              <div 
+                className="flex gap-6 transition-transform duration-300 ease-in-out"
+                style={{ transform: `translateX(-${currentIndex * (100 / itemsPerPage)}%)` }}
+              >
             {visibleArticles.map((article, index) => (
-              <motion.div
-                key={article.id}
-                className="flex-shrink-0 w-[85%] md:w-[45%] lg:w-[31%] group cursor-pointer snap-start"
-                onClick={() => openModal(article)}
+                <motion.div
+                  key={article.id}
+                  className="flex-shrink-0 w-full lg:w-[calc(33.333%-16px)] group cursor-pointer"
+                  onClick={() => openModal(article)}
               >
                 <div className="bg-black/5 dark:bg-white/10 backdrop-blur-xl border border-gray-200 dark:border-white/20 rounded-xl p-4 transition-all duration-300 hover:bg-black/10 dark:hover:bg-white/20 hover:translate-y-[-8px] h-full overflow-hidden">
                   
@@ -279,7 +354,7 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
                   </div>
                 </div>
               </motion.div>
-            ))}
+              ))}
               </div>
             </div>
           </div>
@@ -333,18 +408,7 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
                     <p className="text-xl text-white/70 leading-relaxed">{selectedArticle.description}</p>
                   </div>
 
-                  {/* Mobile Table of Contents Preview - One Line */}
-                  <div className="mb-6 bg-black/20 backdrop-blur-xl border border-white/20 rounded-xl p-4">
-                    <h3 className="text-lg font-semibold text-white mb-3">📋 Table of Contents</h3>
-                    <div className="text-sm text-white/70 truncate">
-                      {selectedArticle.tableOfContents.map((item, idx) => (
-                        <span key={item.id}>
-                          {item.title}{idx < selectedArticle.tableOfContents.length - 1 ? ' • ' : ''}
-                        </span>
-                      ))}
-                      {selectedArticle.tableOfContents.length > 3 && '...'}
-                    </div>
-                  </div>
+                  {/* Mobile: No TOC in upper section - moved to bottom */}
 
                   {/* TL;DR Section */}
                   <div className="mb-6 bg-black/20 backdrop-blur-xl border border-white/20 rounded-xl p-6">
@@ -382,9 +446,9 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
                             } else if (line.startsWith('- ')) {
                               return `<li class="text-white/70 ml-4">${line.substring(2)}</li>`;
                             } else if (line.trim() === '') {
-                              return '<br>';
+                              return '';
                             } else {
-                              return `<p class="text-white/70 mb-3 leading-relaxed">${line}</p>`;
+                              return `<p class="text-white/70 mb-1 leading-relaxed">${line}</p>`;
                             }
                           })
                           .join('')
@@ -395,7 +459,7 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
               </div>
 
               {/* Mobile - Social and Resources at bottom - 30% */}
-              <div className="flex-[0.3] overflow-y-auto p-4 bg-black/20 backdrop-blur-sm border-t border-white/20">
+              <div className="flex-[0.3] flex flex-col p-4 bg-black/20 backdrop-blur-sm border-t border-white/20 min-h-0">
                 <ArticleModalSidebar
                   tableOfContents={selectedArticle.tableOfContents} // Show full TOC here
                   resources={selectedArticle.resources}
@@ -423,6 +487,7 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
                     relatedArticles={getRelatedArticles(selectedArticle)}
                     onTocClick={handleTocClick}
                     activeSection={activeSection}
+                    isMobile={false}
                     onRelatedArticleClick={handleRelatedArticleClick}
                   />
                 </div>
@@ -484,9 +549,9 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
                             } else if (line.startsWith('- ')) {
                               return `<li class="text-white/70 ml-4">${line.substring(2)}</li>`;
                             } else if (line.trim() === '') {
-                              return '<br>';
+                              return '';
                             } else {
-                              return `<p class="text-white/70 mb-3 leading-relaxed">${line}</p>`;
+                              return `<p class="text-white/70 mb-1 leading-relaxed">${line}</p>`;
                             }
                           })
                           .join('')

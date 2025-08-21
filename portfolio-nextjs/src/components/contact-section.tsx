@@ -183,7 +183,7 @@ export function ContactSection({ className }: ContactSectionProps) {
           >
             <button
               onClick={closeCalendly}
-              className="absolute top-4 right-4 z-10 bg-gray-100 dark:bg-white/10 w-10 h-10 rounded-full flex items-center justify-center text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-white/20 transition-all duration-300"
+              className="absolute top-4 right-4 z-10 bg-gray-800 hover:bg-gray-900 w-10 h-10 rounded-full flex items-center justify-center text-white shadow-lg transition-all duration-300"
             >
               ✕
             </button>

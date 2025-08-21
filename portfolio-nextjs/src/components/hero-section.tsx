@@ -80,14 +80,30 @@ export function HeroSection({ className }: HeroSectionProps) {
         />
       )}
       
-      {/* Gradient overlay on top of background */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent z-[1]" />
+      {/* Gradient overlay on top of background - reduced opacity */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/25 to-transparent z-[1]" />
       
-      {/* Gradient background with grain effect */}
-      <div className="flex flex-col items-end absolute -right-60 -top-10 blur-xl z-[2]">
-        <div className="h-[10rem] rounded-full w-[60rem] z-1 bg-gradient-to-b blur-[6rem] from-purple-600 to-sky-600"></div>
-        <div className="h-[10rem] rounded-full w-[90rem] z-1 bg-gradient-to-b blur-[6rem] from-pink-900 to-yellow-400"></div>
-        <div className="h-[10rem] rounded-full w-[60rem] z-1 bg-gradient-to-b blur-[6rem] from-yellow-600 to-sky-500"></div>
+      {/* Better distributed gradient background effects */}
+      <div className="absolute inset-0 overflow-hidden z-[2]">
+        {/* Left side gradients */}
+        <div className="absolute -left-40 -top-20 blur-xl">
+          <div className="h-[10rem] rounded-full w-[50rem] bg-gradient-to-br blur-[6rem] from-blue-600 to-purple-600 opacity-60"></div>
+        </div>
+        
+        {/* Center gradients */}
+        <div className="absolute left-1/2 top-1/4 transform -translate-x-1/2 blur-xl">
+          <div className="h-[8rem] rounded-full w-[40rem] bg-gradient-to-br blur-[5rem] from-pink-500 to-orange-400 opacity-50"></div>
+        </div>
+        
+        {/* Right side gradients */}
+        <div className="absolute -right-40 -top-10 blur-xl">
+          <div className="h-[12rem] rounded-full w-[60rem] bg-gradient-to-bl blur-[6rem] from-purple-600 to-sky-600 opacity-70"></div>
+        </div>
+        
+        {/* Bottom gradients */}
+        <div className="absolute -bottom-20 left-1/4 blur-xl">
+          <div className="h-[10rem] rounded-full w-[50rem] bg-gradient-to-tr blur-[6rem] from-yellow-500 to-pink-500 opacity-40"></div>
+        </div>
       </div>
 
       {/* Content container */}

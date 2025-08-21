@@ -124,13 +124,16 @@ export function ArticleModalSidebar({
       
       {/* Table of Contents */}
       {tableOfContents.length > 0 && (
-        <div>
+        <div className={isMobile ? "flex-1 flex flex-col min-h-0" : ""}>
           <h3 className="text-lg font-semibold text-white mb-3">📋 Table of Contents</h3>
           <div className={cn(
-            "bg-black/20 backdrop-blur-sm border border-white/20 rounded-lg p-3",
-            isMobile ? "max-h-[25vh]" : "max-h-[33vh]"
+            "bg-black/20 backdrop-blur-sm border border-white/20 rounded-lg",
+            isMobile ? "flex-1 overflow-hidden" : "max-h-[33vh]"
           )}>
-            <nav className="space-y-0.5 overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
+            <nav className={cn(
+              "p-3 space-y-0.5 overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent",
+              isMobile ? "h-full" : ""
+            )}>
               {tableOfContents.map((item) => (
                 <button
                   key={item.id}
