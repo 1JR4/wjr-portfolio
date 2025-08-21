@@ -87,6 +87,7 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [mobileTab, setMobileTab] = useState<'toc' | 'tags' | 'resources' | 'related'>('toc');
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -458,19 +459,118 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
                 </div>
               </div>
 
-              {/* Mobile - Social and Resources at bottom - 30% */}
-              <div className="flex-[0.3] flex flex-col p-4 bg-black/20 backdrop-blur-sm border-t border-white/20 min-h-0">
-                <ArticleModalSidebar
-                  tableOfContents={selectedArticle.tableOfContents} // Show full TOC here
-                  resources={selectedArticle.resources}
-                  tags={selectedArticle.tags}
-                  socialMetrics={selectedArticle.socialMetrics}
-                  relatedArticles={getRelatedArticles(selectedArticle)}
-                  onTocClick={handleTocClick}
-                  activeSection={activeSection}
-                  isMobile={true}
-                  onRelatedArticleClick={handleRelatedArticleClick}
-                />
+              {/* Mobile - Tabbed lower section - 30% */}
+              <div className="flex-[0.3] flex flex-col bg-black/20 backdrop-blur-sm border-t border-white/20 min-h-0">
+                {/* Combined engagement at top */}
+                <div className="flex gap-2 p-4 pb-2">
+                  <button
+                    onClick={() => {}}
+                    className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-black/30 hover:bg-black/40 rounded-lg text-white/80 hover:text-white transition-all text-sm"
+                  >
+                    <Heart className="w-4 h-4" />
+                    {selectedArticle.socialMetrics.likes} Like
+                  </button>
+                  <button
+                    onClick={() => {}}
+                    className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-black/30 hover:bg-black/40 rounded-lg text-white/80 hover:text-white transition-all text-sm"
+                  >
+                    <Share2 className="w-4 h-4" />
+                    {selectedArticle.socialMetrics.shares} Share
+                  </button>
+                </div>
+                
+                {/* Tab Navigation */}
+                <div className="flex border-b border-white/20 px-4">
+                  {[
+                    { id: 'toc', label: 'Contents' },
+                    { id: 'tags', label: 'Tags' },
+                    { id: 'resources', label: 'Resources' },
+                    { id: 'related', label: 'Related' }
+                  ].map((tab) => (
+                    <button
+                      key={tab.id}
+                      onClick={() => setMobileTab(tab.id as any)}
+                      className={cn(
+                        "px-4 py-2 text-sm font-medium transition-all border-b-2",
+                        mobileTab === tab.id
+                          ? "text-white border-blue-400"
+                          : "text-white/60 border-transparent hover:text-white/80"
+                      )}
+                    >
+                      {tab.label}
+                    </button>
+                  ))}
+                </div>
+                
+                {/* Tab Content - Scrollable */}
+                <div className="flex-1 overflow-y-auto p-4">
+                  {mobileTab === 'toc' && (
+                    <nav className="space-y-1">
+                      {selectedArticle.tableOfContents.map((item) => (
+                        <button
+                          key={item.id}
+                          onClick={() => handleTocClick(item.id)}
+                          className={cn(
+                            "w-full text-left px-3 py-2 rounded-lg text-sm transition-colors",
+                            "hover:bg-white/10 hover:text-white",
+                            item.level === 1 && "font-medium text-white",
+                            item.level === 2 && "pl-6 text-white/70",
+                            item.level === 3 && "pl-9 text-white/60",
+                            activeSection === item.id && "bg-blue-500/20 text-blue-400 border-l-2 border-blue-400"
+                          )}
+                        >
+                          {item.title}
+                        </button>
+                      ))}
+                    </nav>
+                  )}
+                  
+                  {mobileTab === 'tags' && (
+                    <div className="flex flex-wrap gap-2">
+                      {selectedArticle.tags.map((tag) => (
+                        <span key={tag} className="px-3 py-1 bg-white/10 text-white/80 rounded-full text-xs">
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  
+                  {mobileTab === 'resources' && (
+                    <div className="space-y-2">
+                      {selectedArticle.resources.map((resource, idx) => (
+                        <a
+                          key={idx}
+                          href={resource.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors border border-white/10 hover:border-white/20"
+                        >
+                          <ExternalLink className="w-4 h-4 text-white/60" />
+                          <span className="text-white/80 text-sm">{resource.title}</span>
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                  
+                  {mobileTab === 'related' && (
+                    <div className="space-y-2">
+                      {getRelatedArticles(selectedArticle).map((article) => (
+                        <button
+                          key={article.id}
+                          onClick={() => handleRelatedArticleClick(article.id)}
+                          className="w-full p-3 rounded-lg bg-black/20 hover:bg-black/30 transition-colors border border-white/20 hover:border-white/30 text-left"
+                        >
+                          <div className="text-white/80 text-sm hover:text-white font-medium mb-1">
+                            {article.title}
+                          </div>
+                          <span className="px-2 py-1 bg-white/10 text-white/60 rounded-full text-xs">
+                            {article.category}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 

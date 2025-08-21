@@ -38,17 +38,26 @@ export function HeroSection({ className }: HeroSectionProps) {
       {mounted && (
         <>
           {isMobile ? (
-            // Mobile Background
-            <div 
-              className="absolute inset-0 opacity-[0.4] z-0"
-              style={{
-                backgroundImage: 'url(/contents/background_mobile.png)',
-                backgroundSize: 'contain',
-                backgroundPosition: 'center center',
-                backgroundRepeat: 'no-repeat',
-                animation: 'subtleZoom 20s ease-in-out infinite alternate'
-              }}
-            />
+            // Mobile Background with constrained overlay
+            <>
+              <div 
+                className="absolute inset-0 opacity-[0.8] z-0"
+                style={{
+                  backgroundImage: 'url(/contents/background_mobile.png)',
+                  backgroundSize: 'contain',
+                  backgroundPosition: 'center center',
+                  backgroundRepeat: 'no-repeat',
+                  animation: 'subtleZoom 20s ease-in-out infinite alternate'
+                }}
+              />
+              {/* Mobile: Gradient only within image bounds */}
+              <div 
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-[70vh] z-[1]"
+                style={{
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.05) 50%, rgba(0,0,0,0.2) 100%)'
+                }}
+              />
+            </>
           ) : (
             // Desktop Background
             <div 
@@ -80,34 +89,38 @@ export function HeroSection({ className }: HeroSectionProps) {
         />
       )}
       
-      {/* Gradient overlay on top of background - reduced opacity */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/25 to-transparent z-[1]" />
+      {/* Desktop: Light gradient overlay - 20% opacity */}
+      {mounted && !isMobile && (
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-black/10 to-transparent z-[1]" />
+      )}
       
-      {/* Better distributed gradient background effects */}
-      <div className="absolute inset-0 overflow-hidden z-[2]">
-        {/* Left side gradients */}
-        <div className="absolute -left-40 -top-20 blur-xl">
-          <div className="h-[10rem] rounded-full w-[50rem] bg-gradient-to-br blur-[6rem] from-blue-600 to-purple-600 opacity-60"></div>
+      {/* Desktop: Subtle, well-distributed gradient effects */}
+      {mounted && !isMobile && (
+        <div className="absolute inset-0 overflow-hidden z-[2]">
+          {/* Evenly distributed subtle gradients */}
+          <div className="absolute left-1/4 top-1/4 blur-2xl">
+            <div className="h-[4rem] rounded-full w-[20rem] bg-gradient-to-br blur-[3rem] from-blue-500/10 to-purple-500/10"></div>
+          </div>
+          
+          <div className="absolute right-1/4 top-1/3 blur-2xl">
+            <div className="h-[4rem] rounded-full w-[20rem] bg-gradient-to-bl blur-[3rem] from-purple-500/10 to-pink-500/10"></div>
+          </div>
+          
+          <div className="absolute left-1/3 bottom-1/4 blur-2xl">
+            <div className="h-[4rem] rounded-full w-[20rem] bg-gradient-to-tr blur-[3rem] from-cyan-400/8 to-blue-400/8"></div>
+          </div>
+          
+          <div className="absolute right-1/3 bottom-1/3 blur-2xl">
+            <div className="h-[4rem] rounded-full w-[20rem] bg-gradient-to-tl blur-[3rem] from-orange-400/8 to-yellow-400/8"></div>
+          </div>
         </div>
-        
-        {/* Center gradients */}
-        <div className="absolute left-1/2 top-1/4 transform -translate-x-1/2 blur-xl">
-          <div className="h-[8rem] rounded-full w-[40rem] bg-gradient-to-br blur-[5rem] from-pink-500 to-orange-400 opacity-50"></div>
-        </div>
-        
-        {/* Right side gradients */}
-        <div className="absolute -right-40 -top-10 blur-xl">
-          <div className="h-[12rem] rounded-full w-[60rem] bg-gradient-to-bl blur-[6rem] from-purple-600 to-sky-600 opacity-70"></div>
-        </div>
-        
-        {/* Bottom gradients */}
-        <div className="absolute -bottom-20 left-1/4 blur-xl">
-          <div className="h-[10rem] rounded-full w-[50rem] bg-gradient-to-tr blur-[6rem] from-yellow-500 to-pink-500 opacity-40"></div>
-        </div>
-      </div>
+      )}
 
-      {/* Content container */}
-      <div className="relative z-[10] h-full flex items-center justify-center pt-16 md:pt-0">
+      {/* Content container - Mobile: centered within image */}
+      <div className={cn(
+        "relative z-[10] h-full flex items-center justify-center",
+        mounted && isMobile ? "pt-0" : "pt-16 md:pt-0"
+      )}>
 
         {/* Hero section */}
         <div className="container mx-auto px-4 text-center">
