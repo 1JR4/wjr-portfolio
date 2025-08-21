@@ -205,7 +205,7 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
     }));
   };
 
-  const visibleArticles = mounted && isMobile ? articlesData : articlesData.slice(currentIndex, currentIndex + itemsPerPage);
+  const visibleArticles = articlesData;
 
   return (
     <>
@@ -224,13 +224,13 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
               Latest Articles
             </motion.h2>
 
-            {/* Carousel Controls - Hidden on mobile since we use vertical layout */}
+            {/* Carousel Controls */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="hidden lg:flex gap-2"
+              className="flex gap-2"
             >
               <button
                 onClick={() => navigateCarousel(-1)}
@@ -249,16 +249,16 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
             </motion.div>
           </div>
 
-          {/* Articles Grid - Mobile: Vertical, Desktop: Grid */}
-          <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Articles Carousel */}
+          <div className="relative overflow-hidden">
+            <div 
+              className="flex gap-6 transition-transform duration-300 ease-in-out"
+              style={{ transform: `translateX(-${currentIndex * (100 / itemsPerPage)}%)` }}
+            >
             {visibleArticles.map((article, index) => (
               <motion.div
                 key={article.id}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="relative group cursor-pointer"
+                className="flex-shrink-0 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] group cursor-pointer"
                 onClick={() => openModal(article)}
               >
                 <div className="bg-black/5 dark:bg-white/10 backdrop-blur-xl border border-gray-200 dark:border-white/20 rounded-xl p-6 transition-all duration-300 hover:bg-black/10 dark:hover:bg-white/20 hover:translate-y-[-8px] h-full overflow-hidden">
@@ -297,6 +297,7 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
                 </div>
               </motion.div>
             ))}
+            </div>
           </div>
 
         </div>
@@ -329,8 +330,8 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
 
             {/* Mobile Layout: Stacked */}
             <div className="lg:hidden flex flex-col h-full rounded-2xl">
-              {/* Mobile Main Content - 70% */}
-              <div className="flex-[0.7] overflow-y-auto p-6 border-b border-white/20" ref={contentRef}>
+              {/* Mobile Main Content */}
+              <div className="flex-1 overflow-y-auto p-6" ref={contentRef}>
                 <div className="max-w-none mx-auto">
                   {/* Header */}
                   <div className="mb-6 px-2">
@@ -348,27 +349,40 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
                     <p className="text-xl text-white/70 leading-relaxed">{selectedArticle.description}</p>
                   </div>
 
-                  {/* Collapsible TL;DR Section */}
-                  <div className="mb-6">
-                    <Accordion>
-                      <AccordionItem>
-                        <AccordionTrigger className="text-white hover:text-white/80 p-0 border-b border-white/20">
-                          <span className="flex items-center gap-2">
-                            📝 TL;DR
-                          </span>
-                        </AccordionTrigger>
-                        <AccordionContent className="pt-4">
-                          <ul className="space-y-2">
-                            {selectedArticle.tldr.map((point, index) => (
-                              <li key={index} className="text-white/80 flex items-start gap-2">
-                                <span className="text-blue-400 mt-1">•</span>
-                                <span>{point}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion>
+                  {/* Mobile Table of Contents - Inline */}
+                  <div className="mb-6 bg-black/20 backdrop-blur-xl border border-white/20 rounded-xl p-4">
+                    <h3 className="text-lg font-semibold text-white mb-3">📋 Table of Contents</h3>
+                    <nav className="space-y-1">
+                      {selectedArticle.tableOfContents.map((item) => (
+                        <button
+                          key={item.id}
+                          onClick={() => handleTocClick(item.id)}
+                          className={cn(
+                            "w-full text-left px-3 py-2 rounded-lg text-sm transition-colors",
+                            "hover:bg-white/10 hover:text-white",
+                            item.level === 1 && "font-medium text-white",
+                            item.level === 2 && "pl-6 text-white/70",
+                            item.level === 3 && "pl-9 text-white/60",
+                            activeSection === item.id && "bg-blue-500/20 text-blue-400 border-l-2 border-blue-400"
+                          )}
+                        >
+                          {item.title}
+                        </button>
+                      ))}
+                    </nav>
+                  </div>
+
+                  {/* TL;DR Section */}
+                  <div className="mb-6 bg-black/20 backdrop-blur-xl border border-white/20 rounded-xl p-6">
+                    <h2 className="text-lg font-semibold text-white mb-4">📝 TL;DR</h2>
+                    <ul className="space-y-2">
+                      {selectedArticle.tldr.map((point, index) => (
+                        <li key={index} className="text-white/80 flex items-start gap-2">
+                          <span className="text-blue-400 mt-1">•</span>
+                          <span>{point}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
 
                   {/* Article Content */}
@@ -406,10 +420,10 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
                 </div>
               </div>
 
-              {/* Mobile Sidebar - 30% */}
-              <div className="flex-[0.3] bg-black/20 backdrop-blur-sm overflow-y-auto p-4">
+              {/* Mobile - Social and Resources at bottom */}
+              <div className="p-4 bg-black/20 backdrop-blur-sm">
                 <ArticleModalSidebar
-                  tableOfContents={selectedArticle.tableOfContents}
+                  tableOfContents={[]} // Hide TOC since it's inline above
                   resources={selectedArticle.resources}
                   tags={selectedArticle.tags}
                   socialMetrics={selectedArticle.socialMetrics}

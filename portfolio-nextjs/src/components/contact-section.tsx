@@ -14,17 +14,22 @@ interface ContactSectionProps {
 export function ContactSection({ className }: ContactSectionProps) {
   const [isEmailCopied, setIsEmailCopied] = useState(false);
   
+  const [showCalendlyModal, setShowCalendlyModal] = useState(false);
+  
   const openCalendly = () => {
-    // Direct link to avoid hydration issues
-    window.open('https://calendly.com/lumambo/30min', '_blank');
+    setShowCalendlyModal(true);
+  };
+  
+  const closeCalendly = () => {
+    setShowCalendlyModal(false);
   };
   
   const copyEmailToClipboard = async () => {
-    const email = RESUME_DATA.contact.split('|')[2]?.split(':')[1]?.trim() || 'rawonjae94@gmail.com';
+    const email = 'rawonjae94@gmail.com'; // Hardcoded to avoid parsing errors
     
     try {
       // Check if clipboard API is available
-      if (navigator.clipboard && window.isSecureContext) {
+      if (navigator?.clipboard && window.isSecureContext) {
         await navigator.clipboard.writeText(email);
         setIsEmailCopied(true);
       } else {
@@ -37,15 +42,25 @@ export function ContactSection({ className }: ContactSectionProps) {
         document.body.appendChild(textArea);
         textArea.focus();
         textArea.select();
-        document.execCommand('copy');
+        
+        try {
+          document.execCommand('copy');
+          setIsEmailCopied(true);
+        } catch (e) {
+          console.error('Copy failed:', e);
+          // Open email client as last resort
+          window.location.href = `mailto:${email}`;
+        }
+        
         textArea.remove();
-        setIsEmailCopied(true);
       }
       
       // Reset the button state after 2 seconds
-      setTimeout(() => {
-        setIsEmailCopied(false);
-      }, 2000);
+      if (isEmailCopied) {
+        setTimeout(() => {
+          setIsEmailCopied(false);
+        }, 2000);
+      }
     } catch (err) {
       // Final fallback - open email client
       console.error('Failed to copy email:', err);
@@ -155,6 +170,33 @@ export function ContactSection({ className }: ContactSectionProps) {
           })}
         </motion.div>
       </div>
+
+      {/* Calendly Modal */}
+      {showCalendlyModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={closeCalendly}>
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="relative bg-white dark:bg-gray-900 rounded-2xl max-w-3xl w-full h-[80vh] shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={closeCalendly}
+              className="absolute top-4 right-4 z-10 bg-gray-100 dark:bg-white/10 w-10 h-10 rounded-full flex items-center justify-center text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-white/20 transition-all duration-300"
+            >
+              ✕
+            </button>
+            <iframe
+              src="https://calendly.com/lumambo/30min"
+              width="100%"
+              height="100%"
+              frameBorder="0"
+              className="rounded-2xl"
+            ></iframe>
+          </motion.div>
+        </div>
+      )}
 
     </section>
   );

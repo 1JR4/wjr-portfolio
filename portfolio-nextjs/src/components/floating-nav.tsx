@@ -12,13 +12,24 @@ interface FloatingNavProps {
 export function FloatingNav({ className }: FloatingNavProps) {
   const [activeSection, setActiveSection] = useState("about");
   const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  const navItems = [
+  // Different nav items for mobile and desktop
+  const desktopNavItems = [
     { id: "about", label: "About" },
     { id: "articles", label: "Articles" },
     { id: "products", label: "Products" },
     { id: "contact", label: "Contact" },
   ];
+
+  const mobileNavItems = [
+    { id: "articles", label: "Articles" },
+    { id: "products", label: "Products" },
+    { id: "contact", label: "Contact" },
+  ];
+
+  const navItems = mounted && isMobile ? mobileNavItems : desktopNavItems;
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -40,12 +51,22 @@ export function FloatingNav({ className }: FloatingNavProps) {
   };
 
   useEffect(() => {
+    setMounted(true);
+    const checkIsMobile = () => setIsMobile(window.innerWidth < 768);
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    
     // Load saved theme
     const savedTheme = localStorage.getItem('theme') || 'dark';
     const isDark = savedTheme === 'dark';
     setIsDarkMode(isDark);
     document.documentElement.setAttribute('data-theme', savedTheme);
     document.documentElement.classList.toggle('dark', isDark);
+    
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
+
+  useEffect(() => {
 
     // Set up intersection observer for active section detection
     const sections = document.querySelectorAll('section[id]');
@@ -65,7 +86,7 @@ export function FloatingNav({ className }: FloatingNavProps) {
     return () => {
       sections.forEach((section) => observer.unobserve(section));
     };
-  }, []);
+  }, [mounted, isMobile]);
 
   return (
     <motion.nav

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Heart, Share2, FileText, Video, ExternalLink } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
 
 interface TableOfContentsItem {
@@ -95,14 +94,12 @@ export function ArticleModalSidebar({
 
   return (
     <div className={cn("space-y-4", className)}>
-      {/* Collapsible Table of Contents */}
-      <Accordion>
-        <AccordionItem>
-          <AccordionTrigger className="text-white hover:text-white/80 p-0 border-b border-white/20">
-            📋 Table of Contents
-          </AccordionTrigger>
-          <AccordionContent className="pt-2">
-            <nav className="space-y-0.5 max-h-[20vh] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
+      {/* Table of Contents - Desktop scrollable box */}
+      {tableOfContents.length > 0 && (
+        <div>
+          <h3 className="text-lg font-semibold text-white mb-3">📋 Table of Contents</h3>
+          <div className="bg-black/20 backdrop-blur-sm border border-white/20 rounded-lg p-3">
+            <nav className="space-y-0.5 max-h-[33vh] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
               {tableOfContents.map((item) => (
                 <button
                   key={item.id}
@@ -120,9 +117,9 @@ export function ArticleModalSidebar({
                 </button>
               ))}
             </nav>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
+          </div>
+        </div>
+      )}
 
       {/* Social Actions */}
       <div>

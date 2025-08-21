@@ -51,6 +51,7 @@ interface Product {
     url: string;
     type: "documentation" | "demo" | "research";
   }[];
+  currentImageIndex?: number;
 }
 
 // Icon mapping for products
@@ -125,6 +126,7 @@ export function ProductsSection({ className }: ProductsSectionProps) {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [imageIndices, setImageIndices] = useState<{[key: number]: number}>({});
 
   useEffect(() => {
     setMounted(true);
@@ -153,12 +155,20 @@ export function ProductsSection({ className }: ProductsSectionProps) {
     document.body.style.overflow = '';
   };
 
-  const getStatusColor = (status: string) => {
-    // Use glassmorphism instead of colored badges
-    return "glass text-white";
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case "live":
+        return "Live";
+      case "development":
+        return "In Development";
+      case "concept":
+        return "Concept";
+      default:
+        return status;
+    }
   };
 
-  const visibleProducts = mounted && isMobile ? productsData : productsData.slice(currentIndex, currentIndex + itemsPerPage);
+  const visibleProducts = productsData;
 
   return (
     <>
@@ -177,13 +187,13 @@ export function ProductsSection({ className }: ProductsSectionProps) {
               Featured Products
             </motion.h2>
 
-            {/* Carousel Controls - Hidden on mobile since we use vertical layout */}
+            {/* Carousel Controls */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="hidden lg:flex gap-2"
+              className="flex gap-2"
             >
               <button
                 onClick={() => navigateCarousel(-1)}
@@ -202,16 +212,16 @@ export function ProductsSection({ className }: ProductsSectionProps) {
             </motion.div>
           </div>
 
-          {/* Products Grid - Mobile: Vertical, Desktop: Grid */}
-          <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Products Carousel */}
+          <div className="relative overflow-hidden">
+            <div 
+              className="flex gap-6 transition-transform duration-300 ease-in-out"
+              style={{ transform: `translateX(-${currentIndex * (100 / itemsPerPage)}%)` }}
+            >
             {visibleProducts.map((product, index) => (
               <motion.div
                 key={product.id}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="relative group cursor-pointer"
+                className="flex-shrink-0 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] group cursor-pointer"
                 onClick={() => openModal(product)}
               >
                 <div className="bg-black/5 dark:bg-white/10 backdrop-blur-xl border border-gray-200 dark:border-white/20 rounded-xl p-6 transition-all duration-300 hover:bg-black/10 dark:hover:bg-white/20 hover:translate-y-[-8px] h-full overflow-hidden">
@@ -237,7 +247,7 @@ export function ProductsSection({ className }: ProductsSectionProps) {
                           "px-2 py-1 rounded-full text-xs font-medium ml-2 flex-shrink-0",
                           "bg-black/10 dark:bg-white/10 backdrop-blur-sm border border-gray-200 dark:border-white/20 text-gray-700 dark:text-white"
                         )}>
-                          {product.status}
+                          {getStatusText(product.status)}
                         </span>
                       </div>
 
@@ -272,6 +282,7 @@ export function ProductsSection({ className }: ProductsSectionProps) {
                 </div>
               </motion.div>
             ))}
+            </div>
           </div>
 
         </div>
@@ -308,17 +319,50 @@ export function ProductsSection({ className }: ProductsSectionProps) {
               <div className="flex-[0.7] overflow-y-auto p-6 border-b border-white/20">
                 <div className="max-w-none mx-auto px-2">
                   {/* Image Carousel */}
-                  {selectedProduct.gallery && selectedProduct.gallery.length > 0 && (
-                    <div className="mb-6">
-                      <div className="aspect-video overflow-hidden rounded-xl">
-                        <img
-                          src={selectedProduct.gallery[0]}
-                          alt={selectedProduct.title}
-                          className="w-full h-full object-cover"
-                        />
+                  <div className="mb-6">
+                    {selectedProduct.gallery && selectedProduct.gallery.length > 0 ? (
+                      <div className="relative">
+                        <div className="aspect-[4/3] md:aspect-[16/9] overflow-hidden rounded-xl bg-gray-100 dark:bg-white/5">
+                          <div className="flex transition-transform duration-300"
+                               style={{ transform: `translateX(-${(imageIndices[selectedProduct.id] || 0) * 100}%)` }}>
+                            {selectedProduct.gallery.slice(0, 3).map((img, idx) => (
+                              <img
+                                key={idx}
+                                src={img}
+                                alt={`${selectedProduct.title} ${idx + 1}`}
+                                className="w-full h-full object-cover flex-shrink-0"
+                              />
+                            ))}
+                          </div>
+                        </div>
+                        {selectedProduct.gallery.length > 1 && (
+                          <div className="flex justify-center gap-2 mt-3">
+                            {selectedProduct.gallery.slice(0, 3).map((_, idx) => (
+                              <button
+                                key={idx}
+                                onClick={() => setImageIndices({...imageIndices, [selectedProduct.id]: idx})}
+                                className={cn(
+                                  "w-2 h-2 rounded-full transition-all",
+                                  (imageIndices[selectedProduct.id] || 0) === idx
+                                    ? "bg-white w-6"
+                                    : "bg-white/40"
+                                )}
+                              />
+                            ))}
+                          </div>
+                        )}
                       </div>
-                    </div>
-                  )}
+                    ) : (
+                      <div className="aspect-[4/3] md:aspect-[16/9] overflow-hidden rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 dark:from-white/5 dark:to-white/10 flex items-center justify-center">
+                        <div className="text-center">
+                          <div className="w-20 h-20 mx-auto bg-white/20 rounded-xl flex items-center justify-center mb-3">
+                            <Rocket className="w-10 h-10 text-gray-400 dark:text-white/40" />
+                          </div>
+                          <p className="text-sm text-gray-500 dark:text-white/50">Product Preview</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
 
                   {/* Title and Description */}
                   <div className="mb-6 px-2">
@@ -410,17 +454,50 @@ export function ProductsSection({ className }: ProductsSectionProps) {
               <div className="flex-1 overflow-y-auto p-8 rounded-r-2xl">
                 <div className="max-w-none mx-auto px-2">
                   {/* Image Carousel */}
-                  {selectedProduct.gallery && selectedProduct.gallery.length > 0 && (
-                    <div className="mb-8">
-                      <div className="aspect-video overflow-hidden rounded-xl">
-                        <img
-                          src={selectedProduct.gallery[0]}
-                          alt={selectedProduct.title}
-                          className="w-full h-full object-cover"
-                        />
+                  <div className="mb-8">
+                    {selectedProduct.gallery && selectedProduct.gallery.length > 0 ? (
+                      <div className="relative">
+                        <div className="aspect-[16/9] overflow-hidden rounded-xl bg-gray-100 dark:bg-white/5">
+                          <div className="flex transition-transform duration-300"
+                               style={{ transform: `translateX(-${(imageIndices[selectedProduct.id] || 0) * 100}%)` }}>
+                            {selectedProduct.gallery.slice(0, 3).map((img, idx) => (
+                              <img
+                                key={idx}
+                                src={img}
+                                alt={`${selectedProduct.title} ${idx + 1}`}
+                                className="w-full h-full object-cover flex-shrink-0"
+                              />
+                            ))}
+                          </div>
+                        </div>
+                        {selectedProduct.gallery.length > 1 && (
+                          <div className="flex justify-center gap-2 mt-3">
+                            {selectedProduct.gallery.slice(0, 3).map((_, idx) => (
+                              <button
+                                key={idx}
+                                onClick={() => setImageIndices({...imageIndices, [selectedProduct.id]: idx})}
+                                className={cn(
+                                  "w-2 h-2 rounded-full transition-all",
+                                  (imageIndices[selectedProduct.id] || 0) === idx
+                                    ? "bg-white w-6"
+                                    : "bg-white/40"
+                                )}
+                              />
+                            ))}
+                          </div>
+                        )}
                       </div>
-                    </div>
-                  )}
+                    ) : (
+                      <div className="aspect-[16/9] overflow-hidden rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 dark:from-white/5 dark:to-white/10 flex items-center justify-center">
+                        <div className="text-center">
+                          <div className="w-24 h-24 mx-auto bg-white/20 rounded-xl flex items-center justify-center mb-4">
+                            <Rocket className="w-12 h-12 text-gray-400 dark:text-white/40" />
+                          </div>
+                          <p className="text-sm text-gray-500 dark:text-white/50">Product Preview</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
 
                   {/* Title and Description */}
                   <div className="mb-8 px-2">

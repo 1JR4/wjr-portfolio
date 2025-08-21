@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
@@ -11,6 +11,17 @@ interface HeroSectionProps {
 }
 
 export function HeroSection({ className }: HeroSectionProps) {
+  const [isMobile, setIsMobile] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    const checkIsMobile = () => setIsMobile(window.innerWidth < 768);
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
+
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -31,29 +42,55 @@ export function HeroSection({ className }: HeroSectionProps) {
       </div>
 
       {/* Hero background image overlay */}
-      <div 
-        className="absolute inset-0 opacity-[0.4] md:opacity-[0.3] z-0 bg-center bg-no-repeat bg-cover"
-      >
-        {/* Desktop Background */}
+      {mounted && (
+        <>
+          {isMobile ? (
+            // Mobile Background
+            <>
+              <div 
+                className="absolute inset-0 opacity-[0.5] z-0"
+                style={{
+                  backgroundImage: 'url(/contents/background_mobile.png)',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center top',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundAttachment: 'fixed',
+                  animation: 'subtleZoom 20s ease-in-out infinite alternate'
+                }}
+              />
+              {/* Mobile Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent z-[1]" />
+            </>
+          ) : (
+            // Desktop Background
+            <div 
+              className="absolute inset-0 opacity-[0.3] z-0"
+              style={{
+                backgroundImage: 'url(/contents/background.png)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center center',
+                backgroundRepeat: 'no-repeat',
+                backgroundAttachment: 'fixed',
+                animation: 'subtleZoom 20s ease-in-out infinite alternate'
+              }}
+            />
+          )}
+        </>
+      )}
+      
+      {/* Fallback for SSR */}
+      {!mounted && (
         <div 
-          className="hidden md:block absolute inset-0"
+          className="absolute inset-0 opacity-[0.3] z-0"
           style={{
             backgroundImage: 'url(/contents/background.png)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center center',
+            backgroundRepeat: 'no-repeat',
             animation: 'subtleZoom 20s ease-in-out infinite alternate'
           }}
         />
-        {/* Mobile Background */}
-        <div 
-          className="md:hidden absolute inset-0"
-          style={{
-            backgroundImage: 'url(/contents/background_mobile.png)',
-            animation: 'subtleZoom 20s ease-in-out infinite alternate'
-          }}
-        />
-      </div>
-      
-      {/* Mobile Gradient Overlay */}
-      <div className="md:hidden absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent z-[1]" />
+      )}
 
       {/* Content container */}
       <div className="relative z-10 h-full flex items-center justify-center pt-16 md:pt-0">
@@ -77,13 +114,14 @@ export function HeroSection({ className }: HeroSectionProps) {
           >
             {RESUME_DATA.title}
           </motion.p>
-          {/* CTA Buttons - Hidden on Mobile */}
-          <motion.div 
-            className="hidden md:flex mt-10 items-center justify-center space-x-4"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
+          {/* CTA Buttons - Only show on desktop */}
+          {mounted && !isMobile && (
+            <motion.div 
+              className="flex mt-10 items-center justify-center space-x-4"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
             <button 
               onClick={() => scrollToSection('articles')}
               className="h-12 rounded-full bg-white px-8 text-base font-medium text-black hover:bg-white/90 transition-all duration-300"
@@ -96,7 +134,8 @@ export function HeroSection({ className }: HeroSectionProps) {
             >
               View My Work
             </button>
-          </motion.div>
+            </motion.div>
+          )}
 
         </div>
       </div>
