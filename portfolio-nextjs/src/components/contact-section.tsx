@@ -82,7 +82,7 @@ export function ContactSection({ className }: ContactSectionProps) {
   ];
 
   return (
-    <section id="contact" className={cn("relative py-20 px-4", className)}>
+    <section id="contact" className={cn("relative pt-10 pb-20 px-4", className)}>
       
       <div className="relative z-10 max-w-4xl mx-auto text-center">
         {/* Section Header */}

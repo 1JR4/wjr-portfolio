@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CMS Test</title>
+  <script>window.CMS_MANUAL_INIT = true;</script>
+</head>
+<body>
+  <div id="nc-root"></div>
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  
+  <script>
+    const config = {
+      backend: {
+        name: 'test-repo',
+        login: false
+      },
+      media_folder: 'assets',
+      public_folder: '/assets',
+      collections: [
+        {
+          name: 'test',
+          label: 'Test Posts',
+          folder: 'posts',
+          create: true,
+          slug: '{{slug}}',
+          format: 'frontmatter',
+          extension: 'md',
+          fields: [
+            {label: 'Title', name: 'title', widget: 'string'},
+            {label: 'Content', name: 'body', widget: 'markdown'}
+          ]
+        }
+      ]
+    };
+    
+    window.addEventListener('load', function() {
+      console.log('Test: Loading CMS without authentication...');
+      setTimeout(() => {
+        try {
+          CMS.init({ config });
+          console.log('Test: CMS loaded successfully');
+        } catch (error) {
+          console.error('Test: Error:', error);
+        }
+      }, 1000);
+    });
+  </script>
+</body>
+</html>

@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion } from "motion/react";
-import { ChevronLeft, ChevronRight, ExternalLink, Clock, X, Menu } from "lucide-react";
+import { ChevronLeft, ChevronRight, ExternalLink, Clock, X, Menu, Heart, Share2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BeamsBackgroundLayer } from "@/components/ui/beams-background-layer";
 import { ArticleModalSidebar } from "@/components/article-modal-sidebar";
@@ -79,6 +79,21 @@ interface ArticlesSectionProps {
   className?: string;
 }
 
+// Simple function to get TOC ID for a heading - just use exact matches from JSON
+const getTocId = (headingTitle: string, tableOfContents: TableOfContentsItem[]): string => {
+  // First try exact match
+  const exactMatch = tableOfContents.find(item => 
+    item.title.toLowerCase() === headingTitle.toLowerCase()
+  );
+  if (exactMatch) return exactMatch.id;
+  
+  // Generate simple ID as fallback
+  return headingTitle.toLowerCase()
+    .replace(/^\d+\.\s*/, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+};
+
 export function ArticlesSection({ className }: ArticlesSectionProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
@@ -120,12 +135,10 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
 
   const handleTocClick = (sectionId: string) => {
     const element = document.getElementById(sectionId);
-    if (element && contentRef.current) {
-      const container = contentRef.current;
-      const elementTop = element.offsetTop - container.offsetTop;
-      container.scrollTo({
-        top: elementTop - 20,
-        behavior: 'smooth'
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
       });
       setActiveSection(sectionId);
     }
@@ -217,7 +230,7 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
 
   return (
     <>
-      <section id="articles" className={cn("relative py-20 px-4", className)}>
+      <section id="articles" className={cn("relative pt-10 pb-20 px-4", className)}>
         
         <div className="relative z-10 max-w-7xl mx-auto">
           {/* Section Header */}
@@ -238,8 +251,14 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="hidden lg:flex gap-2"
+              className="hidden lg:flex gap-2 items-center"
             >
+              <a
+                href="/articles"
+                className="px-4 py-2 bg-black/10 dark:bg-white/10 backdrop-blur-xl border border-gray-300 dark:border-white/20 rounded-full text-gray-700 dark:text-white transition-all duration-300 hover:bg-black/20 dark:hover:bg-white/20 text-sm font-medium"
+              >
+                View All
+              </a>
               <button
                 onClick={() => navigateCarousel(-1)}
                 disabled={currentIndex === 0}
@@ -255,6 +274,16 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
                 <ChevronRight className="w-6 h-6" />
               </button>
             </motion.div>
+          </div>
+
+          {/* Mobile View All Button */}
+          <div className="lg:hidden mb-6">
+            <a
+              href="/articles"
+              className="inline-flex items-center px-4 py-2 bg-black/10 dark:bg-white/10 backdrop-blur-xl border border-gray-300 dark:border-white/20 rounded-full text-gray-700 dark:text-white transition-all duration-300 hover:bg-black/20 dark:hover:bg-white/20 text-sm font-medium"
+            >
+              View All Articles
+            </a>
           </div>
 
           {/* Articles Carousel */}
@@ -309,7 +338,7 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
             </div>
             
             {/* Desktop: Controlled carousel */}
-            <div className="hidden lg:block overflow-hidden">
+            <div className="hidden lg:block overflow-x-hidden py-2">
               <div 
                 className="flex gap-6 transition-transform duration-300 ease-in-out"
                 style={{ transform: `translateX(-${currentIndex * (100 / itemsPerPage)}%)` }}
@@ -390,8 +419,8 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
 
             {/* Mobile Layout: Stacked */}
             <div className="lg:hidden flex flex-col h-full rounded-2xl">
-              {/* Mobile Main Content - 70% */}
-              <div className="flex-[0.7] overflow-y-auto p-6" ref={contentRef}>
+              {/* Mobile Main Content - 60% */}
+              <div className="flex-[0.6] overflow-y-auto p-6" ref={contentRef}>
                 <div className="max-w-none mx-auto">
                   {/* Header */}
                   <div className="mb-6 px-2">
@@ -433,17 +462,17 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
                           .split('\n')
                           .map(line => {
                             if (line.startsWith('# ')) {
-                              const title = line.substring(2);
-                              const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-                              return `<h1 id="${id}" class="text-2xl font-bold text-white mt-6 mb-3 scroll-mt-6">${title}</h1>`;
+                              const title = line.substring(2).trim();
+                              const id = getTocId(title, selectedArticle.tableOfContents);
+                              return `<h1 id="${id}" class="text-2xl font-bold text-white mt-6 mb-3 scroll-mt-20">${title}</h1>`;
                             } else if (line.startsWith('## ')) {
-                              const title = line.substring(3);
-                              const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-                              return `<h2 id="${id}" class="text-xl font-semibold text-white mt-5 mb-2 scroll-mt-6">${title}</h2>`;
+                              const title = line.substring(3).trim();
+                              const id = getTocId(title, selectedArticle.tableOfContents);
+                              return `<h2 id="${id}" class="text-xl font-semibold text-white mt-5 mb-2 scroll-mt-20">${title}</h2>`;
                             } else if (line.startsWith('### ')) {
-                              const title = line.substring(4);
-                              const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-                              return `<h3 id="${id}" class="text-lg font-medium text-white mt-4 mb-2 scroll-mt-6">${title}</h3>`;
+                              const title = line.substring(4).trim();
+                              const id = getTocId(title, selectedArticle.tableOfContents);
+                              return `<h3 id="${id}" class="text-lg font-medium text-white mt-4 mb-2 scroll-mt-20">${title}</h3>`;
                             } else if (line.startsWith('- ')) {
                               return `<li class="text-white/70 ml-4">${line.substring(2)}</li>`;
                             } else if (line.trim() === '') {
@@ -459,8 +488,8 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
                 </div>
               </div>
 
-              {/* Mobile - Tabbed lower section - 30% */}
-              <div className="flex-[0.3] flex flex-col bg-black/20 backdrop-blur-sm border-t border-white/20 min-h-0">
+              {/* Mobile - Tabbed lower section - 40% */}
+              <div className="flex-[0.4] flex flex-col bg-black/20 backdrop-blur-sm border-t border-white/20 min-h-0">
                 {/* Combined engagement at top */}
                 <div className="flex gap-2 p-4 pb-2">
                   <button
@@ -635,17 +664,17 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
                           .split('\n')
                           .map(line => {
                             if (line.startsWith('# ')) {
-                              const title = line.substring(2);
-                              const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-                              return `<h1 id="${id}" class="text-2xl font-bold text-white mt-6 mb-3 scroll-mt-6">${title}</h1>`;
+                              const title = line.substring(2).trim();
+                              const id = getTocId(title, selectedArticle.tableOfContents);
+                              return `<h1 id="${id}" class="text-2xl font-bold text-white mt-6 mb-3 scroll-mt-20">${title}</h1>`;
                             } else if (line.startsWith('## ')) {
-                              const title = line.substring(3);
-                              const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-                              return `<h2 id="${id}" class="text-xl font-semibold text-white mt-5 mb-2 scroll-mt-6">${title}</h2>`;
+                              const title = line.substring(3).trim();
+                              const id = getTocId(title, selectedArticle.tableOfContents);
+                              return `<h2 id="${id}" class="text-xl font-semibold text-white mt-5 mb-2 scroll-mt-20">${title}</h2>`;
                             } else if (line.startsWith('### ')) {
-                              const title = line.substring(4);
-                              const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-                              return `<h3 id="${id}" class="text-lg font-medium text-white mt-4 mb-2 scroll-mt-6">${title}</h3>`;
+                              const title = line.substring(4).trim();
+                              const id = getTocId(title, selectedArticle.tableOfContents);
+                              return `<h3 id="${id}" class="text-lg font-medium text-white mt-4 mb-2 scroll-mt-20">${title}</h3>`;
                             } else if (line.startsWith('- ')) {
                               return `<li class="text-white/70 ml-4">${line.substring(2)}</li>`;
                             } else if (line.trim() === '') {

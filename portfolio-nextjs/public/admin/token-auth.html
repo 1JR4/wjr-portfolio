@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Content Manager - Token Auth</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Prevent automatic config.yml loading -->
+  <script>
+    window.CMS_MANUAL_INIT = true;
+  </script>
+  
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
+      color: #e1e5f2;
+      min-height: 100vh;
+    }
+    .auth-container {
+      max-width: 500px;
+      margin: 50px auto;
+      background: linear-gradient(145deg, #242446 0%, #1e1e42 100%);
+      border-radius: 16px;
+      padding: 40px;
+      color: #e1e5f2;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .auth-container h1 {
+      text-align: center;
+      margin-bottom: 10px;
+      color: #f0f2ff;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    .auth-container p {
+      text-align: center;
+      color: #a8b2d1;
+      margin-bottom: 30px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #e1e5f2;
+    }
+    input[type="password"] {
+      width: 100%;
+      padding: 14px;
+      border: 2px solid #3a3a5c;
+      border-radius: 10px;
+      font-size: 16px;
+      font-family: 'Inter', sans-serif;
+      box-sizing: border-box;
+      background: rgba(255,255,255,0.05);
+      color: #e1e5f2;
+      transition: all 0.3s ease;
+    }
+    input[type="password"]:focus {
+      outline: none;
+      border-color: #667eea;
+      background: rgba(255,255,255,0.1);
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+    }
+    input[type="password"]::placeholder {
+      color: #6b7280;
+    }
+    .btn {
+      width: 100%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 16px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
+    }
+    .instructions {
+      background: linear-gradient(145deg, #2a2a4e 0%, #1f1f3d 100%);
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 24px;
+      border-left: 4px solid #667eea;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .instructions h3 {
+      margin-top: 0;
+      color: #f0f2ff;
+      font-size: 18px;
+    }
+    .instructions ol {
+      color: #a8b2d1;
+      line-height: 1.7;
+    }
+    .instructions li {
+      margin-bottom: 8px;
+    }
+    .instructions code {
+      background: rgba(0,0,0,0.3);
+      color: #94a3b8;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 13px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .instructions strong {
+      color: #e1e5f2;
+    }
+    #cms-container {
+      display: none;
+    }
+    
+    /* Smooth scrolling */
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    /* Loading animation */
+    @keyframes glow {
+      0%, 100% { box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); }
+      50% { box-shadow: 0 4px 25px rgba(102, 126, 234, 0.5); }
+    }
+    
+    .btn:active {
+      animation: glow 0.5s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+  <!-- Auth Form -->
+  <div id="auth-form" class="auth-container">
+    <h1>🔐 CMS Authentication</h1>
+    <p>Enter your GitHub Personal Access Token to access the content management system</p>
+    
+    <form id="token-form">
+      <div class="form-group">
+        <label for="token">GitHub Personal Access Token</label>
+        <input type="password" id="token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" required>
+      </div>
+      <button type="submit" class="btn">Access CMS</button>
+    </form>
+    
+    <div class="instructions">
+      <h3>How to get your token:</h3>
+      <ol>
+        <li>Go to <strong>GitHub Settings → Developer settings → Personal access tokens → Tokens (classic)</strong></li>
+        <li>Click <strong>"Generate new token (classic)"</strong></li>
+        <li>Give it a name like "Portfolio CMS"</li>
+        <li>Select scopes: <code>repo</code> (full repository access)</li>
+        <li>Click <strong>"Generate token"</strong></li>
+        <li>Copy the token and paste it above</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- CMS Container -->
+  <div id="cms-container">
+    <div id="nc-root"></div>
+  </div>
+  
+  <!-- Decap CMS -->
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  
+  <script>
+    const tokenForm = document.getElementById('token-form');
+    const authForm = document.getElementById('auth-form');
+    const cmsContainer = document.getElementById('cms-container');
+    
+    tokenForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const token = document.getElementById('token').value.trim();
+      
+      if (!token.startsWith('ghp_') && !token.startsWith('github_pat_')) {
+        alert('Please enter a valid GitHub Personal Access Token');
+        return;
+      }
+      
+      // Store token securely (in memory only)
+      window.GITHUB_TOKEN = token;
+      
+      // Hide auth form, show CMS
+      authForm.style.display = 'none';
+      cmsContainer.style.display = 'block';
+      
+      // Initialize CMS with token
+      initializeCMS();
+    });
+    
+    function initializeCMS() {
+      console.log('Initializing CMS with token authentication...');
+      
+      const config = {
+        backend: {
+          name: 'github',
+          repo: '1JR4/wjr-portfolio',
+          branch: 'main',
+          token: window.GITHUB_TOKEN,
+          squash_merges: true
+        },
+        media_folder: 'contents/images',
+        public_folder: '/contents/images',
+        publish_mode: 'editorial_workflow',
+        collections: [
+          {
+            name: 'blog',
+            label: 'Blog Posts',
+            folder: 'contents/blogs',
+            create: true,
+            slug: '{{slug}}',
+            format: 'frontmatter',
+            extension: 'md',
+            fields: [
+              {label: 'Title', name: 'title', widget: 'string', required: true},
+              {label: 'Slug', name: 'slug', widget: 'string', required: true},
+              {label: 'Excerpt', name: 'excerpt', widget: 'text', required: true},
+              {label: 'Content', name: 'body', widget: 'markdown', required: true},
+              {label: 'Author', name: 'author', widget: 'string', default: 'Wonjae Ra'},
+              {label: 'Publish Date', name: 'date', widget: 'datetime', format: 'YYYY-MM-DD', required: true},
+              {label: 'Read Time', name: 'readTime', widget: 'string', default: '5 min read'},
+              {label: 'Category', name: 'category', widget: 'select', options: ['AI & Engineering', 'Product Management', 'Technology Trends', 'Personal Development', 'Industry Analysis'], required: true},
+              {label: 'Tags', name: 'tags', widget: 'list', required: false},
+              {label: 'Featured Image', name: 'image', widget: 'image', required: false}
+            ]
+          },
+          {
+            name: 'product',
+            label: 'Products', 
+            folder: 'contents/products',
+            create: true,
+            slug: '{{slug}}',
+            format: 'frontmatter',
+            extension: 'md',
+            fields: [
+              {label: 'Name', name: 'name', widget: 'string', required: true},
+              {label: 'Slug', name: 'slug', widget: 'string', required: true},
+              {label: 'Short Description', name: 'description', widget: 'text', required: true},
+              {label: 'Full Description', name: 'fullDescription', widget: 'markdown', required: true},
+              {label: 'Status', name: 'status', widget: 'select', options: ['live', 'mvp', 'development', 'concept'], required: true},
+              {label: 'Category', name: 'category', widget: 'select', options: ['Web Builder/AI-Admin', 'Productivity', 'Personal Development', 'Content Aggregator/Research Tool'], required: true},
+              {label: 'Type', name: 'type', widget: 'select', options: ['web-app', 'mobile-app', 'desktop-app', 'api', 'tool'], required: true},
+              {label: 'Main Image', name: 'image', widget: 'image', required: false},
+              {label: 'Technologies', name: 'technologies', widget: 'list', required: false},
+              {label: 'Live Link', name: 'link', widget: 'string', required: false},
+              {label: 'GitHub', name: 'github', widget: 'string', required: false}
+            ]
+          },
+          {
+            name: 'journey',
+            label: 'My Journey',
+            folder: 'contents/my jouurney', 
+            create: true,
+            slug: '{{slug}}',
+            format: 'frontmatter',
+            extension: 'md',
+            fields: [
+              {label: 'Title', name: 'title', widget: 'string', required: true},
+              {label: 'Slug', name: 'slug', widget: 'string', required: true},
+              {label: 'Date', name: 'date', widget: 'datetime', required: true},
+              {label: 'Category', name: 'category', widget: 'select', options: ['work', 'personal', 'travel', 'learning'], required: true},
+              {label: 'Featured', name: 'featured', widget: 'boolean', default: false},
+              {label: 'Content', name: 'body', widget: 'markdown', required: true}
+            ]
+          }
+        ]
+      };
+      
+      try {
+        CMS.init({ config });
+        console.log('✅ CMS initialized with token authentication');
+      } catch (error) {
+        console.error('❌ CMS initialization failed:', error);
+        alert('CMS initialization failed. Please check your token and try again.');
+      }
+    }
+  </script>
+</body>
+</html>

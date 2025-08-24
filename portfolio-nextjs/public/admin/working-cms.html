@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Working CMS</title>
+  <script>
+    // Completely disable automatic initialization
+    window.CMS_MANUAL_INIT = true;
+    
+    // Override CMS auth behavior
+    window.CMS_ENV = 'development';
+  </script>
+</head>
+<body>
+  <div id="nc-root"></div>
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  
+  <script>
+    // Force bypass authentication
+    const originalInit = window.CMS?.init;
+    
+    window.addEventListener('load', function() {
+      console.log('Starting bypass authentication CMS...');
+      
+      // Create a completely custom backend that bypasses auth
+      // Use test-repo backend to bypass auth completely (from issue #7321)
+      const customBackend = {
+        name: 'test-repo',
+        login: false
+      };
+      
+      const config = {
+        backend: customBackend,
+        load_config_file: false,
+        media_folder: 'contents/images',
+        public_folder: '/contents/images',
+        collections: [
+          {
+            name: 'blog',
+            label: 'Blog Posts',
+            folder: 'contents/blogs',
+            create: true,
+            slug: '{{slug}}',
+            format: 'frontmatter',
+            extension: 'md',
+            fields: [
+              {label: 'Title', name: 'title', widget: 'string'},
+              {label: 'Date', name: 'date', widget: 'datetime'},
+              {label: 'Content', name: 'body', widget: 'markdown'}
+            ]
+          }
+        ]
+      };
+      
+      setTimeout(() => {
+        try {
+          // Try to directly set authenticated state
+          if (window.CMS) {
+            console.log('Attempting direct CMS initialization...');
+            
+            // Initialize with config
+            window.CMS.init({ 
+              config: config,
+              htmlElementId: 'nc-root'
+            });
+            
+            console.log('CMS initialization attempt completed');
+            
+            // Try to force authentication state after initialization
+            setTimeout(() => {
+              console.log('Checking CMS state...');
+              if (window.CMS.getBackend) {
+                const backend = window.CMS.getBackend();
+                console.log('Backend:', backend);
+              }
+            }, 2000);
+            
+          } else {
+            console.error('CMS not available');
+          }
+        } catch (error) {
+          console.error('CMS initialization error:', error);
+        }
+      }, 1000);
+    });
+  </script>
+</body>
+</html>

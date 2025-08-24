@@ -1,0 +1,22 @@
+
+  {
+    "name": "Nimbus",
+    "slug": "nimbus",
+    "description": "AI powered personality insight and fortune forecasting app",
+    "status": "development",
+    "type": "mobile-app",
+    "image": "/products/nimbus-logo.png",
+    "gallery": ["/products/nimbus-1.png", "/products/nimbus-2.png"],
+    "technologies": ["React Native", "TensorFlow", "Node.js", "MongoDB"],
+    "features": [
+      {
+        "title": "Personality Analysis",
+        "description": "Deep AI-driven personality insights",
+        "status": "available"
+      }
+    ],
+    "kpis": [
+      { "label": "User Retention", "value": "85%", "trend": "up" },
+      { "label": "Daily Active Users", "value": "10K+", "trend": "up" }
+    ]
+  }

@@ -38,7 +38,7 @@ export function AboutSection({ className }: AboutSectionProps) {
   ];
 
   return (
-    <section id="about" className={cn("relative py-20 px-4", className)}>
+    <section id="about" className={cn("relative pt-10 pb-20 px-4", className)}>
       
       <div className="relative z-10 max-w-6xl mx-auto">
         {/* Section Header */}

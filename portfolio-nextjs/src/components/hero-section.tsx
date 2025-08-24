@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { RESUME_DATA } from "@/lib/content";
@@ -33,28 +33,27 @@ export function HeroSection({ className }: HeroSectionProps) {
   };
 
   return (
-    <section className={cn("relative min-h-screen md:h-[80vh] overflow-hidden bg-black", className)}>
+    <section className={cn("relative overflow-hidden bg-black h-screen m-0 p-0", className)} style={{ marginTop: 0, paddingTop: 0 }}>
       {/* Hero background image - behind everything */}
       {mounted && (
         <>
           {isMobile ? (
-            // Mobile Background with constrained overlay
+            // Mobile Background - full screen coverage with no gaps
             <>
               <div 
                 className="absolute inset-0 opacity-[0.8] z-0"
                 style={{
                   backgroundImage: 'url(/contents/background_mobile.png)',
-                  backgroundSize: 'contain',
+                  backgroundSize: 'cover',
                   backgroundPosition: 'center center',
-                  backgroundRepeat: 'no-repeat',
-                  animation: 'subtleZoom 20s ease-in-out infinite alternate'
+                  backgroundRepeat: 'no-repeat'
                 }}
               />
-              {/* Mobile: Gradient only within image bounds */}
+              {/* Mobile: Gradient overlay */}
               <div 
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-[70vh] z-[1]"
+                className="absolute inset-0 z-[1]"
                 style={{
-                  background: 'linear-gradient(to top, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.05) 50%, rgba(0,0,0,0.2) 100%)'
+                  background: 'linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.3) 100%)'
                 }}
               />
             </>
@@ -89,43 +88,43 @@ export function HeroSection({ className }: HeroSectionProps) {
         />
       )}
       
-      {/* Desktop: Light gradient overlay - 20% opacity */}
+      {/* Desktop: Light gradient overlay - 30% opacity */}
       {mounted && !isMobile && (
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-black/10 to-transparent z-[1]" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/20 to-transparent z-[1]" />
       )}
       
       {/* Desktop: Subtle, well-distributed gradient effects */}
       {mounted && !isMobile && (
         <div className="absolute inset-0 overflow-hidden z-[2]">
-          {/* Evenly distributed subtle gradients */}
+          {/* Evenly distributed subtle gradients - increased opacity by 10% */}
           <div className="absolute left-1/4 top-1/4 blur-2xl">
-            <div className="h-[4rem] rounded-full w-[20rem] bg-gradient-to-br blur-[3rem] from-blue-500/10 to-purple-500/10"></div>
+            <div className="h-[4rem] rounded-full w-[20rem] bg-gradient-to-br blur-[3rem] from-blue-500/20 to-purple-500/20"></div>
           </div>
           
           <div className="absolute right-1/4 top-1/3 blur-2xl">
-            <div className="h-[4rem] rounded-full w-[20rem] bg-gradient-to-bl blur-[3rem] from-purple-500/10 to-pink-500/10"></div>
+            <div className="h-[4rem] rounded-full w-[20rem] bg-gradient-to-bl blur-[3rem] from-purple-500/20 to-pink-500/20"></div>
           </div>
           
           <div className="absolute left-1/3 bottom-1/4 blur-2xl">
-            <div className="h-[4rem] rounded-full w-[20rem] bg-gradient-to-tr blur-[3rem] from-cyan-400/8 to-blue-400/8"></div>
+            <div className="h-[4rem] rounded-full w-[20rem] bg-gradient-to-tr blur-[3rem] from-cyan-400/18 to-blue-400/18"></div>
           </div>
           
           <div className="absolute right-1/3 bottom-1/3 blur-2xl">
-            <div className="h-[4rem] rounded-full w-[20rem] bg-gradient-to-tl blur-[3rem] from-orange-400/8 to-yellow-400/8"></div>
+            <div className="h-[4rem] rounded-full w-[20rem] bg-gradient-to-tl blur-[3rem] from-orange-400/18 to-yellow-400/18"></div>
           </div>
         </div>
       )}
 
-      {/* Content container - Mobile: centered within image */}
-      <div className={cn(
-        "relative z-[10] h-full flex items-center justify-center",
-        mounted && isMobile ? "pt-0" : "pt-16 md:pt-0"
-      )}>
+      {/* Content container */}
+      <div className="relative z-[10] h-full flex flex-col justify-center">
 
         {/* Hero section */}
         <div className="container mx-auto px-4 text-center">
           <motion.h1 
-            className="mx-auto max-w-4xl text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight text-white drop-shadow-lg"
+            className={cn(
+              "mx-auto max-w-4xl font-bold leading-tight text-white drop-shadow-lg",
+              mounted && isMobile ? "text-3xl" : "text-4xl md:text-5xl lg:text-6xl xl:text-7xl"
+            )}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -134,7 +133,10 @@ export function HeroSection({ className }: HeroSectionProps) {
             Hey, I&apos;m <span className="text-white">Wonjae</span>
           </motion.h1>
           <motion.p 
-            className="mx-auto mt-4 md:mt-6 max-w-2xl text-base md:text-lg text-gray-300"
+            className={cn(
+              "mx-auto max-w-2xl text-gray-300",
+              mounted && isMobile ? "mt-3 text-sm" : "mt-4 md:mt-6 text-base md:text-lg"
+            )}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -161,6 +163,35 @@ export function HeroSection({ className }: HeroSectionProps) {
             >
               View My Work
             </button>
+            </motion.div>
+          )}
+
+          {/* Scroll Down Indicator - Show on both desktop and mobile */}
+          {mounted && (
+            <motion.div 
+              className={cn(
+                "flex flex-col items-center justify-center",
+                isMobile ? "mt-8" : "mt-16"
+              )}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+            >
+              <p className={cn(
+                "text-white/60 mb-2",
+                isMobile ? "text-xs" : "text-sm"
+              )}>Scroll to explore</p>
+              <motion.div
+                animate={{ y: [0, 8, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                className="cursor-pointer"
+                onClick={() => scrollToSection('about')}
+              >
+                <ChevronDown className={cn(
+                  "text-white/40 hover:text-white/60 transition-colors duration-300",
+                  isMobile ? "w-4 h-4" : "w-5 h-5"
+                )} />
+              </motion.div>
             </motion.div>
           )}
 

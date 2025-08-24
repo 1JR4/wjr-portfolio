@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wonjae Ra - Technical Product Manager</title>
+    <meta name="description" content="Technical Product Manager with 7+ years of experience bridging technical and business needs. Specializing in AI-powered solutions, enterprise platforms, and product innovation.">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://flyingnimbustest.web.app/">
+    <meta property="og:title" content="Wonjae Ra - Technical Product Manager">
+    <meta property="og:description" content="Technical Product Manager with 7+ years of experience bridging technical and business needs.">
+    <meta property="og:image" content="https://flyingnimbustest.web.app/og-image.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://flyingnimbustest.web.app/">
+    <meta property="twitter:title" content="Wonjae Ra - Technical Product Manager">
+    <meta property="twitter:description" content="Technical Product Manager with 7+ years of experience bridging technical and business needs.">
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <!-- Calendly badge widget begin -->
+    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+    <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+    <script type="text/javascript">
+        window.onload = function() { 
+            if (typeof Calendly !== 'undefined') {
+                Calendly.initBadgeWidget({ 
+                    url: 'https://calendly.com/lumambo/30min', 
+                    text: 'Schedule time with me', 
+                    color: '#0069ff', 
+                    textColor: '#ffffff', 
+                    branding: true 
+                }); 
+            }
+        }
+    </script>
+    <!-- Calendly badge widget end -->
+</head>
+<body>
+    <!-- Background Pattern -->
+    <div class="bg-pattern"></div>
+    
+    <!-- Floating Navigation -->
+    <nav id="floating-nav" class="floating-nav">
+        <div class="nav-container">
+            <button class="nav-item" data-section="about">About</button>
+            <button class="nav-item" data-section="articles">Articles</button>
+            <button class="nav-item" data-section="products">Products</button>
+            <button class="nav-item" data-section="contact">Contact</button>
+            <button id="theme-toggle" class="theme-toggle" title="Toggle theme">
+                <i data-lucide="sun" class="theme-icon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section">
+        <div class="hero-background"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Hey, I'm Wonjae</h1>
+            <p class="hero-tagline">Generalist Product Manager & AI Enthusiast</p>
+            <p class="hero-subtitle">
+                I bridge the gap between user needs and technical solutions. When I'm not 
+                crafting product strategies, you'll find me coding side projects and sharing 
+                insights about the intersection of product management and technology.
+            </p>
+            <div class="hero-actions">
+                <button class="btn-primary" data-scroll="articles">
+                    Read My Articles
+                </button>
+                <button class="btn-secondary" data-scroll="products">
+                    View My Work
+                </button>
+            </div>
+        </div>
+        <div class="floating-particles"></div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">About Me</h2>
+                <p class="section-subtitle">
+                    I'm a passionate product manager with 5+ years of experience building products that solve real problems. 
+                    I believe in the power of data-driven decisions, user-centric design, and cross-functional collaboration.
+                </p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card" data-delay="0.1">
+                    <div class="feature-icon">
+                        <i data-lucide="dollar-sign"></i>
+                    </div>
+                    <h3>Business-Driven</h3>
+                    <p>Tie product decisions to P&L, pricing, and GTM to grow revenue and retention.</p>
+                </div>
+                
+                <div class="feature-card" data-delay="0.2">
+                    <div class="feature-icon">
+                        <i data-lucide="settings"></i>
+                    </div>
+                    <h3>Technical Execution</h3>
+                    <p>Translate user needs into clear specs and scalable systems with engineering.</p>
+                </div>
+                
+                <div class="feature-card" data-delay="0.3">
+                    <div class="feature-icon">
+                        <i data-lucide="cpu"></i>
+                    </div>
+                    <h3>AI Product Builder</h3>
+                    <p>Apply LLMs, RAG, and evals to ship safe, useful AI features with real impact.</p>
+                </div>
+            </div>
+            
+            <!-- Integrated Timeline Section -->
+            <div class="timeline-container">
+                <div class="timeline-controls">
+                    <button id="timeline-toggle" class="timeline-toggle">
+                        <i data-lucide="clock"></i>
+                        <span class="toggle-text">Show My Journey</span>
+                    </button>
+                    <div class="timeline-filter-pills">
+                        <button id="filter-work" class="filter-pill active" data-filter="work">
+                            <i data-lucide="briefcase"></i>
+                            Work
+                        </button>
+                        <button id="filter-personal" class="filter-pill" data-filter="personal">
+                            <i data-lucide="user"></i>
+                            Personal
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="timeline-content" class="timeline-content hidden">
+                    <div class="timeline-line"></div>
+                    <div id="timeline-items" class="timeline-items">
+                        <!-- Timeline items will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Articles Section -->
+    <section id="articles" class="section">
+        <div class="container">
+            <div class="carousel-header">
+                <h2 class="section-title">Latest Articles</h2>
+                <div class="carousel-controls">
+                    <button id="articles-prev" class="carousel-btn" disabled>
+                        <i data-lucide="chevron-left"></i>
+                    </button>
+                    <button id="articles-next" class="carousel-btn">
+                        <i data-lucide="chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="articles-carousel" class="carousel">
+                <!-- Articles will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="section">
+        <div class="container">
+            <div class="carousel-header">
+                <h2 class="section-title">Featured Products</h2>
+                <div class="carousel-controls">
+                    <button id="products-prev" class="carousel-btn" disabled>
+                        <i data-lucide="chevron-left"></i>
+                    </button>
+                    <button id="products-next" class="carousel-btn">
+                        <i data-lucide="chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="products-carousel" class="carousel">
+                <!-- Products will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div class="container">
+            <div class="contact-content">
+                <h2 class="section-title">Let's Connect</h2>
+                <p class="section-subtitle">
+                    I'm always interested in discussing product strategy, sharing insights, or exploring new opportunities.
+                </p>
+                
+                <div class="contact-actions">
+                    <a href="mailto:rawonjae94@gmail.com" class="btn-primary">
+                        <i data-lucide="mail"></i>
+                        Reach Out
+                    </a>
+                    <button id="calendly-btn" class="btn-secondary">
+                        <i data-lucide="coffee"></i>
+                        Schedule a Coffee Chat
+                    </button>
+                </div>
+                
+                <div class="social-links">
+                    <a href="https://linkedin.com/in/wonjaera" target="_blank" rel="noopener noreferrer" class="social-link">
+                        <i data-lucide="linkedin"></i>
+                    </a>
+                    <a href="https://github.com/1JR4" target="_blank" rel="noopener noreferrer" class="social-link">
+                        <i data-lucide="github"></i>
+                    </a>
+                    <a href="mailto:rawonjae94@gmail.com" class="social-link">
+                        <i data-lucide="mail"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text">
+                © 2024 Wonjae Ra. Built with passion and lots of ☕
+            </p>
+        </div>
+    </footer>
+
+    <!-- Modal Overlay -->
+    <div id="modal-overlay" class="modal-overlay hidden">
+        <div id="modal-content" class="modal-content">
+            <button id="modal-close" class="modal-close">
+                <i data-lucide="x"></i>
+            </button>
+            <div id="modal-body" class="modal-body">
+                <!-- Modal content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
+    
+    <script src="firebase-config.js"></script>
+    <script src="data.js"></script>
+    <script src="beams.js"></script>
+    <script src="glow.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

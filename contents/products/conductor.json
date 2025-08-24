@@ -1,0 +1,139 @@
+{
+  "name": "Conductor",
+  "slug": "conductor",
+  "description": "Enterprise software delivery management",
+  "fullDescription": "Conductor is a comprehensive enterprise software delivery management platform that orchestrates the entire software development lifecycle. It provides teams with advanced project management, resource allocation, and delivery optimization tools to ensure successful software projects at scale.",
+  "status": "development",
+  "category": "Productivity",
+  "icon": "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=200&q=80",
+  "type": "web-app",
+  "image": "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80",
+  "gallery": [
+    "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80",
+    "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=80",
+    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80"
+  ],
+  "technologies": ["React", "Node.js", "GraphQL", "PostgreSQL", "Redis", "Docker", "Kubernetes", "AWS"],
+  "platforms": ["Web", "API", "Mobile"],
+  "version": "4.5.2",
+  "link": "https://conductor.enterprise.com",
+  "documentation": "https://docs.conductor.enterprise.com",
+  "kpis": [
+    {
+      "label": "Enterprise Clients",
+      "value": "45",
+      "trend": "up"
+    },
+    {
+      "label": "Projects Managed",
+      "value": "2.1K+",
+      "trend": "up"
+    },
+    {
+      "label": "Delivery Success Rate",
+      "value": "94%",
+      "trend": "up"
+    }
+  ],
+  "okrs": [
+    {
+      "objective": "Expand Enterprise Market Share",
+      "keyResults": [
+        "Onboard 60 enterprise clients by end of 2024",
+        "Achieve 98% delivery success rate",
+        "Reduce average project delivery time by 25%"
+      ],
+      "progress": 82
+    }
+  ],
+  "features": [
+    {
+      "title": "Project Orchestration",
+      "description": "Advanced project management with dependency tracking and resource optimization",
+      "icon": "network",
+      "status": "available"
+    },
+    {
+      "title": "Resource Management",
+      "description": "Intelligent resource allocation and capacity planning across teams",
+      "icon": "users",
+      "status": "available"
+    },
+    {
+      "title": "Delivery Analytics",
+      "description": "Real-time insights into delivery performance and project health",
+      "icon": "analytics",
+      "status": "available"
+    },
+    {
+      "title": "Risk Assessment",
+      "description": "AI-powered risk detection and mitigation recommendations",
+      "icon": "shield",
+      "status": "available"
+    },
+    {
+      "title": "Stakeholder Portal",
+      "description": "Executive dashboards and stakeholder communication tools",
+      "icon": "presentation",
+      "status": "available"
+    },
+    {
+      "title": "Integration Hub",
+      "description": "Seamless integration with popular development and project management tools",
+      "icon": "plug",
+      "status": "available"
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2022-01-15",
+      "milestone": "Platform Development",
+      "description": "Core platform architecture and foundational features"
+    },
+    {
+      "date": "2022-06-01",
+      "milestone": "Enterprise Pilot",
+      "description": "Limited pilot program with select enterprise clients"
+    },
+    {
+      "date": "2022-11-20",
+      "milestone": "General Availability",
+      "description": "Full platform launch for enterprise market"
+    },
+    {
+      "date": "2023-04-10",
+      "milestone": "AI Integration",
+      "description": "Advanced AI-powered analytics and risk assessment"
+    },
+    {
+      "date": "2023-10-05",
+      "milestone": "Mobile App Launch",
+      "description": "Native mobile applications for iOS and Android"
+    }
+  ],
+  "createdAt": "2022-01-15",
+  "updatedAt": "2024-01-25",
+  "launchDate": "2022-11-20",
+  "faq": [
+    {
+      "question": "What makes Conductor different from other project management tools?",
+      "answer": "Conductor is specifically designed for enterprise software delivery with AI-powered risk assessment, advanced resource optimization, and seamless integration with development workflows. It goes beyond basic project management to orchestrate entire software delivery pipelines."
+    },
+    {
+      "question": "How does the AI risk assessment work?",
+      "answer": "Our AI continuously analyzes project data, team performance, dependencies, and historical patterns to identify potential risks before they impact delivery. It provides proactive recommendations and mitigation strategies."
+    },
+    {
+      "question": "Can Conductor integrate with our existing tools?",
+      "answer": "Yes, Conductor's Integration Hub supports seamless connections with popular development tools like Jira, GitHub, Jenkins, Slack, and many others. Our API also enables custom integrations."
+    },
+    {
+      "question": "What level of support do you provide for enterprise clients?",
+      "answer": "Enterprise clients receive dedicated customer success managers, priority support, custom training programs, and assistance with implementation and optimization strategies."
+    },
+    {
+      "question": "How quickly can we see results after implementation?",
+      "answer": "Most enterprise clients see improved delivery visibility within the first week and measurable improvements in delivery success rates within 30-60 days of implementation."
+    }
+  ]
+}

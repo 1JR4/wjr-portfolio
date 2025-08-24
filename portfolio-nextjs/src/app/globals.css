@@ -290,12 +290,21 @@
 }
 
 @layer base {
-  * {
+  *, *::before, *::after {
     @apply border-border outline-ring/50;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
   }
   
   html {
     scroll-behavior: smooth;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    /* Fix for mobile browsers */
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
   }
   
   body {
@@ -303,5 +312,19 @@
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     line-height: 1.6;
     overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    /* Mobile specific fixes */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Mobile viewport height fix */
+  @supports (-webkit-appearance: none) {
+    .h-screen {
+      height: 100vh;
+      height: -webkit-fill-available;
+    }
   }
 }

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Content Manager - FreshPaper</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="/admin/cms.css" rel="stylesheet" />
+  <link href="/cms-preview-styles.css" rel="stylesheet" />
+</head>
+<body>
+  <div id="nc-root"></div>
+  
+  <!-- Loading indicator -->
+  <div id="cms-loading" style="
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    z-index: 9999;
+  ">
+    <div style="text-align: center;">
+      <div style="
+        width: 40px;
+        height: 40px;
+        border: 4px solid rgba(255,255,255,0.3);
+        border-top: 4px solid white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 16px;
+      "></div>
+      <div style="font-size: 18px; font-weight: 600;">Loading Content Manager...</div>
+      <div style="font-size: 14px; opacity: 0.8; margin-top: 4px;">Setting up your CMS experience</div>
+    </div>
+  </div>
+
+  <style>
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+  
+  <!-- React and ReactDOM -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  
+  <!-- Babel for JSX -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  
+  <!-- js-yaml for config parsing -->
+  <script src="https://unpkg.com/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+  
+  <!-- Netlify Identity Widget -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  
+  <!-- Decap CMS -->
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  
+  <!-- Custom Components -->
+  <script type="text/babel">
+    const { useState } = React;
+    
+    // Blog Preview Component
+    const BlogPreview = ({ entry, widgetFor }) => {
+      const data = entry.getIn(['data']).toJS();
+      const title = data.title || 'Untitled Blog Post';
+      const excerpt = data.excerpt || '';
+      const category = data.category || '';
+      const readTime = data.readTime || '';
+      const status = data.status || 'concept';
+      
+      const getStatusBadge = (status) => {
+        const statusConfig = {
+          live: { bg: '#10b981', text: 'white', label: '🟢 Live' },
+          mvp: { bg: '#8b5cf6', text: 'white', label: '🟣 MVP' },
+          development: { bg: '#f59e0b', text: 'white', label: '🟡 Development' },
+          concept: { bg: '#6b7280', text: 'white', label: '⚪ Concept' }
+        };
+        const config = statusConfig[status] || statusConfig.concept;
+        return React.createElement('span', {
+          style: {
+            background: config.bg,
+            color: config.text,
+            padding: '4px 8px',
+            borderRadius: '12px',
+            fontSize: '12px',
+            fontWeight: '600'
+          }
+        }, config.label);
+      };
+      
+      return React.createElement('div', {
+        className: 'cms-preview',
+        style: { 
+          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+          maxWidth: '800px',
+          margin: '0 auto',
+          padding: '20px'
+        }
+      }, [
+        React.createElement('div', { 
+          key: 'header',
+          style: { 
+            borderBottom: '1px solid #e5e7eb', 
+            paddingBottom: '16px', 
+            marginBottom: '20px' 
+          } 
+        }, [
+          React.createElement('div', {
+            key: 'meta',
+            style: { 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '12px', 
+              marginBottom: '8px' 
+            }
+          }, [
+            getStatusBadge(status),
+            category && React.createElement('span', {
+              key: 'category',
+              style: {
+                background: '#dbeafe',
+                color: '#1d4ed8',
+                padding: '4px 8px',
+                borderRadius: '8px',
+                fontSize: '12px',
+                fontWeight: '500'
+              }
+            }, category),
+            readTime && React.createElement('span', {
+              key: 'readTime',
+              style: { fontSize: '14px', color: '#6b7280' }
+            }, `${readTime} min read`)
+          ]),
+          React.createElement('h1', {
+            key: 'title',
+            style: { 
+              margin: '0', 
+              fontSize: '32px', 
+              fontWeight: '700',
+              lineHeight: '1.2',
+              color: '#111827'
+            }
+          }, title),
+          excerpt && React.createElement('p', {
+            key: 'excerpt',
+            style: { 
+              fontSize: '18px', 
+              color: '#6b7280', 
+              margin: '8px 0 0 0',
+              lineHeight: '1.6'
+            }
+          }, excerpt)
+        ]),
+        React.createElement('div', { key: 'content' }, widgetFor('content'))
+      ]);
+    };
+
+    // Product Preview Component  
+    const ProductPreview = ({ entry }) => {
+      const data = entry.getIn(['data']).toJS();
+      const title = data.title || 'Untitled Product';
+      const description = data.description || '';
+      const status = data.status || 'concept';
+      const category = data.category || '';
+      const techStack = data.techStack || [];
+      const kpis = data.kpis || [];
+      
+      const getStatusColor = (status) => {
+        const colors = {
+          live: { bg: '#10b981', text: 'white' },
+          mvp: { bg: '#8b5cf6', text: 'white' },
+          development: { bg: '#f59e0b', text: 'white' },
+          concept: { bg: '#6b7280', text: 'white' }
+        };
+        return colors[status] || colors.concept;
+      };
+      
+      const statusColor = getStatusColor(status);
+      
+      return React.createElement('div', {
+        className: 'product-preview',
+        style: { 
+          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+          maxWidth: '800px',
+          margin: '0 auto',
+          padding: '20px'
+        }
+      }, [
+        React.createElement('div', {
+          key: 'header',
+          style: {
+            background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
+            padding: '24px',
+            borderRadius: '12px',
+            marginBottom: '24px'
+          }
+        }, [
+          React.createElement('div', {
+            key: 'meta',
+            style: { display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }
+          }, [
+            React.createElement('span', {
+              key: 'status',
+              style: {
+                background: statusColor.bg,
+                color: statusColor.text,
+                padding: '6px 12px',
+                borderRadius: '16px',
+                fontSize: '12px',
+                fontWeight: '600',
+                textTransform: 'uppercase'
+              }
+            }, status),
+            category && React.createElement('span', {
+              key: 'category', 
+              style: {
+                background: '#dbeafe',
+                color: '#1d4ed8',
+                padding: '4px 8px',
+                borderRadius: '8px',
+                fontSize: '12px',
+                fontWeight: '500'
+              }
+            }, category)
+          ]),
+          React.createElement('h1', {
+            key: 'title',
+            style: { margin: '0 0 8px 0', fontSize: '28px', fontWeight: '700', color: '#111827' }
+          }, title),
+          description && React.createElement('p', {
+            key: 'description',
+            style: { margin: '0', fontSize: '16px', color: '#6b7280', lineHeight: '1.6' }
+          }, description)
+        ]),
+        
+        techStack.length > 0 && React.createElement('div', {
+          key: 'tech',
+          style: { marginBottom: '24px' }
+        }, [
+          React.createElement('h3', {
+            key: 'tech-title',
+            style: { fontSize: '18px', fontWeight: '600', marginBottom: '8px', color: '#374151' }
+          }, 'Tech Stack'),
+          React.createElement('div', {
+            key: 'tech-list',
+            style: { display: 'flex', flexWrap: 'wrap', gap: '6px' }
+          }, techStack.map((tech, i) => 
+            React.createElement('span', {
+              key: i,
+              style: {
+                background: '#dbeafe',
+                color: '#1d4ed8',
+                padding: '4px 8px',
+                borderRadius: '8px',
+                fontSize: '12px',
+                fontWeight: '500'
+              }
+            }, tech)
+          ))
+        ]),
+        
+        kpis.length > 0 && React.createElement('div', {
+          key: 'kpis'
+        }, [
+          React.createElement('h3', {
+            key: 'kpi-title',
+            style: { fontSize: '18px', fontWeight: '600', marginBottom: '12px', color: '#374151' }
+          }, 'Key Performance Indicators'),
+          React.createElement('div', {
+            key: 'kpi-grid',
+            style: {
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+              gap: '16px'
+            }
+          }, kpis.map((kpi, i) => 
+            React.createElement('div', {
+              key: i,
+              style: {
+                background: 'white',
+                border: '1px solid #e5e7eb',
+                borderRadius: '8px',
+                padding: '16px',
+                textAlign: 'center'
+              }
+            }, [
+              React.createElement('div', {
+                key: 'value',
+                style: {
+                  fontSize: '24px',
+                  fontWeight: '700',
+                  color: '#111827',
+                  marginBottom: '4px'
+                }
+              }, kpi.value || '—'),
+              React.createElement('div', {
+                key: 'label',
+                style: {
+                  fontSize: '12px',
+                  color: '#6b7280',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em'
+                }
+              }, kpi.label || 'Metric')
+            ])
+          ))
+        ])
+      ]);
+    };
+
+    // Status Widget Component
+    const StatusWidget = ({ value, onChange }) => {
+      const statusOptions = [
+        { value: 'live', label: 'Live', color: '#10b981', icon: '🟢' },
+        { value: 'mvp', label: 'MVP', color: '#8b5cf6', icon: '🟣' },
+        { value: 'development', label: 'In Development', color: '#f59e0b', icon: '🟡' },
+        { value: 'concept', label: 'Concept', color: '#6b7280', icon: '⚪' }
+      ];
+      
+      return React.createElement('div', {
+        style: {
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
+          gap: '8px',
+          marginTop: '8px'
+        }
+      }, statusOptions.map(option => {
+        const isSelected = value === option.value;
+        return React.createElement('button', {
+          key: option.value,
+          type: 'button',
+          onClick: () => onChange(option.value),
+          style: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '6px',
+            padding: '8px 12px',
+            borderRadius: '8px',
+            border: `2px solid ${isSelected ? option.color : '#e5e7eb'}`,
+            background: isSelected ? `${option.color}15` : 'white',
+            color: isSelected ? option.color : '#374151',
+            fontSize: '14px',
+            fontWeight: isSelected ? '600' : '500',
+            cursor: 'pointer',
+            transition: 'all 0.2s ease',
+            minHeight: '40px'
+          }
+        }, [
+          React.createElement('span', { key: 'icon' }, option.icon),
+          React.createElement('span', { key: 'label' }, option.label)
+        ]);
+      }));
+    };
+
+    // Initialize CMS when all dependencies are loaded
+    window.addEventListener('load', function() {
+      // Track CMS access
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'cms_access', {
+          event_category: 'admin',
+          event_label: 'cms_login_page',
+          value: 1
+        });
+      }
+      
+      // Wait for all dependencies to be available
+      const initCMS = () => {
+        if (typeof CMS === 'undefined' || typeof React === 'undefined') {
+          console.log('Waiting for dependencies...');
+          setTimeout(initCMS, 100);
+          return;
+        }
+        
+        console.log('Registering custom components...');
+        try {
+          // Register custom components
+          CMS.registerPreviewTemplate('blog', BlogPreview);
+          CMS.registerPreviewTemplate('product', ProductPreview);
+          CMS.registerWidget('status', StatusWidget);
+          CMS.registerPreviewStyle('/cms-preview-styles.css');
+          
+          console.log('Initializing CMS...');
+          // Load config manually to avoid path issues
+          fetch('/admin/config.yml')
+            .then(response => {
+              if (!response.ok) {
+                throw new Error(`Failed to load config.yml: ${response.status}`);
+              }
+              return response.text();
+            })
+            .then(configText => {
+              console.log('Config loaded successfully, parsing...');
+              // Use js-yaml to parse the YAML
+              const config = jsyaml.load(configText);
+              console.log('Config parsed:', config);
+              CMS.init({ config });
+              console.log('✅ CMS initialized successfully with custom config');
+            })
+            .catch(error => {
+              console.error('Failed to load config:', error);
+              // Fallback to default initialization
+              CMS.init();
+              console.log('✅ CMS initialized with fallback config');
+            });
+          
+          // Hide loading screen after successful initialization
+          setTimeout(() => {
+            const loading = document.getElementById('cms-loading');
+            if (loading) {
+              loading.style.opacity = '0';
+              loading.style.transition = 'opacity 0.3s ease';
+              setTimeout(() => loading.remove(), 300);
+            }
+          }, 500);
+          
+        } catch (error) {
+          console.error('❌ CMS initialization error:', error);
+          // Hide loading on error too
+          const loading = document.getElementById('cms-loading');
+          if (loading) loading.remove();
+        }
+      };
+      
+      // Start initialization
+      initCMS();
+    });
+  </script>
+</body>
+</html>

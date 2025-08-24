@@ -81,6 +81,28 @@ export interface Product {
   name: string;
   description: string;
   slug: string;
+  fullDescription?: string;
+  status: string;
+  category: string;
+  icon?: string;
+  type?: string;
+  image?: string;
+  gallery?: string[];
+  technologies?: string[];
+  platforms?: string[];
+  version?: string;
+  link?: string;
+  github?: string;
+  documentation?: string;
+  demo?: string;
+  kpis?: any[];
+  okrs?: any[];
+  features?: any[];
+  timeline?: any[];
+  createdAt?: string;
+  updatedAt?: string;
+  launchDate?: string;
+  faq?: Array<{ question: string; answer: string }>;
 }
 
 // Generated blog posts from JSON files
@@ -104,7 +126,29 @@ export const BLOG_POSTS: BlogPost[] = ${JSON.stringify(blogPosts.map(post => ({
 export const PRODUCTS: Product[] = ${JSON.stringify(products.map(product => ({
   name: product.name,
   description: product.description,
-  slug: product.slug
+  slug: product.slug,
+  fullDescription: product.fullDescription,
+  status: product.status,
+  category: product.category,
+  icon: product.icon,
+  type: product.type,
+  image: product.image,
+  gallery: product.gallery,
+  technologies: product.technologies,
+  platforms: product.platforms,
+  version: product.version,
+  link: product.link,
+  github: product.github,
+  documentation: product.documentation,
+  demo: product.demo,
+  kpis: product.kpis,
+  okrs: product.okrs,
+  features: product.features,
+  timeline: product.timeline,
+  createdAt: product.createdAt,
+  updatedAt: product.updatedAt,
+  launchDate: product.launchDate,
+  faq: product.faq
 })), null, 2)};
 
 export interface Resume {

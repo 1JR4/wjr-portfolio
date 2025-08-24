@@ -4,6 +4,9 @@
   "description": "Wonjae Ra's Portfolio Website",
   "main": "index.js",
   "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "build": "echo 'Static files ready in out/ directory'",
     "deploy:staging": "firebase deploy --only hosting --project flyingnimbustest-staging",
     "deploy:production": "firebase deploy --only hosting --project flyingnimbustest",
     "deploy:rollback": "firebase hosting:rollback --project flyingnimbustest"
@@ -23,6 +26,14 @@
     "node": ">=20.0.0",
     "npm": ">=10.0.0"
   },
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "express": "^4.18.2",
+    "firebase": "^12.1.0",
+    "firebase-admin": "^13.4.0",
+    "framer-motion": "^12.23.12",
+    "lucide-react": "^0.539.0",
+    "tailwind-merge": "^3.3.1"
+  }
 }

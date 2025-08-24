@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CMS Solution</title>
+</head>
+<body>
+  <div id="nc-root"></div>
+  
+  <!-- Load CMS WITHOUT manual init flag to use test-repo -->
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  
+  <script>
+    // DON'T set CMS_MANUAL_INIT for test-repo backend
+    // Let CMS auto-initialize with inline config
+    
+    window.CMS_CONFIG = {
+      backend: {
+        name: 'test-repo'
+      },
+      media_folder: 'images',
+      public_folder: '/images',
+      collections: [
+        {
+          name: 'blog',
+          label: 'Blog Posts',
+          folder: 'blog',
+          create: true,
+          slug: '{{slug}}',
+          fields: [
+            {label: 'Title', name: 'title', widget: 'string'},
+            {label: 'Date', name: 'date', widget: 'datetime'},
+            {label: 'Body', name: 'body', widget: 'markdown'}
+          ]
+        },
+        {
+          name: 'products',
+          label: 'Products',
+          folder: 'products',
+          create: true,
+          slug: '{{slug}}',
+          fields: [
+            {label: 'Name', name: 'title', widget: 'string'},
+            {label: 'Description', name: 'description', widget: 'text'},
+            {label: 'Content', name: 'body', widget: 'markdown'}
+          ]
+        }
+      ]
+    };
+    
+    console.log('CMS with test-repo backend loading...');
+  </script>
+</body>
+</html>

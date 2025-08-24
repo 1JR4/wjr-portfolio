@@ -121,6 +121,30 @@ export function ArticleModalSidebar({
           </Button>
         </div>
       )}
+
+      {/* Desktop: Social Actions at top */}
+      {!isMobile && (
+        <div className="flex gap-2">
+          <Button
+            variant={isLiked ? "gradient" : "glass"}
+            size="sm"
+            className="flex-1"
+            onClick={handleLike}
+          >
+            <Heart className={cn("w-4 h-4 mr-2", isLiked && "fill-current")} />
+            {isLiked ? socialMetrics.likes + 1 : socialMetrics.likes}
+          </Button>
+          <Button
+            variant="glass"
+            size="sm"
+            className="flex-1"
+            onClick={handleShare}
+          >
+            <Share2 className="w-4 h-4 mr-2" />
+            {socialMetrics.shares}
+          </Button>
+        </div>
+      )}
       
       {/* Table of Contents */}
       {tableOfContents.length > 0 && (
@@ -137,15 +161,29 @@ export function ArticleModalSidebar({
               {tableOfContents.map((item) => (
                 <button
                   key={item.id}
-                  onClick={() => onTocClick(item.id)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Desktop TOC clicked:', item.id);
+                    const element = document.getElementById(item.id);
+                    console.log('Element found:', !!element);
+                    if (element) {
+                      console.log('Scrolling...');
+                      element.scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'start'
+                      });
+                    }
+                  }}
                   className={cn(
                     "w-full text-left px-3 py-2 rounded-lg text-sm transition-colors break-words",
-                    "hover:bg-white/10 hover:text-white",
+                    "hover:bg-white/10 hover:text-white cursor-pointer relative z-10",
                     item.level === 1 && "font-medium text-white",
                     item.level === 2 && "pl-6 text-white/70",
                     item.level === 3 && "pl-9 text-white/60",
                     activeSection === item.id && "bg-blue-500/20 text-blue-400 border-l-2 border-blue-400"
                   )}
+                  style={{ pointerEvents: 'auto' }}
                 >
                   {item.title}
                 </button>
@@ -155,47 +193,6 @@ export function ArticleModalSidebar({
         </div>
       )}
 
-      {/* Desktop: Social Actions */}
-      {!isMobile && (
-        <div>
-          <h3 className="text-lg font-semibold text-white mb-3">Engagement</h3>
-          <div className="space-y-3">
-            {/* Social Metrics */}
-            <div className="grid grid-cols-2 gap-3">
-              <div className="bg-black/20 rounded-lg p-3 text-center border border-white/20">
-                <div className="text-white font-semibold">{isLiked ? socialMetrics.likes + 1 : socialMetrics.likes}</div>
-                <div className="text-white/70 text-xs">Likes</div>
-              </div>
-              <div className="bg-black/20 rounded-lg p-3 text-center border border-white/20">
-                <div className="text-white font-semibold">{socialMetrics.shares}</div>
-                <div className="text-white/70 text-xs">Shares</div>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex gap-2">
-              <Button
-                variant={isLiked ? "gradient" : "glass"}
-                size="sm"
-                className="flex-1"
-                onClick={handleLike}
-              >
-                <Heart className={cn("w-4 h-4 mr-2", isLiked && "fill-current")} />
-                {isLiked ? "Liked" : "Like"}
-              </Button>
-              <Button
-                variant="glass"
-                size="sm"
-                className="flex-1"
-                onClick={handleShare}
-              >
-                <Share2 className="w-4 h-4 mr-2" />
-                Share
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Related Articles */}
       {relatedArticles.length > 0 && (

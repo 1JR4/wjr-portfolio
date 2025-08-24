@@ -1,0 +1,21 @@
+ {
+    "title": "From Good to Great PM in AI",
+    "slug": "from-good-to-great-pm-in-ai",
+    "excerpt": "AI will replace good PMs. Great PMs will thrive by leveraging AI.",
+    "content": "Full article content here...",
+    "author": "Wonjae Ra",
+    "date": "2024-01-15",
+    "readTime": "8 min read",
+    "category": "Product Management",
+    "tags": ["AI", "Product Management", "Career", "Technology"],
+    "image": "/images/ai-pm-hero.jpg",
+    "tldr": [
+      "Good PMs will be replaced by automation",
+      "Great PMs excel where automation fails",
+      "Key skills: AI understanding, technical depth"
+    ],
+    "tableOfContents": [
+      { "id": "intro", "title": "Introduction", "level": 1 },
+      { "id": "ai-basics", "title": "Understanding AI", "level": 2 }
+    ]
+  }

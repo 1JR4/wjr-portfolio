@@ -1,0 +1,118 @@
+{
+  "name": "Arcadia",
+  "slug": "arcadia",
+  "description": "AI powered News/Event aggregator and organizer for market research",
+  "fullDescription": "Arcadia is a comprehensive market intelligence platform that uses AI to aggregate, analyze, and organize news and events from multiple sources. It provides researchers, analysts, and businesses with real-time insights and trend analysis to make informed decisions.",
+  "status": "live",
+  "category": "Content Aggregator/Research Tool",
+  "icon": "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=200&q=80",
+  "type": "web-app",
+  "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+  "gallery": [
+    "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+    "https://images.unsplash.com/photo-1553729459-efe14ef6055d?w=800&q=80",
+    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80"
+  ],
+  "technologies": ["Next.js", "Python", "OpenAI API", "PostgreSQL", "Redis", "Docker", "AWS"],
+  "platforms": ["Web", "API"],
+  "version": "2.1.0",
+  "link": "https://arcadia.bitnbolt.com",
+  "documentation": "https://docs.arcadia.bitnbolt.com",
+  "demo": "https://demo.arcadia.bitnbolt.com",
+  "kpis": [
+    {
+      "label": "Sources Monitored",
+      "value": "10K+",
+      "trend": "up"
+    },
+    {
+      "label": "Daily Articles Processed",
+      "value": "50K",
+      "trend": "up"
+    },
+    {
+      "label": "Research Teams Using",
+      "value": "127",
+      "trend": "up"
+    }
+  ],
+  "features": [
+    {
+      "title": "Real-time News Aggregation",
+      "description": "Monitor thousands of news sources and aggregate relevant content in real-time",
+      "icon": "newspaper",
+      "status": "available"
+    },
+    {
+      "title": "AI-Powered Analysis",
+      "description": "Advanced NLP algorithms extract key insights and sentiment from news articles",
+      "icon": "brain",
+      "status": "available"
+    },
+    {
+      "title": "Custom Research Dashboards",
+      "description": "Create personalized dashboards tailored to specific research topics and industries",
+      "icon": "dashboard",
+      "status": "available"
+    },
+    {
+      "title": "Trend Prediction",
+      "description": "Machine learning models predict emerging trends based on news patterns",
+      "icon": "trending-up",
+      "status": "available"
+    },
+    {
+      "title": "Automated Reporting",
+      "description": "Generate comprehensive market research reports automatically",
+      "icon": "file-text",
+      "status": "coming-soon"
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2023-03-01",
+      "milestone": "Platform Launch",
+      "description": "Initial release with basic aggregation features"
+    },
+    {
+      "date": "2023-07-15",
+      "milestone": "AI Integration",
+      "description": "Advanced NLP and sentiment analysis capabilities added"
+    },
+    {
+      "date": "2023-11-20",
+      "milestone": "Dashboard Customization",
+      "description": "Custom research dashboard builder released"
+    },
+    {
+      "date": "2024-01-10",
+      "milestone": "API v2.0",
+      "description": "Comprehensive API for enterprise integrations"
+    }
+  ],
+  "createdAt": "2023-03-01",
+  "updatedAt": "2024-01-10",
+  "launchDate": "2023-03-01",
+  "faq": [
+    {
+      "question": "What types of sources does Arcadia monitor?",
+      "answer": "Arcadia monitors over 10,000 sources including major news outlets, industry publications, research papers, social media platforms, press releases, and specialized trade publications across various industries and regions."
+    },
+    {
+      "question": "How accurate is the AI analysis and sentiment detection?",
+      "answer": "Our NLP algorithms achieve 94% accuracy in sentiment analysis and content categorization. The system continuously learns and improves from user feedback and new data patterns."
+    },
+    {
+      "question": "Can I set up custom alerts for specific topics or companies?",
+      "answer": "Yes! Arcadia allows you to create highly customized alerts based on keywords, companies, industries, sentiment scores, source types, and geographic regions. You'll receive real-time notifications when relevant content is detected."
+    },
+    {
+      "question": "What data export options are available?",
+      "answer": "Arcadia supports multiple export formats including CSV, JSON, PDF reports, and API access. You can also integrate data directly into your existing business intelligence tools and dashboards."
+    },
+    {
+      "question": "Is there a free trial available?",
+      "answer": "Yes, we offer a 14-day free trial that includes access to core features, limited source monitoring, and sample dashboard creation. No credit card required to start."
+    }
+  ]
+}

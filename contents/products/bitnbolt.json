@@ -1,0 +1,141 @@
+{
+  "name": "BitnBolt",
+  "slug": "bitnbolt",
+  "description": "AI powered web building and conversational content management for small to medium business websites",
+  "fullDescription": "BitnBolt revolutionizes website creation and management for SMBs through AI-powered tools and conversational interfaces. It combines intelligent web building capabilities with an intuitive content management system that allows business owners to create and maintain professional websites without technical expertise.",
+  "status": "mvp",
+  "category": "Web Builder/AI-Admin",
+  "icon": "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=200&q=80",
+  "type": "web-app",
+  "image": "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=80",
+  "gallery": [
+    "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=80",
+    "https://images.unsplash.com/photo-1559526324-c1f275fbfa32?w=800&q=80",
+    "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80"
+  ],
+  "technologies": ["Next.js", "OpenAI API", "Stripe", "Vercel", "PostgreSQL", "Tailwind CSS"],
+  "platforms": ["Web"],
+  "version": "3.2.1",
+  "link": "https://bitnbolt.com",
+  "github": "https://github.com/bitnbolt/platform",
+  "documentation": "https://docs.bitnbolt.com",
+  "demo": "https://demo.bitnbolt.com",
+  "kpis": [
+    {
+      "label": "Active Websites",
+      "value": "850+",
+      "trend": "up"
+    },
+    {
+      "label": "Monthly Recurring Revenue",
+      "value": "$15K",
+      "trend": "up"
+    },
+    {
+      "label": "Customer Satisfaction",
+      "value": "4.8/5",
+      "trend": "up"
+    }
+  ],
+  "okrs": [
+    {
+      "objective": "Scale SMB Market Penetration",
+      "keyResults": [
+        "Reach 1,000 active websites by Q2 2024",
+        "Achieve $25K MRR by end of 2024",
+        "Maintain 95%+ customer satisfaction"
+      ],
+      "progress": 75
+    }
+  ],
+  "features": [
+    {
+      "title": "AI Website Builder",
+      "description": "Create professional websites using natural language prompts and AI assistance",
+      "icon": "wand",
+      "status": "available"
+    },
+    {
+      "title": "Conversational CMS",
+      "description": "Manage website content through natural language conversations with AI",
+      "icon": "message-circle",
+      "status": "available"
+    },
+    {
+      "title": "Smart Templates",
+      "description": "Industry-specific templates that adapt based on business requirements",
+      "icon": "layout",
+      "status": "available"
+    },
+    {
+      "title": "SEO Optimization",
+      "description": "Automated SEO recommendations and implementation",
+      "icon": "search",
+      "status": "available"
+    },
+    {
+      "title": "E-commerce Integration",
+      "description": "Built-in e-commerce capabilities with payment processing",
+      "icon": "shopping-cart",
+      "status": "available"
+    },
+    {
+      "title": "Analytics Dashboard",
+      "description": "Comprehensive website analytics and performance insights",
+      "icon": "bar-chart",
+      "status": "coming-soon"
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2023-02-01",
+      "milestone": "Beta Launch",
+      "description": "Initial beta release with core AI building features"
+    },
+    {
+      "date": "2023-05-15",
+      "milestone": "Public Launch",
+      "description": "Official platform launch with subscription plans"
+    },
+    {
+      "date": "2023-09-10",
+      "milestone": "E-commerce Module",
+      "description": "Integrated e-commerce capabilities and payment processing"
+    },
+    {
+      "date": "2023-12-20",
+      "milestone": "Conversational CMS",
+      "description": "Revolutionary AI-powered content management system"
+    },
+    {
+      "date": "2024-02-01",
+      "milestone": "Enterprise Features",
+      "description": "Advanced features for larger businesses and agencies"
+    }
+  ],
+  "createdAt": "2023-02-01",
+  "updatedAt": "2024-02-01",
+  "launchDate": "2023-05-15",
+  "faq": [
+    {
+      "question": "How easy is it to build a website with BitnBolt?",
+      "answer": "BitnBolt makes website creation incredibly simple through natural language prompts. Just describe what you want, and our AI will build it for you. No coding or technical knowledge required."
+    },
+    {
+      "question": "Can I customize the templates?",
+      "answer": "Absolutely! Our smart templates adapt automatically to your business requirements, and you can further customize them through conversational commands with our AI assistant."
+    },
+    {
+      "question": "What kind of websites can I create?",
+      "answer": "BitnBolt supports a wide range of business websites including portfolios, e-commerce stores, service businesses, restaurants, agencies, and more. Our AI adapts to industry-specific needs."
+    },
+    {
+      "question": "Is there ongoing support and maintenance?",
+      "answer": "Yes! BitnBolt includes automated maintenance, security updates, and our conversational CMS makes ongoing content management effortless. Plus, our support team is always available to help."
+    },
+    {
+      "question": "How does pricing work?",
+      "answer": "We offer flexible subscription plans starting from basic websites to enterprise solutions. Each plan includes hosting, maintenance, and access to our AI-powered tools. Visit our pricing page for detailed information."
+    }
+  ]
+}

@@ -30,14 +30,19 @@ interface Product {
   id: number;
   title: string;
   description: string;
+  category: string;
+  icon: string;
   image: string;
   gallery?: string[];
   technologies: string[];
-  status: "live" | "development" | "concept";
+  status: "live" | "development" | "concept" | "mvp";
   link?: string;
   github?: string;
+  demo?: string;
+  documentation?: string;
   kpis: KPI[];
   okrs: OKR[];
+  faq: Array<{ question: string; answer: string }>;
   sections: {
     description: ProductSection;
     documents: ProductSection;
@@ -72,54 +77,60 @@ const productsData: Product[] = PRODUCTS.map((product, index) => ({
   id: index + 1,
   title: product.name,
   description: product.description,
-  image: `https://images.unsplash.com/photo-${1551288049 + index * 1000}?w=800&q=80`,
-  gallery: generatePlaceholderImages(5), // Generate 5 placeholder images
-  technologies: ["AI/ML", "React", "TypeScript", "Next.js", "TailwindCSS"],
-  status: index === 0 ? "live" as const : index === 1 ? "development" as const : "concept" as const,
-  link: index === 0 ? "https://bitnbolt.com" : undefined,
-  github: "#",
-  kpis: [
+  category: product.category || "SaaS",
+  icon: product.icon || `https://images.unsplash.com/photo-${1614680376593 + index * 100000}?w=200&q=80`,
+  image: product.image || `https://images.unsplash.com/photo-${1551288049 + index * 1000}?w=800&q=80`,
+  gallery: product.gallery || generatePlaceholderImages(5),
+  technologies: product.technologies || ["AI/ML", "React", "TypeScript", "Next.js", "TailwindCSS"],
+  status: product.status as "live" | "development" | "concept" | "mvp",
+  link: product.link,
+  github: product.github,
+  demo: product.demo,
+  documentation: product.documentation,
+  kpis: product.kpis || [
     { label: "Development Progress", value: `${75 + (index * 5)}%`, trend: "up" as const },
     { label: "User Interest", value: "High", trend: "up" as const },
     { label: "Market Fit", value: "Validated", trend: "neutral" as const }
   ],
-  okrs: [
+  okrs: product.okrs || [
     {
       objective: "Build and launch MVP",
       keyResults: ["Complete core features", "Onboard beta users", "Achieve product-market fit"],
       progress: 65 + (index * 10)
     }
   ],
+  faq: product.faq || [],
   sections: {
     description: {
-      title: "Description Details",
-      content: product.description
+      title: "Product Overview",
+      content: product.fullDescription || product.description
     },
     documents: {
-      title: "Product Documents",
+      title: "Documentation",
       content: "Comprehensive documentation including product requirements, technical specifications, and user journey maps."
     },
     technical: {
-      title: "Technical Specifications",
+      title: "Technical Implementation",
       content: "Built with modern web technologies including React, TypeScript, and AI/ML integration for enhanced user experience."
     },
     aiUsage: {
-      title: "AI Usage",
+      title: "AI & Machine Learning",
       content: "Leverages advanced AI and machine learning capabilities to provide intelligent insights and automation."
     },
     results: {
-      title: "Results",
+      title: "Results & Impact",
       content: "Focused on delivering high-value solutions that address real market needs and user pain points."
     },
     approach: {
-      title: "Approach",
+      title: "Development Approach",
       content: "User-centered design approach with rapid prototyping and iterative development methodology."
     }
   },
   resources: [
-    { title: "Product Documentation", url: "#", type: "documentation" as const },
-    { title: "Live Demo", url: "#", type: "demo" as const }
-  ]
+    product.documentation && { title: "Documentation", url: product.documentation, type: "documentation" as const },
+    product.demo && { title: "Live Demo", url: product.demo, type: "demo" as const },
+    product.github && { title: "GitHub", url: product.github, type: "research" as const }
+  ].filter(Boolean) as any
 }));
 
 interface ProductsSectionProps {
@@ -168,6 +179,8 @@ export function ProductsSection({ className }: ProductsSectionProps) {
         return "Live";
       case "development":
         return "In Development";
+      case "mvp":
+        return "MVP";
       case "concept":
         return "Concept";
       default:
@@ -179,7 +192,7 @@ export function ProductsSection({ className }: ProductsSectionProps) {
 
   return (
     <>
-      <section id="products" className={cn("relative py-20 px-4", className)}>
+      <section id="products" className={cn("relative pt-10 pb-20 px-4", className)}>
         
         <div className="relative z-10 max-w-7xl mx-auto">
           {/* Section Header */}
@@ -200,8 +213,14 @@ export function ProductsSection({ className }: ProductsSectionProps) {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="hidden lg:flex gap-2"
+              className="hidden lg:flex gap-2 items-center"
             >
+              <a
+                href="/products"
+                className="px-4 py-2 bg-black/10 dark:bg-white/10 backdrop-blur-xl border border-gray-300 dark:border-white/20 rounded-full text-gray-700 dark:text-white transition-all duration-300 hover:bg-black/20 dark:hover:bg-white/20 text-sm font-medium"
+              >
+                View All
+              </a>
               <button
                 onClick={() => navigateCarousel(-1)}
                 disabled={currentIndex === 0}
@@ -219,6 +238,16 @@ export function ProductsSection({ className }: ProductsSectionProps) {
             </motion.div>
           </div>
 
+          {/* Mobile View All Button */}
+          <div className="lg:hidden mb-6">
+            <a
+              href="/products"
+              className="inline-flex items-center px-4 py-2 bg-black/10 dark:bg-white/10 backdrop-blur-xl border border-gray-300 dark:border-white/20 rounded-full text-gray-700 dark:text-white transition-all duration-300 hover:bg-black/20 dark:hover:bg-white/20 text-sm font-medium"
+            >
+              View All Products
+            </a>
+          </div>
+
           {/* Products Carousel */}
           <div className="relative">
             {/* Mobile: Scrollable */}
@@ -232,30 +261,60 @@ export function ProductsSection({ className }: ProductsSectionProps) {
                       onClick={() => openModal(product)}
                     >
                       <div className="bg-black/5 dark:bg-white/10 backdrop-blur-xl border border-gray-200 dark:border-white/20 rounded-xl p-6 transition-all duration-300 hover:bg-black/10 dark:hover:bg-white/20 hover:translate-y-[-8px] h-full overflow-hidden">
-                        <div className="relative z-10 flex items-start gap-4 h-full">
-                          {/* App Icon */}
-                          <div className="flex-shrink-0">
-                            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                              {(() => {
-                                const IconComponent = getProductIcon(index);
-                                return <IconComponent className="w-8 h-8 text-white" />;
-                              })()}
-                            </div>
+                        <div className="relative z-10 h-full">
+                          {/* App Icon - Top Left */}
+                          <div className="absolute top-0 left-0 w-12 h-12 rounded-lg overflow-hidden shadow-md">
+                            {product.icon ? (
+                              <img 
+                                src={product.icon} 
+                                alt={`${product.title} icon`}
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  const target = e.target as HTMLImageElement;
+                                  const parent = target.parentElement;
+                                  if (parent) {
+                                    parent.innerHTML = `
+                                      <div class="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                                        <span class="text-white font-bold text-lg">${product.title.charAt(0)}</span>
+                                      </div>
+                                    `;
+                                  }
+                                }}
+                              />
+                            ) : (
+                              <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                                <span className="text-white font-bold text-lg">{product.title.charAt(0)}</span>
+                              </div>
+                            )}
                           </div>
 
-                          {/* Product Details */}
-                          <div className="flex-1 min-w-0">
-                            {/* Header with Title and Status */}
+                          {/* Product Details - Adjusted padding for icon */}
+                          <div className="pl-14 pr-2">
+                            {/* Header with Title and Pills */}
                             <div className="flex items-start justify-between mb-2">
-                              <h3 className="text-lg font-semibold text-gray-900 dark:text-white line-clamp-1 transition-colors duration-300">
+                              <h3 className="text-lg font-semibold text-gray-900 dark:text-white line-clamp-1 transition-colors duration-300 pr-2">
                                 {product.title}
                               </h3>
-                              <span className={cn(
-                                "px-2 py-1 rounded-full text-xs font-medium ml-2 flex-shrink-0",
-                                "bg-black/10 dark:bg-white/10 backdrop-blur-sm border border-gray-200 dark:border-white/20 text-gray-700 dark:text-white"
-                              )}>
-                                {getStatusText(product.status)}
-                              </span>
+                              <div className="flex flex-col gap-1 flex-shrink-0 items-end">
+                                <span className={cn(
+                                  "px-2 py-1 rounded-full text-xs font-medium",
+                                  product.status === "live" 
+                                    ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800"
+                                    : product.status === "development"
+                                    ? "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 border border-yellow-200 dark:border-yellow-800"
+                                    : product.status === "mvp"
+                                    ? "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800"
+                                    : "bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-800"
+                                )}>
+                                  {getStatusText(product.status)}
+                                </span>
+                                <span className={cn(
+                                  "px-2 py-1 rounded-full text-xs font-medium text-center",
+                                  "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800"
+                                )}>
+                                  {product.category.split('/')[0]}
+                                </span>
+                              </div>
                             </div>
 
                             {/* Description */}
@@ -294,7 +353,7 @@ export function ProductsSection({ className }: ProductsSectionProps) {
             </div>
             
             {/* Desktop: Controlled carousel */}
-            <div className="hidden lg:block overflow-hidden">
+            <div className="hidden lg:block overflow-x-hidden py-2">
               <div 
                 className="flex gap-6 transition-transform duration-300 ease-in-out"
                 style={{ transform: `translateX(-${currentIndex * (100 / itemsPerPage)}%)` }}
@@ -306,30 +365,60 @@ export function ProductsSection({ className }: ProductsSectionProps) {
                   onClick={() => openModal(product)}
               >
                 <div className="bg-black/5 dark:bg-white/10 backdrop-blur-xl border border-gray-200 dark:border-white/20 rounded-xl p-6 transition-all duration-300 hover:bg-black/10 dark:hover:bg-white/20 hover:translate-y-[-8px] h-full overflow-hidden">
-                  <div className="relative z-10 flex items-start gap-4 h-full">
-                    {/* App Icon */}
-                    <div className="flex-shrink-0">
-                      <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                        {(() => {
-                          const IconComponent = getProductIcon(index);
-                          return <IconComponent className="w-8 h-8 text-white" />;
-                        })()}
-                      </div>
+                  <div className="relative z-10 h-full">
+                    {/* App Icon - Top Left */}
+                    <div className="absolute top-0 left-0 w-12 h-12 rounded-lg overflow-hidden shadow-md">
+                      {product.icon ? (
+                        <img 
+                          src={product.icon} 
+                          alt={`${product.title} icon`}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            const parent = target.parentElement;
+                            if (parent) {
+                              parent.innerHTML = `
+                                <div class="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                                  <span class="text-white font-bold text-lg">${product.title.charAt(0)}</span>
+                                </div>
+                              `;
+                            }
+                          }}
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                          <span className="text-white font-bold text-lg">{product.title.charAt(0)}</span>
+                        </div>
+                      )}
                     </div>
 
-                    {/* Product Details */}
-                    <div className="flex-1 min-w-0">
-                      {/* Header with Title and Status */}
+                    {/* Product Details - Adjusted padding for icon */}
+                    <div className="pl-14 pr-2">
+                      {/* Header with Title and Pills */}
                       <div className="flex items-start justify-between mb-2">
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white line-clamp-1 transition-colors duration-300">
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white line-clamp-1 transition-colors duration-300 pr-2">
                           {product.title}
                         </h3>
-                        <span className={cn(
-                          "px-2 py-1 rounded-full text-xs font-medium ml-2 flex-shrink-0",
-                          "bg-black/10 dark:bg-white/10 backdrop-blur-sm border border-gray-200 dark:border-white/20 text-gray-700 dark:text-white"
-                        )}>
-                          {getStatusText(product.status)}
-                        </span>
+                        <div className="flex flex-col gap-1 flex-shrink-0 items-end">
+                          <span className={cn(
+                            "px-2 py-1 rounded-full text-xs font-medium",
+                            product.status === "live" 
+                              ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800"
+                              : product.status === "development"
+                              ? "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 border border-yellow-200 dark:border-yellow-800"
+                              : product.status === "mvp"
+                              ? "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800"
+                              : "bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-800"
+                          )}>
+                            {getStatusText(product.status)}
+                          </span>
+                          <span className={cn(
+                            "px-2 py-1 rounded-full text-xs font-medium text-center",
+                            "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800"
+                          )}>
+                            {product.category.split('/')[0]}
+                          </span>
+                        </div>
                       </div>
 
                       {/* Description */}
@@ -506,16 +595,62 @@ export function ProductsSection({ className }: ProductsSectionProps) {
                     </div>
                   </div>
 
-                  {/* Title and Description */}
+                  {/* Title with Icon and Description */}
                   <div className="mb-6 px-2">
-                    <h1 className="text-3xl font-bold text-white mb-4">{selectedProduct.title}</h1>
+                    <div className="flex items-start gap-4 mb-4">
+                      {/* Product Icon */}
+                      <div className="w-16 h-16 rounded-xl overflow-hidden shadow-lg flex-shrink-0">
+                        {selectedProduct.icon ? (
+                          <img 
+                            src={selectedProduct.icon} 
+                            alt={`${selectedProduct.title} icon`}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              const parent = target.parentElement;
+                              if (parent) {
+                                parent.innerHTML = `
+                                  <div class="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                                    <span class="text-white font-bold text-2xl">${selectedProduct.title.charAt(0)}</span>
+                                  </div>
+                                `;
+                              }
+                            }}
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                            <span className="text-white font-bold text-2xl">{selectedProduct.title.charAt(0)}</span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <h1 className="text-3xl font-bold text-white">{selectedProduct.title}</h1>
+                        <div className="flex gap-2 mt-2">
+                          <span className="px-3 py-1 rounded-full text-sm font-medium bg-blue-500/20 text-blue-300 border border-blue-500/30">
+                            {selectedProduct.category}
+                          </span>
+                          <span className={cn(
+                            "px-3 py-1 rounded-full text-sm font-medium",
+                            selectedProduct.status === "live" 
+                              ? "bg-green-500/20 text-green-300 border border-green-500/30"
+                              : selectedProduct.status === "development"
+                              ? "bg-yellow-500/20 text-yellow-300 border border-yellow-500/30"
+                              : selectedProduct.status === "mvp"
+                              ? "bg-purple-500/20 text-purple-300 border border-purple-500/30"
+                              : "bg-gray-500/20 text-gray-300 border border-gray-500/30"
+                          )}>
+                            {getStatusText(selectedProduct.status)}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                     <p className="text-xl text-white/80 leading-relaxed">{selectedProduct.description}</p>
                   </div>
 
                   {/* Expandable Content Sections */}
                   <div className="px-2 pb-4">
                     <Accordion>
-                      <AccordionItem defaultOpen>
+                      <AccordionItem>
                         <AccordionTrigger>{selectedProduct.sections.description.title}</AccordionTrigger>
                         <AccordionContent>
                           <p className="text-white/70 leading-relaxed">{selectedProduct.sections.description.content}</p>
@@ -556,6 +691,23 @@ export function ProductsSection({ className }: ProductsSectionProps) {
                           <p className="text-white/70 leading-relaxed">{selectedProduct.sections.approach.content}</p>
                         </AccordionContent>
                       </AccordionItem>
+
+                      {/* FAQ Section */}
+                      {selectedProduct.faq && selectedProduct.faq.length > 0 && (
+                        <AccordionItem>
+                          <AccordionTrigger>FAQ</AccordionTrigger>
+                          <AccordionContent>
+                            <div className="space-y-4">
+                              {selectedProduct.faq.map((item, idx) => (
+                                <div key={idx}>
+                                  <h4 className="text-white/90 font-medium mb-2">{item.question}</h4>
+                                  <p className="text-white/70 leading-relaxed text-sm">{item.answer}</p>
+                                </div>
+                              ))}
+                            </div>
+                          </AccordionContent>
+                        </AccordionItem>
+                      )}
                     </Accordion>
                   </div>
                 </div>
@@ -662,9 +814,55 @@ export function ProductsSection({ className }: ProductsSectionProps) {
                     </div>
                   </div>
 
-                  {/* Title and Description */}
+                  {/* Title with Icon and Description */}
                   <div className="mb-8 px-2">
-                    <h1 className="text-4xl font-bold text-white mb-4">{selectedProduct.title}</h1>
+                    <div className="flex items-start gap-4 mb-4">
+                      {/* Product Icon */}
+                      <div className="w-20 h-20 rounded-xl overflow-hidden shadow-lg flex-shrink-0">
+                        {selectedProduct.icon ? (
+                          <img 
+                            src={selectedProduct.icon} 
+                            alt={`${selectedProduct.title} icon`}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              const parent = target.parentElement;
+                              if (parent) {
+                                parent.innerHTML = `
+                                  <div class="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                                    <span class="text-white font-bold text-3xl">${selectedProduct.title.charAt(0)}</span>
+                                  </div>
+                                `;
+                              }
+                            }}
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                            <span className="text-white font-bold text-3xl">{selectedProduct.title.charAt(0)}</span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <h1 className="text-4xl font-bold text-white">{selectedProduct.title}</h1>
+                        <div className="flex gap-2 mt-2">
+                          <span className="px-3 py-1 rounded-full text-sm font-medium bg-blue-500/20 text-blue-300 border border-blue-500/30">
+                            {selectedProduct.category}
+                          </span>
+                          <span className={cn(
+                            "px-3 py-1 rounded-full text-sm font-medium",
+                            selectedProduct.status === "live" 
+                              ? "bg-green-500/20 text-green-300 border border-green-500/30"
+                              : selectedProduct.status === "development"
+                              ? "bg-yellow-500/20 text-yellow-300 border border-yellow-500/30"
+                              : selectedProduct.status === "mvp"
+                              ? "bg-purple-500/20 text-purple-300 border border-purple-500/30"
+                              : "bg-gray-500/20 text-gray-300 border border-gray-500/30"
+                          )}>
+                            {getStatusText(selectedProduct.status)}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                     <p className="text-xl text-white/80 leading-relaxed">{selectedProduct.description}</p>
                   </div>
 
@@ -712,6 +910,23 @@ export function ProductsSection({ className }: ProductsSectionProps) {
                         <p className="text-white/70 leading-relaxed">{selectedProduct.sections.approach.content}</p>
                       </AccordionContent>
                     </AccordionItem>
+
+                    {/* FAQ Section */}
+                    {selectedProduct.faq && selectedProduct.faq.length > 0 && (
+                      <AccordionItem>
+                        <AccordionTrigger>Frequently Asked Questions</AccordionTrigger>
+                        <AccordionContent>
+                          <div className="space-y-4">
+                            {selectedProduct.faq.map((item, idx) => (
+                              <div key={idx}>
+                                <h4 className="text-white/90 font-medium mb-2">{item.question}</h4>
+                                <p className="text-white/70 leading-relaxed text-sm">{item.answer}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                    )}
                   </Accordion>
                   </div>
                 </div>

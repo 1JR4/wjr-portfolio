@@ -1,0 +1,110 @@
+{
+  "name": "Nimbus",
+  "slug": "nimbus",
+  "description": "AI powered ultimate personality insight and fortune forecasting app",
+  "fullDescription": "Nimbus leverages advanced AI algorithms to analyze personality patterns and provide personalized insights for fortune forecasting. The app combines traditional personality assessment methodologies with modern machine learning to offer users deep insights into their behavioral patterns and potential future outcomes.",
+  "status": "development",
+  "category": "Personal Development",
+  "icon": "https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=200&q=80",
+  "type": "mobile-app",
+  "image": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&q=80",
+  "gallery": [
+    "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&q=80",
+    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
+    "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80"
+  ],
+  "technologies": ["React Native", "Python", "TensorFlow", "Firebase", "Node.js", "MongoDB"],
+  "platforms": ["iOS", "Android"],
+  "version": "1.0.0",
+  "demo": "https://nimbus-demo.bitnbolt.com",
+  "kpis": [
+    {
+      "label": "User Accuracy Rate",
+      "value": "87%",
+      "trend": "up"
+    },
+    {
+      "label": "Monthly Active Users",
+      "value": "2.5K",
+      "trend": "up"
+    },
+    {
+      "label": "Session Duration",
+      "value": "12 min",
+      "trend": "up"
+    }
+  ],
+  "features": [
+    {
+      "title": "AI Personality Analysis",
+      "description": "Advanced machine learning algorithms analyze user responses to provide detailed personality insights",
+      "icon": "brain",
+      "status": "available"
+    },
+    {
+      "title": "Fortune Forecasting",
+      "description": "Predictive analytics to forecast potential life outcomes based on personality patterns",
+      "icon": "crystal-ball",
+      "status": "available"
+    },
+    {
+      "title": "Personalized Recommendations",
+      "description": "Custom advice and recommendations tailored to individual personality profiles",
+      "icon": "target",
+      "status": "available"
+    },
+    {
+      "title": "Social Compatibility",
+      "description": "Analyze compatibility with friends, partners, and colleagues",
+      "icon": "users",
+      "status": "coming-soon"
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2023-02-15",
+      "milestone": "Project Inception",
+      "description": "Initial concept development and market research"
+    },
+    {
+      "date": "2023-06-20",
+      "milestone": "MVP Development",
+      "description": "Core personality analysis engine completed"
+    },
+    {
+      "date": "2023-12-10",
+      "milestone": "Beta Launch",
+      "description": "Limited beta release with select users"
+    },
+    {
+      "date": "2024-03-15",
+      "milestone": "Public Launch",
+      "description": "Official app store release planned"
+    }
+  ],
+  "createdAt": "2023-02-15",
+  "updatedAt": "2024-01-20",
+  "launchDate": "2024-03-15",
+  "faq": [
+    {
+      "question": "How does Nimbus analyze personality patterns?",
+      "answer": "Nimbus uses advanced machine learning algorithms trained on psychological assessment methodologies and behavioral patterns. The AI analyzes user responses, interactions, and preferences to create comprehensive personality profiles while ensuring complete privacy and data security."
+    },
+    {
+      "question": "Is my personal data safe with Nimbus?",
+      "answer": "Absolutely. We implement end-to-end encryption for all user data, and our AI models process information locally on your device whenever possible. We never share personal data with third parties and comply with GDPR and other privacy regulations."
+    },
+    {
+      "question": "How accurate are the fortune forecasting predictions?",
+      "answer": "Our predictions are based on pattern recognition and statistical analysis with an 87% accuracy rate in behavioral trend predictions. However, we always emphasize that forecasts are probabilistic insights meant to guide decision-making, not definitive predictions."
+    },
+    {
+      "question": "Can I use Nimbus for professional team assessments?",
+      "answer": "Yes! Nimbus offers team assessment features for professional use, helping organizations understand team dynamics, improve collaboration, and optimize team composition based on personality compatibility insights."
+    },
+    {
+      "question": "What makes Nimbus different from other personality apps?",
+      "answer": "Nimbus combines traditional psychological frameworks with cutting-edge AI to provide dynamic, evolving insights. Unlike static personality tests, Nimbus continuously learns and adapts its analysis based on ongoing interactions, providing increasingly personalized and accurate insights over time."
+    }
+  ]
+}

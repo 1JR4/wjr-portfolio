@@ -24,7 +24,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-white dark:bg-black text-black dark:text-white transition-colors duration-300 relative">
+    <main className="min-h-screen bg-white dark:bg-black text-black dark:text-white transition-colors duration-300 relative m-0 p-0">
       {/* Unified Background Beams Effect */}
       <div className="fixed inset-0 pointer-events-none">
         <BeamsBackgroundLayer intensity="subtle" />

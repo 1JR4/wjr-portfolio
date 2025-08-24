@@ -29,6 +29,28 @@ export interface Product {
   name: string;
   description: string;
   slug: string;
+  fullDescription?: string;
+  status: string;
+  category: string;
+  icon?: string;
+  type?: string;
+  image?: string;
+  gallery?: string[];
+  technologies?: string[];
+  platforms?: string[];
+  version?: string;
+  link?: string;
+  github?: string;
+  documentation?: string;
+  demo?: string;
+  kpis?: any[];
+  okrs?: any[];
+  features?: any[];
+  timeline?: any[];
+  createdAt?: string;
+  updatedAt?: string;
+  launchDate?: string;
+  faq?: Array<{ question: string; answer: string }>;
 }
 
 // Generated blog posts from JSON files
@@ -129,6 +151,67 @@ export const BLOG_POSTS: BlogPost[] = [
         "type": "link"
       }
     ]
+  },
+  {
+    "title": "Test TOC Navigation",
+    "content": "## Introduction\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\n## First Section\n\nSed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.\n\nNemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.\n\n### First Subsection\n\nNeque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.\n\nUt enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur.\n\n### Second Subsection\n\nQuis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.\n\nAt vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores.\n\n## Second Section\n\nEt harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus.\n\nOmnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.\n\n### Third Subsection\n\nItaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.\n\nSed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.\n\n## Conclusion\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.\n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+    "excerpt": "A simple test blog post to debug table of contents navigation with clear headings and content.",
+    "slug": "test-toc",
+    "date": "2024-08-21",
+    "readTime": "5 min read",
+    "category": "Test",
+    "author": "Test Author",
+    "image": "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80",
+    "tags": [
+      "Test",
+      "TOC",
+      "Navigation",
+      "Debug"
+    ],
+    "tldr": [
+      "This is a test blog post to debug TOC navigation",
+      "Contains simple headings with clear titles",
+      "Each section has lorem ipsum content",
+      "Should help identify TOC scrolling issues"
+    ],
+    "tableOfContents": [
+      {
+        "id": "introduction",
+        "title": "Introduction",
+        "level": 2
+      },
+      {
+        "id": "first-section",
+        "title": "First Section",
+        "level": 2
+      },
+      {
+        "id": "first-subsection",
+        "title": "First Subsection",
+        "level": 3
+      },
+      {
+        "id": "second-subsection",
+        "title": "Second Subsection",
+        "level": 3
+      },
+      {
+        "id": "second-section",
+        "title": "Second Section",
+        "level": 2
+      },
+      {
+        "id": "third-subsection",
+        "title": "Third Subsection",
+        "level": 3
+      },
+      {
+        "id": "conclusion",
+        "title": "Conclusion",
+        "level": 2
+      }
+    ],
+    "resources": []
   },
   {
     "title": "Talking to the Wood Wide Web: Mycelial Networks as Nature's Internet",
@@ -646,22 +729,553 @@ export const PRODUCTS: Product[] = [
   {
     "name": "BitnBolt",
     "description": "AI powered web building and conversational content management for small to medium business websites",
-    "slug": "bitnbolt"
+    "slug": "bitnbolt",
+    "fullDescription": "BitnBolt revolutionizes website creation and management for SMBs through AI-powered tools and conversational interfaces. It combines intelligent web building capabilities with an intuitive content management system that allows business owners to create and maintain professional websites without technical expertise.",
+    "status": "mvp",
+    "category": "Web Builder/AI-Admin",
+    "icon": "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=200&q=80",
+    "type": "web-app",
+    "image": "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=80",
+    "gallery": [
+      "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=80",
+      "https://images.unsplash.com/photo-1559526324-c1f275fbfa32?w=800&q=80",
+      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80"
+    ],
+    "technologies": [
+      "Next.js",
+      "OpenAI API",
+      "Stripe",
+      "Vercel",
+      "PostgreSQL",
+      "Tailwind CSS"
+    ],
+    "platforms": [
+      "Web"
+    ],
+    "version": "3.2.1",
+    "link": "https://bitnbolt.com",
+    "github": "https://github.com/bitnbolt/platform",
+    "documentation": "https://docs.bitnbolt.com",
+    "demo": "https://demo.bitnbolt.com",
+    "kpis": [
+      {
+        "label": "Active Websites",
+        "value": "850+",
+        "trend": "up"
+      },
+      {
+        "label": "Monthly Recurring Revenue",
+        "value": "$15K",
+        "trend": "up"
+      },
+      {
+        "label": "Customer Satisfaction",
+        "value": "4.8/5",
+        "trend": "up"
+      }
+    ],
+    "okrs": [
+      {
+        "objective": "Scale SMB Market Penetration",
+        "keyResults": [
+          "Reach 1,000 active websites by Q2 2024",
+          "Achieve $25K MRR by end of 2024",
+          "Maintain 95%+ customer satisfaction"
+        ],
+        "progress": 75
+      }
+    ],
+    "features": [
+      {
+        "title": "AI Website Builder",
+        "description": "Create professional websites using natural language prompts and AI assistance",
+        "icon": "wand",
+        "status": "available"
+      },
+      {
+        "title": "Conversational CMS",
+        "description": "Manage website content through natural language conversations with AI",
+        "icon": "message-circle",
+        "status": "available"
+      },
+      {
+        "title": "Smart Templates",
+        "description": "Industry-specific templates that adapt based on business requirements",
+        "icon": "layout",
+        "status": "available"
+      },
+      {
+        "title": "SEO Optimization",
+        "description": "Automated SEO recommendations and implementation",
+        "icon": "search",
+        "status": "available"
+      },
+      {
+        "title": "E-commerce Integration",
+        "description": "Built-in e-commerce capabilities with payment processing",
+        "icon": "shopping-cart",
+        "status": "available"
+      },
+      {
+        "title": "Analytics Dashboard",
+        "description": "Comprehensive website analytics and performance insights",
+        "icon": "bar-chart",
+        "status": "coming-soon"
+      }
+    ],
+    "timeline": [
+      {
+        "date": "2023-02-01",
+        "milestone": "Beta Launch",
+        "description": "Initial beta release with core AI building features"
+      },
+      {
+        "date": "2023-05-15",
+        "milestone": "Public Launch",
+        "description": "Official platform launch with subscription plans"
+      },
+      {
+        "date": "2023-09-10",
+        "milestone": "E-commerce Module",
+        "description": "Integrated e-commerce capabilities and payment processing"
+      },
+      {
+        "date": "2023-12-20",
+        "milestone": "Conversational CMS",
+        "description": "Revolutionary AI-powered content management system"
+      },
+      {
+        "date": "2024-02-01",
+        "milestone": "Enterprise Features",
+        "description": "Advanced features for larger businesses and agencies"
+      }
+    ],
+    "createdAt": "2023-02-01",
+    "updatedAt": "2024-02-01",
+    "launchDate": "2023-05-15",
+    "faq": [
+      {
+        "question": "How easy is it to build a website with BitnBolt?",
+        "answer": "BitnBolt makes website creation incredibly simple through natural language prompts. Just describe what you want, and our AI will build it for you. No coding or technical knowledge required."
+      },
+      {
+        "question": "Can I customize the templates?",
+        "answer": "Absolutely! Our smart templates adapt automatically to your business requirements, and you can further customize them through conversational commands with our AI assistant."
+      },
+      {
+        "question": "What kind of websites can I create?",
+        "answer": "BitnBolt supports a wide range of business websites including portfolios, e-commerce stores, service businesses, restaurants, agencies, and more. Our AI adapts to industry-specific needs."
+      },
+      {
+        "question": "Is there ongoing support and maintenance?",
+        "answer": "Yes! BitnBolt includes automated maintenance, security updates, and our conversational CMS makes ongoing content management effortless. Plus, our support team is always available to help."
+      },
+      {
+        "question": "How does pricing work?",
+        "answer": "We offer flexible subscription plans starting from basic websites to enterprise solutions. Each plan includes hosting, maintenance, and access to our AI-powered tools. Visit our pricing page for detailed information."
+      }
+    ]
   },
   {
     "name": "Conductor",
     "description": "Enterprise software delivery management",
-    "slug": "conductor"
+    "slug": "conductor",
+    "fullDescription": "Conductor is a comprehensive enterprise software delivery management platform that orchestrates the entire software development lifecycle. It provides teams with advanced project management, resource allocation, and delivery optimization tools to ensure successful software projects at scale.",
+    "status": "development",
+    "category": "Productivity",
+    "icon": "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=200&q=80",
+    "type": "web-app",
+    "image": "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80",
+    "gallery": [
+      "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80",
+      "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=80",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80"
+    ],
+    "technologies": [
+      "React",
+      "Node.js",
+      "GraphQL",
+      "PostgreSQL",
+      "Redis",
+      "Docker",
+      "Kubernetes",
+      "AWS"
+    ],
+    "platforms": [
+      "Web",
+      "API",
+      "Mobile"
+    ],
+    "version": "4.5.2",
+    "link": "https://conductor.enterprise.com",
+    "documentation": "https://docs.conductor.enterprise.com",
+    "kpis": [
+      {
+        "label": "Enterprise Clients",
+        "value": "45",
+        "trend": "up"
+      },
+      {
+        "label": "Projects Managed",
+        "value": "2.1K+",
+        "trend": "up"
+      },
+      {
+        "label": "Delivery Success Rate",
+        "value": "94%",
+        "trend": "up"
+      }
+    ],
+    "okrs": [
+      {
+        "objective": "Expand Enterprise Market Share",
+        "keyResults": [
+          "Onboard 60 enterprise clients by end of 2024",
+          "Achieve 98% delivery success rate",
+          "Reduce average project delivery time by 25%"
+        ],
+        "progress": 82
+      }
+    ],
+    "features": [
+      {
+        "title": "Project Orchestration",
+        "description": "Advanced project management with dependency tracking and resource optimization",
+        "icon": "network",
+        "status": "available"
+      },
+      {
+        "title": "Resource Management",
+        "description": "Intelligent resource allocation and capacity planning across teams",
+        "icon": "users",
+        "status": "available"
+      },
+      {
+        "title": "Delivery Analytics",
+        "description": "Real-time insights into delivery performance and project health",
+        "icon": "analytics",
+        "status": "available"
+      },
+      {
+        "title": "Risk Assessment",
+        "description": "AI-powered risk detection and mitigation recommendations",
+        "icon": "shield",
+        "status": "available"
+      },
+      {
+        "title": "Stakeholder Portal",
+        "description": "Executive dashboards and stakeholder communication tools",
+        "icon": "presentation",
+        "status": "available"
+      },
+      {
+        "title": "Integration Hub",
+        "description": "Seamless integration with popular development and project management tools",
+        "icon": "plug",
+        "status": "available"
+      }
+    ],
+    "timeline": [
+      {
+        "date": "2022-01-15",
+        "milestone": "Platform Development",
+        "description": "Core platform architecture and foundational features"
+      },
+      {
+        "date": "2022-06-01",
+        "milestone": "Enterprise Pilot",
+        "description": "Limited pilot program with select enterprise clients"
+      },
+      {
+        "date": "2022-11-20",
+        "milestone": "General Availability",
+        "description": "Full platform launch for enterprise market"
+      },
+      {
+        "date": "2023-04-10",
+        "milestone": "AI Integration",
+        "description": "Advanced AI-powered analytics and risk assessment"
+      },
+      {
+        "date": "2023-10-05",
+        "milestone": "Mobile App Launch",
+        "description": "Native mobile applications for iOS and Android"
+      }
+    ],
+    "createdAt": "2022-01-15",
+    "updatedAt": "2024-01-25",
+    "launchDate": "2022-11-20",
+    "faq": [
+      {
+        "question": "What makes Conductor different from other project management tools?",
+        "answer": "Conductor is specifically designed for enterprise software delivery with AI-powered risk assessment, advanced resource optimization, and seamless integration with development workflows. It goes beyond basic project management to orchestrate entire software delivery pipelines."
+      },
+      {
+        "question": "How does the AI risk assessment work?",
+        "answer": "Our AI continuously analyzes project data, team performance, dependencies, and historical patterns to identify potential risks before they impact delivery. It provides proactive recommendations and mitigation strategies."
+      },
+      {
+        "question": "Can Conductor integrate with our existing tools?",
+        "answer": "Yes, Conductor's Integration Hub supports seamless connections with popular development tools like Jira, GitHub, Jenkins, Slack, and many others. Our API also enables custom integrations."
+      },
+      {
+        "question": "What level of support do you provide for enterprise clients?",
+        "answer": "Enterprise clients receive dedicated customer success managers, priority support, custom training programs, and assistance with implementation and optimization strategies."
+      },
+      {
+        "question": "How quickly can we see results after implementation?",
+        "answer": "Most enterprise clients see improved delivery visibility within the first week and measurable improvements in delivery success rates within 30-60 days of implementation."
+      }
+    ]
   },
   {
     "name": "Nimbus",
     "description": "AI powered ultimate personality insight and fortune forecasting app",
-    "slug": "nimbus"
+    "slug": "nimbus",
+    "fullDescription": "Nimbus leverages advanced AI algorithms to analyze personality patterns and provide personalized insights for fortune forecasting. The app combines traditional personality assessment methodologies with modern machine learning to offer users deep insights into their behavioral patterns and potential future outcomes.",
+    "status": "development",
+    "category": "Personal Development",
+    "icon": "https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=200&q=80",
+    "type": "mobile-app",
+    "image": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&q=80",
+    "gallery": [
+      "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&q=80",
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80"
+    ],
+    "technologies": [
+      "React Native",
+      "Python",
+      "TensorFlow",
+      "Firebase",
+      "Node.js",
+      "MongoDB"
+    ],
+    "platforms": [
+      "iOS",
+      "Android"
+    ],
+    "version": "1.0.0",
+    "demo": "https://nimbus-demo.bitnbolt.com",
+    "kpis": [
+      {
+        "label": "User Accuracy Rate",
+        "value": "87%",
+        "trend": "up"
+      },
+      {
+        "label": "Monthly Active Users",
+        "value": "2.5K",
+        "trend": "up"
+      },
+      {
+        "label": "Session Duration",
+        "value": "12 min",
+        "trend": "up"
+      }
+    ],
+    "features": [
+      {
+        "title": "AI Personality Analysis",
+        "description": "Advanced machine learning algorithms analyze user responses to provide detailed personality insights",
+        "icon": "brain",
+        "status": "available"
+      },
+      {
+        "title": "Fortune Forecasting",
+        "description": "Predictive analytics to forecast potential life outcomes based on personality patterns",
+        "icon": "crystal-ball",
+        "status": "available"
+      },
+      {
+        "title": "Personalized Recommendations",
+        "description": "Custom advice and recommendations tailored to individual personality profiles",
+        "icon": "target",
+        "status": "available"
+      },
+      {
+        "title": "Social Compatibility",
+        "description": "Analyze compatibility with friends, partners, and colleagues",
+        "icon": "users",
+        "status": "coming-soon"
+      }
+    ],
+    "timeline": [
+      {
+        "date": "2023-02-15",
+        "milestone": "Project Inception",
+        "description": "Initial concept development and market research"
+      },
+      {
+        "date": "2023-06-20",
+        "milestone": "MVP Development",
+        "description": "Core personality analysis engine completed"
+      },
+      {
+        "date": "2023-12-10",
+        "milestone": "Beta Launch",
+        "description": "Limited beta release with select users"
+      },
+      {
+        "date": "2024-03-15",
+        "milestone": "Public Launch",
+        "description": "Official app store release planned"
+      }
+    ],
+    "createdAt": "2023-02-15",
+    "updatedAt": "2024-01-20",
+    "launchDate": "2024-03-15",
+    "faq": [
+      {
+        "question": "How does Nimbus analyze personality patterns?",
+        "answer": "Nimbus uses advanced machine learning algorithms trained on psychological assessment methodologies and behavioral patterns. The AI analyzes user responses, interactions, and preferences to create comprehensive personality profiles while ensuring complete privacy and data security."
+      },
+      {
+        "question": "Is my personal data safe with Nimbus?",
+        "answer": "Absolutely. We implement end-to-end encryption for all user data, and our AI models process information locally on your device whenever possible. We never share personal data with third parties and comply with GDPR and other privacy regulations."
+      },
+      {
+        "question": "How accurate are the fortune forecasting predictions?",
+        "answer": "Our predictions are based on pattern recognition and statistical analysis with an 87% accuracy rate in behavioral trend predictions. However, we always emphasize that forecasts are probabilistic insights meant to guide decision-making, not definitive predictions."
+      },
+      {
+        "question": "Can I use Nimbus for professional team assessments?",
+        "answer": "Yes! Nimbus offers team assessment features for professional use, helping organizations understand team dynamics, improve collaboration, and optimize team composition based on personality compatibility insights."
+      },
+      {
+        "question": "What makes Nimbus different from other personality apps?",
+        "answer": "Nimbus combines traditional psychological frameworks with cutting-edge AI to provide dynamic, evolving insights. Unlike static personality tests, Nimbus continuously learns and adapts its analysis based on ongoing interactions, providing increasingly personalized and accurate insights over time."
+      }
+    ]
   },
   {
     "name": "Arcadia",
     "description": "AI powered News/Event aggregator and organizer for market research",
-    "slug": "arcadia"
+    "slug": "arcadia",
+    "fullDescription": "Arcadia is a comprehensive market intelligence platform that uses AI to aggregate, analyze, and organize news and events from multiple sources. It provides researchers, analysts, and businesses with real-time insights and trend analysis to make informed decisions.",
+    "status": "live",
+    "category": "Content Aggregator/Research Tool",
+    "icon": "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=200&q=80",
+    "type": "web-app",
+    "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+    "gallery": [
+      "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "https://images.unsplash.com/photo-1553729459-efe14ef6055d?w=800&q=80",
+      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80"
+    ],
+    "technologies": [
+      "Next.js",
+      "Python",
+      "OpenAI API",
+      "PostgreSQL",
+      "Redis",
+      "Docker",
+      "AWS"
+    ],
+    "platforms": [
+      "Web",
+      "API"
+    ],
+    "version": "2.1.0",
+    "link": "https://arcadia.bitnbolt.com",
+    "documentation": "https://docs.arcadia.bitnbolt.com",
+    "demo": "https://demo.arcadia.bitnbolt.com",
+    "kpis": [
+      {
+        "label": "Sources Monitored",
+        "value": "10K+",
+        "trend": "up"
+      },
+      {
+        "label": "Daily Articles Processed",
+        "value": "50K",
+        "trend": "up"
+      },
+      {
+        "label": "Research Teams Using",
+        "value": "127",
+        "trend": "up"
+      }
+    ],
+    "features": [
+      {
+        "title": "Real-time News Aggregation",
+        "description": "Monitor thousands of news sources and aggregate relevant content in real-time",
+        "icon": "newspaper",
+        "status": "available"
+      },
+      {
+        "title": "AI-Powered Analysis",
+        "description": "Advanced NLP algorithms extract key insights and sentiment from news articles",
+        "icon": "brain",
+        "status": "available"
+      },
+      {
+        "title": "Custom Research Dashboards",
+        "description": "Create personalized dashboards tailored to specific research topics and industries",
+        "icon": "dashboard",
+        "status": "available"
+      },
+      {
+        "title": "Trend Prediction",
+        "description": "Machine learning models predict emerging trends based on news patterns",
+        "icon": "trending-up",
+        "status": "available"
+      },
+      {
+        "title": "Automated Reporting",
+        "description": "Generate comprehensive market research reports automatically",
+        "icon": "file-text",
+        "status": "coming-soon"
+      }
+    ],
+    "timeline": [
+      {
+        "date": "2023-03-01",
+        "milestone": "Platform Launch",
+        "description": "Initial release with basic aggregation features"
+      },
+      {
+        "date": "2023-07-15",
+        "milestone": "AI Integration",
+        "description": "Advanced NLP and sentiment analysis capabilities added"
+      },
+      {
+        "date": "2023-11-20",
+        "milestone": "Dashboard Customization",
+        "description": "Custom research dashboard builder released"
+      },
+      {
+        "date": "2024-01-10",
+        "milestone": "API v2.0",
+        "description": "Comprehensive API for enterprise integrations"
+      }
+    ],
+    "createdAt": "2023-03-01",
+    "updatedAt": "2024-01-10",
+    "launchDate": "2023-03-01",
+    "faq": [
+      {
+        "question": "What types of sources does Arcadia monitor?",
+        "answer": "Arcadia monitors over 10,000 sources including major news outlets, industry publications, research papers, social media platforms, press releases, and specialized trade publications across various industries and regions."
+      },
+      {
+        "question": "How accurate is the AI analysis and sentiment detection?",
+        "answer": "Our NLP algorithms achieve 94% accuracy in sentiment analysis and content categorization. The system continuously learns and improves from user feedback and new data patterns."
+      },
+      {
+        "question": "Can I set up custom alerts for specific topics or companies?",
+        "answer": "Yes! Arcadia allows you to create highly customized alerts based on keywords, companies, industries, sentiment scores, source types, and geographic regions. You'll receive real-time notifications when relevant content is detected."
+      },
+      {
+        "question": "What data export options are available?",
+        "answer": "Arcadia supports multiple export formats including CSV, JSON, PDF reports, and API access. You can also integrate data directly into your existing business intelligence tools and dashboards."
+      },
+      {
+        "question": "Is there a free trial available?",
+        "answer": "Yes, we offer a 14-day free trial that includes access to core features, limited source monitoring, and sample dashboard creation. No credit card required to start."
+      }
+    ]
   }
 ];
 
