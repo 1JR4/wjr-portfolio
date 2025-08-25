@@ -327,67 +327,6 @@ export const BLOG_POSTS: BlogPost[] = [
     ]
   },
   {
-    "title": "Test TOC Navigation",
-    "content": "## Introduction\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\n## First Section\n\nSed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.\n\nNemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.\n\n### First Subsection\n\nNeque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.\n\nUt enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur.\n\n### Second Subsection\n\nQuis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.\n\nAt vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores.\n\n## Second Section\n\nEt harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus.\n\nOmnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.\n\n### Third Subsection\n\nItaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.\n\nSed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.\n\n## Conclusion\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.\n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    "excerpt": "A simple test blog post to debug table of contents navigation with clear headings and content.",
-    "slug": "test-toc",
-    "date": "2024-08-21",
-    "readTime": "5 min read",
-    "category": "Test",
-    "author": "Test Author",
-    "image": "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80",
-    "tags": [
-      "Test",
-      "TOC",
-      "Navigation",
-      "Debug"
-    ],
-    "tldr": [
-      "This is a test blog post to debug TOC navigation",
-      "Contains simple headings with clear titles",
-      "Each section has lorem ipsum content",
-      "Should help identify TOC scrolling issues"
-    ],
-    "tableOfContents": [
-      {
-        "id": "introduction",
-        "title": "Introduction",
-        "level": 2
-      },
-      {
-        "id": "first-section",
-        "title": "First Section",
-        "level": 2
-      },
-      {
-        "id": "first-subsection",
-        "title": "First Subsection",
-        "level": 3
-      },
-      {
-        "id": "second-subsection",
-        "title": "Second Subsection",
-        "level": 3
-      },
-      {
-        "id": "second-section",
-        "title": "Second Section",
-        "level": 2
-      },
-      {
-        "id": "third-subsection",
-        "title": "Third Subsection",
-        "level": 3
-      },
-      {
-        "id": "conclusion",
-        "title": "Conclusion",
-        "level": 2
-      }
-    ],
-    "resources": []
-  },
-  {
     "title": "Talking to the Wood Wide Web: Mycelial Networks as Nature's Internet",
     "content": "## Introduction\n\nImagine an underground network that quietly links trees, mushrooms, and soil across a forest – a biological \"internet\" pulsing with information. This isn't science fiction; it's the mycelium network, often nicknamed the \"Wood Wide Web.\"\n\nJust below our feet, microscopic fungal threads (called hyphae) form vast interconnecting webs (mycelia) that weave through soil and plant roots, enabling plants to communicate and share resources in remarkable ways. Researchers are now speculating: what if we could tap into this living network and interface with it, bridging ecology and technology?\n\nCould a forest's fungal network help solve modern problems – from detecting pollution to keeping communication alive during blackouts? In this article, we'll explore the science of the mycelium network, how a theoretical \"communication interface\" to it might work, and real-world challenges it could help address.\n\n## The Mycelium Network: Nature's Underground Web\n\nMost plants in a healthy ecosystem are hooked into the mycelium network, forming a symbiotic association known as mycorrhiza. The fungi connect to plant roots and, in exchange for sugars from the plants, they extend the reach of roots by many meters, scavenging water and nutrients from afar and shuttling them back to the plants.\n\nBut beyond nutrient trading, this network also carries information. Through a mix of chemical signals and even electrical impulses, trees and plants can \"talk\" to each other across the fungal web.\n\n### Nature's Early Warning System\n\nWhen a tree is stressed – say, besieged by insects or parched by drought – it can send warning signals through the mycelium. Neighboring plants receiving the signal may preemptively boost their own defenses or adjust their growth.\n\nIn one experiment, bean plants under aphid attack alerted other plants via shared fungus, prompting the unwounded plants to produce pest-repelling chemicals. In effect, the fungal network acts as an early-warning system for the ecosystem.\n\n### The Fungal \"Language\"\n\nScientists are only beginning to decipher the communication protocols of the Wood Wide Web. We know that trees can send chemical alerts that hitch a ride through fungal hyphae. Intriguingly, there is also an electrical component: researchers have observed slow pulsing electrical signals propagating along mycelial networks.\n\nA recent study even suggested that fungi might transmit information in discrete electrical bursts that cluster into patterns analogous to words. When scientists inserted microelectrodes into the mycelium of certain mushroom species, they detected trains of voltage spikes showing statistical similarities to human speech patterns, with researchers identifying a \"vocabulary\" of perhaps 50 unique electrical signal patterns.\n\n## Interfacing with the Fungal \"Internet\"\n\nWhat would it mean to communicate with a mycelium network directly? In theory, two approaches are possible: listening in on the network's own signals, and sending signals into the network that fungi (or plants) could respond to.\n\n### Plugging Into the Network\n\nIn pioneering experiments, researchers effectively plugged into a living fungal network with electrodes. They placed electrodes in mushroom fruiting bodies connected by a common mycelium. When they gave one mushroom a stimulus, the electrical activity in other mushrooms changed in response.\n\nThis demonstrated two key things:\n1. Fungi do generate and transmit electrical signals\n2. We can detect those signals and see when information is moving through the network\n\n### Fungal Computing\n\nResearchers have conceptualized a \"fungal computer\" – treating the mycelium network as a biological circuit where the pattern of how the hyphae are arranged can determine logical operations, and the mushrooms can serve as input/output points.\n\n### Two-Way Communication\n\nBeyond reading signals, could we use mycelium as a communication channel? Recent studies found that mycelium-bound cables can reliably carry electrical signals across a broad range of frequencies (from about 100 Hz up to 10 kHz). The fungi even show properties of capacitors and memristors – electrical components that can store and \"remember\" signals.\n\nThis opens the door to using fungal networks as living communication lines. Imagine embedding tiny sensor nodes in forest soil, each connected to local mycelium. One node could encode a message as electrical pulses; the fungal threads could conduct that signal underground; and another node could decode the message.\n\n## Real-World Applications\n\n### Environmental Early-Warning Systems\n\nFungi are natural biosensors, constantly sampling soil chemistry and responding to changes. If a toxin or pollutant spills into the ground, local mycelium might react by altering its electrical activity or growth pattern.\n\nBy listening to those changes, we could get early alerts about soil contamination or water pollution. Oyster mushrooms, known for breaking down oil and industrial chemicals through mycoremediation, could double as cleanup crew and signal beacon.\n\n### Ecosystem Health Monitoring\n\nBecause mycelium networks tie together entire ecosystems, tapping into them could give us direct feedback on ecosystem health. Changes in the network's \"chatter\" might indicate shifts in biodiversity or spreading pest infestations.\n\nForest managers could use fungal interfaces as a stethoscope on the forest. If trees are water-stressed, they send distress signals via mycelium – sensors could detect these \"drought alarm\" signals before trees visibly wilt.\n\n### Infrastructure Resilience\n\nMycelium networks inspire new ways to build resilient human communication networks. Unlike our current internet infrastructure with critical weak points, fungal networks are decentralized and self-healing – there's no single point of failure.\n\nTech developers are creating \"mycelium-inspired\" protocols like the ThreeFold \"Mycelium Network\" – a peer-to-peer mesh that routes data efficiently and automatically reroutes when links break. Such systems could maintain local communications during disasters or outages.\n\n### Unconventional Computing\n\nMycelium networks might themselves perform computations. Researchers have shown that fungi can implement basic logic gates and memory – processing information as they grow and respond.\n\nA fungal computer might excel at tasks like optimization, pattern recognition, or environmental data analysis. For example, a fungal network in contaminated soil could potentially compute the optimal way to neutralize pollutants by adjusting where it grows and releases enzymes.\n\n## Bridging Ecology and Technology\n\nBlending fungal networks with our technology embodies a systems-thinking approach that's increasingly relevant. Instead of viewing nature and machines as separate, it asks how the oldest networks on Earth can complement the newest.\n\nThe mycelium network, with its resilience, adaptability, and low-energy operation, offers a model for sustainable innovation. It pushes us to design technology that is decentralized, fault-tolerant, and in tune with ecological feedback loops.\n\n### Future Possibilities\n\nWe might deploy fungi as natural sensor grids under highways and pipelines, warning us of leaks or structural weaknesses. Smart farms could use fungal networks to report on soil health and crop stress in real time. City parks could have \"digital mycelium\" monitoring pollution seepage and guiding cleanup robots.\n\nThere's also a philosophical allure to connecting with the mycelium network – engaging with nature on its own terms and fostering greater respect for the intelligence embedded in living systems.\n\n## Conclusion\n\nThe idea of a mycelium communication interface sits at the intersection of ecology, technology, and imagination. It's speculative, yes, but rooted in real scientific discoveries: forests do have underground communication webs, fungi can carry and process signals, and decentralized networks can be remarkably resilient.\n\nBy learning to speak with mushrooms – or at least to translate their electrical murmurs – we could unlock new solutions to pollution sensing, biodiversity monitoring, and internet connectivity during crises.\n\nJust as importantly, we'd be acknowledging that innovation doesn't always mean inventing from scratch; sometimes it means tapping into the genius of systems nature has already evolved.\n\nThe next time you walk in the woods, consider that beneath each step is a living network exceeding the complexity of our highways and perhaps even our routers. One day, we might send a message across that network – a collaboration between human and fungus that blurs the line between the man-made and the natural.\n\nIt's a future where the \"Wood Wide Web\" and the World Wide Web could join forces, growing and communicating together to help both planet and people.",
     "excerpt": "Deep beneath the forest floor exists a vast network that makes the internet look primitive by comparison. The mycelial network connects trees and plants in ways that revolutionize our understanding of communication and could inspire the next generation of resilient technology.",

@@ -164,16 +164,8 @@ export function ArticleModalSidebar({
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    console.log('Desktop TOC clicked:', item.id);
-                    const element = document.getElementById(item.id);
-                    console.log('Element found:', !!element);
-                    if (element) {
-                      console.log('Scrolling...');
-                      element.scrollIntoView({ 
-                        behavior: 'smooth',
-                        block: 'start'
-                      });
-                    }
+                    console.log('Sidebar TOC clicked:', item.id);
+                    onTocClick(item.id);
                   }}
                   className={cn(
                     "w-full text-left px-3 py-2 rounded-lg text-sm transition-colors break-words",

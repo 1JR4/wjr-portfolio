@@ -76,19 +76,66 @@ const articlesData = BLOG_POSTS.map((post, index) => ({
   relatedArticles: []
 }));
 
-// Simple function to get TOC ID for a heading - just use exact matches from JSON
+// Enhanced function to get TOC ID for a heading with better matching
 const getTocId = (headingTitle: string, tableOfContents: TableOfContentsItem[]): string => {
-  // First try exact match
+  console.log(`Looking for TOC ID for heading: "${headingTitle}"`);
+  
+  // Strategy 1: Exact title match
   const exactMatch = tableOfContents.find(item => 
     item.title.toLowerCase() === headingTitle.toLowerCase()
   );
-  if (exactMatch) return exactMatch.id;
+  if (exactMatch) {
+    console.log(`✅ Exact match found: ${exactMatch.id}`);
+    return exactMatch.id;
+  }
+
+  // Strategy 2: Clean title match (remove numbers, punctuation)
+  const cleanHeading = headingTitle
+    .replace(/^\d+\.\s*/, '') // Remove leading numbers like "1. "
+    .replace(/[()]/g, '') // Remove parentheses
+    .trim()
+    .toLowerCase();
   
-  // Generate simple ID as fallback
-  return headingTitle.toLowerCase()
+  console.log(`Clean heading: "${cleanHeading}"`);
+  
+  const cleanMatch = tableOfContents.find(item => {
+    const cleanTocTitle = item.title
+      .replace(/^\d+\.\s*/, '')
+      .replace(/[()]/g, '')
+      .trim()
+      .toLowerCase();
+    console.log(`  Comparing with TOC "${item.title}" -> "${cleanTocTitle}"`);
+    return cleanTocTitle === cleanHeading;
+  });
+  if (cleanMatch) {
+    console.log(`✅ Clean match found: ${cleanMatch.id}`);
+    return cleanMatch.id;
+  }
+
+  // Strategy 3: Partial match using key words
+  const keyWords = cleanHeading.split(/\s+/).filter(word => word.length > 3);
+  console.log(`Key words: [${keyWords.join(', ')}]`);
+  
+  const partialMatch = tableOfContents.find(item => {
+    const tocWords = item.title.toLowerCase().split(/\s+/);
+    const hasMatch = keyWords.some(word => 
+      tocWords.some(tocWord => tocWord.includes(word) || word.includes(tocWord))
+    );
+    if (hasMatch) console.log(`  Partial match candidate: ${item.title}`);
+    return hasMatch;
+  });
+  if (partialMatch) {
+    console.log(`✅ Partial match found: ${partialMatch.id}`);
+    return partialMatch.id;
+  }
+
+  // Strategy 4: Fallback - generate ID from heading
+  const fallbackId = headingTitle.toLowerCase()
     .replace(/^\d+\.\s*/, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
+  console.log(`⚠️ No match found, using fallback ID: ${fallbackId}`);
+  return fallbackId;
 };
 
 export default function ArticlesPage() {
@@ -133,13 +180,41 @@ export default function ArticlesPage() {
   };
 
   const handleTocClick = (sectionId: string) => {
+    console.log(`TOC click handler called with ID: ${sectionId}`);
     const element = document.getElementById(sectionId);
+    console.log(`Element found:`, !!element, element);
+    
     if (element) {
-      element.scrollIntoView({ 
-        behavior: 'smooth',
-        block: 'start'
-      });
+      if (isMobile) {
+        // Mobile: regular scroll behavior
+        element.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'start'
+        });
+      } else {
+        // Desktop: scroll within the content container
+        const container = desktopContentRef.current;
+        if (container) {
+          const containerRect = container.getBoundingClientRect();
+          const elementRect = element.getBoundingClientRect();
+          const scrollTop = container.scrollTop + elementRect.top - containerRect.top - 20; // 20px offset
+          
+          console.log(`Desktop scroll: container scrollTop ${container.scrollTop} -> ${scrollTop}`);
+          container.scrollTo({
+            top: scrollTop,
+            behavior: 'smooth'
+          });
+        } else {
+          console.log('Desktop content container not found, using fallback');
+          element.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      }
       setActiveSection(sectionId);
+    } else {
+      console.log(`⚠️ Element with ID "${sectionId}" not found in DOM`);
     }
   };
 
