@@ -198,23 +198,23 @@ export function ArticlesSection({ className }: ArticlesSectionProps) {
         // Desktop: scroll within the content container
         const container = contentRef.current;
         if (container) {
-          // Find the element's position relative to the scrollable content
-          let offsetTop = 0;
-          let currentElement = element;
+          // Get element position relative to container
+          const containerRect = container.getBoundingClientRect();
+          const elementRect = element.getBoundingClientRect();
           
-          // Calculate cumulative offsetTop until we reach the container
-          while (currentElement && currentElement !== container) {
-            offsetTop += currentElement.offsetTop;
-            currentElement = currentElement.offsetParent as HTMLElement;
-          }
+          // Calculate target scroll position
+          const elementTopRelativeToContainer = elementRect.top - containerRect.top;
+          const targetScrollTop = container.scrollTop + elementTopRelativeToContainer - 20; // 20px offset
           
-          const targetScrollTop = offsetTop - 20; // 20px offset for better visibility
-          
-          console.log(`Homepage desktop scroll: element offsetTop: ${offsetTop}, scrolling to: ${targetScrollTop}`);
-          console.log(`Homepage container current scrollTop: ${container.scrollTop}`);
+          console.log(`Homepage desktop scroll debug:`);
+          console.log(`- Container scrollTop: ${container.scrollTop}`);
+          console.log(`- Container top: ${containerRect.top}`);
+          console.log(`- Element top: ${elementRect.top}`);
+          console.log(`- Element relative to container: ${elementTopRelativeToContainer}`);
+          console.log(`- Target scroll position: ${targetScrollTop}`);
           
           container.scrollTo({
-            top: targetScrollTop,
+            top: Math.max(0, targetScrollTop), // Ensure we don't scroll to negative position
             behavior: 'smooth'
           });
         } else {
