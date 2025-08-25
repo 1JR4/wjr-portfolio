@@ -1,0 +1,34 @@
+backend:
+  name: git-gateway
+  branch: main
+  local_backend: true  # This enables local editing without auth
+
+# Same as your main config
+media_folder: "portfolio-nextjs/public/images"
+public_folder: "/images"
+
+collections:
+  - name: "blog"
+    label: "Blog Posts"
+    folder: "contents/blogs"
+    create: true
+    slug: "{{slug}}"
+    extension: "json"
+    format: "json"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Excerpt", name: "excerpt", widget: "text"}
+      - {label: "Content", name: "content", widget: "markdown"}
+      # ... rest of your fields
+
+  - name: "products"
+    label: "Products"
+    folder: "contents/products"
+    create: true
+    slug: "{{slug}}"
+    extension: "json"
+    format: "json"
+    fields:
+      - {label: "Name", name: "name", widget: "string"}
+      - {label: "Description", name: "description", widget: "text"}
+      # ... rest of your fields

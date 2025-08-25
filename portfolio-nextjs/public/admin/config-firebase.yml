@@ -1,0 +1,51 @@
+backend:
+  name: github
+  repo: 1JR4/wjr-portfolio
+  branch: main
+  base_url: https://us-central1-flyingnimbustest.cloudfunctions.net
+  auth_endpoint: /oauth/auth
+
+# Or for simple GitHub personal access token:
+# backend:
+#   name: github
+#   repo: 1JR4/wjr-portfolio
+#   branch: main
+#   use_graphql: true
+
+media_folder: "portfolio-nextjs/public/images"
+public_folder: "/images"
+
+collections:
+  - name: "blog"
+    label: "Blog Posts"
+    folder: "contents/blogs"
+    create: true
+    slug: "{{slug}}"
+    extension: "json"
+    format: "json"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Excerpt", name: "excerpt", widget: "text"}
+      - {label: "Slug", name: "slug", widget: "string"}
+      - {label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD"}
+      - {label: "Read Time", name: "readTime", widget: "string", default: "5 min read"}
+      - {label: "Category", name: "category", widget: "select", options: ["AI & Engineering", "Technology & Innovation", "Product Management", "Finance & Technology", "Nature & Technology", "AI & Business"]}
+      - {label: "Author", name: "author", widget: "string", default: "Wonjae Ra"}
+      - {label: "Featured Image", name: "image", widget: "string", hint: "URL to header image"}
+      - {label: "Tags", name: "tags", widget: "list", default: ["Technology"]}
+      - {label: "Content", name: "content", widget: "markdown"}
+
+  - name: "products"
+    label: "Products"
+    folder: "contents/products"
+    create: true
+    slug: "{{slug}}"
+    extension: "json"
+    format: "json"
+    fields:
+      - {label: "Name", name: "name", widget: "string"}
+      - {label: "Description", name: "description", widget: "text"}
+      - {label: "Slug", name: "slug", widget: "string"}
+      - {label: "Status", name: "status", widget: "select", options: ["live", "mvp", "development", "concept"]}
+      - {label: "Category", name: "category", widget: "string"}
+      - {label: "Technologies", name: "technologies", widget: "list", default: ["React", "TypeScript"]}
