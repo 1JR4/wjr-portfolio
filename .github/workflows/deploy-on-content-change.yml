@@ -1,0 +1,63 @@
+name: Auto-Deploy on Content Changes
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'contents/**'
+      - 'portfolio-nextjs/src/**'
+      - 'portfolio-nextjs/public/**'
+      - 'portfolio-nextjs/package.json'
+      - 'portfolio-nextjs/next.config.ts'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: 'portfolio-nextjs/package-lock.json'
+        
+    - name: Install dependencies
+      run: |
+        cd portfolio-nextjs
+        npm ci
+        
+    - name: Build Next.js application
+      run: |
+        cd portfolio-nextjs
+        npm run build
+        
+    - name: Setup Firebase CLI
+      uses: w9jds/firebase-action@master
+      with:
+        args: --version
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        
+    - name: Deploy to Firebase Hosting
+      uses: w9jds/firebase-action@master
+      with:
+        args: deploy --only hosting --project flyingnimbustest
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        
+    - name: Deploy to Secondary Hosting (onepointjae)
+      uses: w9jds/firebase-action@master
+      with:
+        args: deploy --only hosting --project onepointjae
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        
+    - name: Notification
+      run: |
+        echo "🚀 Deployment completed successfully!"
+        echo "✅ Main site: https://flyingnimbustest.web.app"  
+        echo "✅ Custom domain: https://1jae.com"
