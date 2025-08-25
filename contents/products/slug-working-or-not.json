@@ -1,0 +1,12 @@
+{
+  "name": "test product",
+  "description": "short description test",
+  "fullDescription": "long descp test",
+  "slug": "slug-working-or-not",
+  "status": "mvp",
+  "category": "pizza",
+  "technologies": [
+    "basil",
+    "dough"
+  ]
+}
