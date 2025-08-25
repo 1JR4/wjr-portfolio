@@ -197,13 +197,23 @@ export default function ArticlesPage() {
         // Desktop: scroll within the content container
         const container = desktopContentRef.current;
         if (container) {
-          const containerRect = container.getBoundingClientRect();
-          const elementRect = element.getBoundingClientRect();
-          const scrollTop = container.scrollTop + elementRect.top - containerRect.top - 20; // 20px offset
+          // Find the element's position relative to the scrollable content
+          let offsetTop = 0;
+          let currentElement = element;
           
-          console.log(`Desktop scroll: container scrollTop ${container.scrollTop} -> ${scrollTop}`);
+          // Calculate cumulative offsetTop until we reach the container
+          while (currentElement && currentElement !== container) {
+            offsetTop += currentElement.offsetTop;
+            currentElement = currentElement.offsetParent as HTMLElement;
+          }
+          
+          const targetScrollTop = offsetTop - 20; // 20px offset for better visibility
+          
+          console.log(`Desktop scroll: element offsetTop: ${offsetTop}, scrolling to: ${targetScrollTop}`);
+          console.log(`Container current scrollTop: ${container.scrollTop}`);
+          
           container.scrollTo({
-            top: scrollTop,
+            top: targetScrollTop,
             behavior: 'smooth'
           });
         } else {
