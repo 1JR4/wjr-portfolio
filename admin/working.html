@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Content Manager - FreshPaper</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="/admin/cms.css" rel="stylesheet" />
+  
+  <!-- Prevent automatic config.yml loading -->
+  <script>
+    window.CMS_MANUAL_INIT = true;
+  </script>
+</head>
+<body>
+  <div id="nc-root"></div>
+  
+  <!-- Loading indicator -->
+  <div id="cms-loading" style="
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    z-index: 9999;
+  ">
+    <div style="text-align: center;">
+      <div style="
+        width: 40px;
+        height: 40px;
+        border: 4px solid rgba(255,255,255,0.3);
+        border-top: 4px solid white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 16px;
+      "></div>
+      <div style="font-size: 18px; font-weight: 600;">Loading Content Manager...</div>
+      <div style="font-size: 14px; opacity: 0.8; margin-top: 4px;">Setting up your CMS experience</div>
+    </div>
+  </div>
+
+  <style>
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+  
+  <!-- Decap CMS -->
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  
+  <script>
+    // Embedded configuration to avoid file loading issues
+    const cmsConfig = {
+      backend: {
+        name: 'github',
+        repo: '1JR4/wjr-portfolio',
+        branch: 'main'
+      },
+      media_folder: 'public/contents/images',
+      public_folder: '/contents/images',
+      publish_mode: 'editorial_workflow',
+      collections: [
+        {
+          name: 'blog',
+          label: 'Blog Posts',
+          folder: 'public/contents/blogs',
+          create: true,
+          slug: '{{slug}}',
+          format: 'json',
+          extension: 'json',
+          fields: [
+            {label: 'Title', name: 'title', widget: 'string', required: true},
+            {label: 'Slug', name: 'slug', widget: 'string', required: true},
+            {label: 'Excerpt', name: 'excerpt', widget: 'text', required: true},
+            {label: 'Content', name: 'content', widget: 'markdown', required: true},
+            {label: 'Author', name: 'author', widget: 'string', default: 'Wonjae Ra'},
+            {label: 'Publish Date', name: 'date', widget: 'datetime', format: 'YYYY-MM-DD', required: true},
+            {label: 'Read Time', name: 'readTime', widget: 'string', default: '5 min read'},
+            {label: 'Category', name: 'category', widget: 'select', options: ['AI & Engineering', 'Product Management', 'Technology Trends', 'Personal Development', 'Industry Analysis'], required: true},
+            {label: 'Tags', name: 'tags', widget: 'list', required: false},
+            {label: 'Featured Image', name: 'image', widget: 'image', required: false}
+          ]
+        },
+        {
+          name: 'product',
+          label: 'Products', 
+          folder: 'public/contents/products',
+          create: true,
+          slug: '{{slug}}',
+          format: 'json',
+          extension: 'json',
+          fields: [
+            {label: 'Name', name: 'name', widget: 'string', required: true},
+            {label: 'Slug', name: 'slug', widget: 'string', required: true},
+            {label: 'Short Description', name: 'description', widget: 'text', required: true},
+            {label: 'Full Description', name: 'fullDescription', widget: 'markdown', required: true},
+            {label: 'Status', name: 'status', widget: 'select', options: ['live', 'mvp', 'development', 'concept'], required: true},
+            {label: 'Category', name: 'category', widget: 'select', options: ['Web Builder/AI-Admin', 'Productivity', 'Personal Development', 'Content Aggregator/Research Tool'], required: true},
+            {label: 'Type', name: 'type', widget: 'select', options: ['web-app', 'mobile-app', 'desktop-app', 'api', 'tool'], required: true},
+            {label: 'Main Image', name: 'image', widget: 'image', required: false},
+            {label: 'Technologies', name: 'technologies', widget: 'list', required: false},
+            {label: 'Live Link', name: 'link', widget: 'string', required: false},
+            {label: 'GitHub', name: 'github', widget: 'string', required: false}
+          ]
+        },
+        {
+          name: 'journey',
+          label: 'My Journey',
+          folder: 'public/contents/my jouurney', 
+          create: true,
+          slug: '{{slug}}',
+          format: 'frontmatter',
+          extension: 'md',
+          fields: [
+            {label: 'Title', name: 'title', widget: 'string', required: true},
+            {label: 'Slug', name: 'slug', widget: 'string', required: true},
+            {label: 'Date', name: 'date', widget: 'datetime', required: true},
+            {label: 'Category', name: 'category', widget: 'select', options: ['work', 'personal', 'travel', 'learning'], required: true},
+            {label: 'Featured', name: 'featured', widget: 'boolean', default: false},
+            {label: 'Content', name: 'body', widget: 'markdown', required: true}
+          ]
+        }
+      ]
+    };
+
+    // Initialize when page loads
+    window.addEventListener('load', function() {
+      console.log('Initializing Decap CMS with embedded config...');
+      
+      try {
+        CMS.init({ config: cmsConfig });
+        console.log('✅ CMS initialized successfully');
+        
+        // Hide loading screen
+        setTimeout(() => {
+          const loading = document.getElementById('cms-loading');
+          if (loading) {
+            loading.style.opacity = '0';
+            loading.style.transition = 'opacity 0.3s ease';
+            setTimeout(() => loading.remove(), 300);
+          }
+        }, 1000);
+        
+      } catch (error) {
+        console.error('❌ CMS initialization failed:', error);
+        const loading = document.getElementById('cms-loading');
+        if (loading) loading.remove();
+      }
+    });
+  </script>
+</body>
+</html>
