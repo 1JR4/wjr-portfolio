@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio CMS - Content Management</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #1a1a1a;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #e5e5e5;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .card {
+            background: #2a2a2a;
+            border: 1px solid #404040;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .flex {
+            display: flex;
+        }
+        
+        .flex-col {
+            flex-direction: column;
+        }
+        
+        .items-center {
+            align-items: center;
+        }
+        
+        .justify-center {
+            justify-content: center;
+        }
+        
+        .justify-between {
+            justify-content: space-between;
+        }
+        
+        .space-x-2 > * + * {
+            margin-left: 8px;
+        }
+        
+        .space-x-4 > * + * {
+            margin-left: 16px;
+        }
+        
+        .space-y-4 > * + * {
+            margin-top: 16px;
+        }
+        
+        .space-y-6 > * + * {
+            margin-top: 24px;
+        }
+        
+        .grid {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .grid-cols-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        
+        @media (max-width: 768px) {
+            .grid-cols-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .p-4 {
+            padding: 16px;
+        }
+        
+        .p-6 {
+            padding: 24px;
+        }
+        
+        .mb-4 {
+            margin-bottom: 16px;
+        }
+        
+        .mb-6 {
+            margin-bottom: 24px;
+        }
+        
+        .w-full {
+            width: 100%;
+        }
+        
+        .h-32 {
+            height: 128px;
+        }
+        
+        .h-12 {
+            height: 48px;
+        }
+        
+        .w-12 {
+            width: 48px;
+        }
+        
+        .min-h-screen {
+            min-height: 100vh;
+        }
+        
+        .rounded-lg {
+            border-radius: 8px;
+        }
+        
+        .rounded-full {
+            border-radius: 50%;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .text-sm {
+            font-size: 14px;
+        }
+        
+        .text-lg {
+            font-size: 18px;
+        }
+        
+        .text-xl {
+            font-size: 20px;
+        }
+        
+        .text-2xl {
+            font-size: 24px;
+        }
+        
+        .text-3xl {
+            font-size: 30px;
+        }
+        
+        .font-bold {
+            font-weight: 700;
+        }
+        
+        .font-semibold {
+            font-weight: 600;
+        }
+        
+        .text-gray-300 {
+            color: #d1d5db;
+        }
+        
+        .text-gray-400 {
+            color: #9ca3af;
+        }
+        
+        .text-blue-400 {
+            color: #60a5fa;
+        }
+        
+        .text-green-400 {
+            color: #4ade80;
+        }
+        
+        .text-red-400 {
+            color: #f87171;
+        }
+        
+        .bg-blue-600 {
+            background-color: #2563eb;
+        }
+        
+        .bg-green-600 {
+            background-color: #16a34a;
+        }
+        
+        .bg-red-600 {
+            background-color: #dc2626;
+        }
+        
+        .bg-purple-600 {
+            background-color: #9333ea;
+        }
+        
+        .bg-gray-600 {
+            background-color: #4b5563;
+        }
+        
+        .hover\\:bg-blue-700:hover {
+            background-color: #1d4ed8;
+        }
+        
+        .hover\\:bg-green-700:hover {
+            background-color: #15803d;
+        }
+        
+        .hover\\:bg-red-700:hover {
+            background-color: #b91c1c;
+        }
+        
+        .hover\\:bg-gray-700:hover {
+            background-color: #374151;
+        }
+        
+        .border {
+            border-width: 1px;
+            border-color: #404040;
+        }
+        
+        .transition-colors {
+            transition: color 0.15s, background-color 0.15s;
+        }
+        
+        .cursor-pointer {
+            cursor: pointer;
+        }
+        
+        .disabled\\:opacity-50:disabled {
+            opacity: 0.5;
+        }
+        
+        input, textarea, select {
+            background: #1a1a1a;
+            border: 1px solid #404040;
+            color: #e5e5e5;
+            padding: 12px;
+            border-radius: 6px;
+        }
+        
+        input::placeholder, textarea::placeholder {
+            color: #9ca3af;
+        }
+        
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.15s;
+        }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .tab-nav {
+            display: flex;
+            background: #2a2a2a;
+            border-radius: 8px;
+            padding: 4px;
+            margin-bottom: 24px;
+        }
+        
+        .tab-button {
+            flex: 1;
+            padding: 12px;
+            background: transparent;
+            color: #9ca3af;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        
+        .tab-button.active {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            padding: 20px;
+        }
+        
+        .modal-content {
+            background: #2a2a2a;
+            border: 1px solid #404040;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .content-card {
+            background: #2a2a2a;
+            border: 1px solid #404040;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.15s;
+        }
+        
+        .content-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .status-live { background: #10b981; }
+        .status-mvp { background: #8b5cf6; }
+        .status-development { background: #f59e0b; }
+        .status-concept { background: #6b7280; }
+        
+        .tag {
+            background: #3b82f6;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .error-notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #dc2626;
+            border: 1px solid #b91c1c;
+            border-radius: 6px;
+            padding: 16px;
+            color: white;
+            max-width: 400px;
+            z-index: 60;
+        }
+        
+        .line-clamp-2 {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+        }
+        
+        .line-clamp-3 {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+        }
+    </style>
+</head>
+<body>
+    <div id="cms-root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // GitHub API Configuration
+        const GITHUB_CONFIG = {
+            owner: '1JR4',
+            repo: 'wjr-portfolio',
+            branch: 'main'
+        };
+
+        // Content type configurations
+        const CONTENT_TYPES = {
+            blogs: {
+                label: 'Blog Posts',
+                folder: 'contents/blogs',
+                icon: 'fas fa-pen-to-square',
+                color: 'blue',
+                fields: [
+                    { name: 'title', label: 'Title', type: 'text', required: true },
+                    { name: 'excerpt', label: 'Excerpt', type: 'textarea', required: true },
+                    { name: 'slug', label: 'Slug', type: 'text', required: true },
+                    { name: 'date', label: 'Date', type: 'date', required: true },
+                    { name: 'readTime', label: 'Read Time', type: 'text', default: '5 min read' },
+                    { 
+                        name: 'category', 
+                        label: 'Category', 
+                        type: 'select', 
+                        options: ['AI & Engineering', 'Technology & Innovation', 'Product Management', 'Finance & Technology', 'Nature & Technology', 'AI & Business'],
+                        required: true 
+                    },
+                    { name: 'author', label: 'Author', type: 'text', default: 'Wonjae Ra' },
+                    { name: 'image', label: 'Featured Image URL', type: 'url' },
+                    { name: 'tags', label: 'Tags', type: 'tags', default: ['Technology'] },
+                    { name: 'tldr', label: 'TL;DR Points', type: 'list' },
+                    { name: 'content', label: 'Content', type: 'markdown', required: true }
+                ]
+            },
+            products: {
+                label: 'Products',
+                folder: 'contents/products',
+                icon: 'fas fa-cube',
+                color: 'purple',
+                fields: [
+                    { name: 'name', label: 'Product Name', type: 'text', required: true },
+                    { name: 'description', label: 'Short Description', type: 'textarea', required: true },
+                    { name: 'fullDescription', label: 'Full Description', type: 'textarea' },
+                    { name: 'slug', label: 'Slug', type: 'text', required: true },
+                    { 
+                        name: 'status', 
+                        label: 'Status', 
+                        type: 'select', 
+                        options: ['live', 'mvp', 'development', 'concept'],
+                        required: true 
+                    },
+                    { name: 'category', label: 'Category', type: 'text', required: true },
+                    { name: 'icon', label: 'Icon URL', type: 'url' },
+                    { name: 'technologies', label: 'Technologies', type: 'tags', default: ['React', 'TypeScript'] },
+                    { name: 'link', label: 'Live Link', type: 'url' },
+                    { name: 'github', label: 'GitHub URL', type: 'url' },
+                    { name: 'demo', label: 'Demo URL', type: 'url' }
+                ]
+            },
+            journey: {
+                label: 'Journey',
+                folder: 'contents/my jouurney',
+                icon: 'fas fa-route',
+                color: 'green',
+                fields: [
+                    { name: 'title', label: 'Title', type: 'text', required: true },
+                    { name: 'description', label: 'Description', type: 'textarea', required: true },
+                    { name: 'slug', label: 'Slug', type: 'text', required: true },
+                    { name: 'date', label: 'Date', type: 'date', required: true },
+                    { name: 'type', label: 'Type', type: 'select', options: ['work', 'personal', 'education', 'achievement'], required: true },
+                    { name: 'company', label: 'Company/Organization', type: 'text' },
+                    { name: 'position', label: 'Position/Role', type: 'text' },
+                    { name: 'location', label: 'Location', type: 'text' },
+                    { name: 'duration', label: 'Duration', type: 'text' },
+                    { name: 'highlights', label: 'Key Highlights', type: 'list' },
+                    { name: 'skills', label: 'Skills/Technologies', type: 'tags', default: [] },
+                    { name: 'content', label: 'Detailed Description', type: 'markdown', required: true }
+                ]
+            }
+        };
+
+        // GitHub API Helper
+        class GitHubAPI {
+            constructor(token) {
+                this.token = token;
+                this.baseURL = 'https://api.github.com';
+            }
+
+            async request(endpoint, options = {}) {
+                const url = `${this.baseURL}${endpoint}`;
+                const response = await fetch(url, {
+                    ...options,
+                    headers: {
+                        'Authorization': `token ${this.token}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json',
+                        ...options.headers
+                    }
+                });
+
+                if (!response.ok) {
+                    const error = await response.text();
+                    throw new Error(`GitHub API Error: ${response.status} - ${error}`);
+                }
+
+                return response.json();
+            }
+
+            async getFile(path) {
+                try {
+                    const response = await this.request(
+                        `/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${path}`
+                    );
+                    return {
+                        content: JSON.parse(atob(response.content)),
+                        sha: response.sha
+                    };
+                } catch (error) {
+                    if (error.message.includes('404')) {
+                        return null;
+                    }
+                    throw error;
+                }
+            }
+
+            async listFiles(path) {
+                try {
+                    const response = await this.request(
+                        `/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${path}`
+                    );
+                    return response.filter(file => file.type === 'file' && file.name.endsWith('.json'));
+                } catch (error) {
+                    console.log(`Folder ${path} not found or empty`);
+                    return [];
+                }
+            }
+
+            async saveFile(path, content, sha = null) {
+                const body = {
+                    message: `${sha ? 'Update' : 'Create'} ${path.split('/').pop()}`,
+                    content: btoa(JSON.stringify(content, null, 2)),
+                    branch: GITHUB_CONFIG.branch
+                };
+
+                if (sha) {
+                    body.sha = sha;
+                }
+
+                return this.request(
+                    `/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${path}`,
+                    { method: 'PUT', body: JSON.stringify(body) }
+                );
+            }
+
+            async deleteFile(path, sha) {
+                return this.request(
+                    `/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${path}`,
+                    {
+                        method: 'DELETE',
+                        body: JSON.stringify({
+                            message: `Delete ${path.split('/').pop()}`,
+                            sha: sha,
+                            branch: GITHUB_CONFIG.branch
+                        })
+                    }
+                );
+            }
+
+            async testConnection() {
+                return this.request('/user');
+            }
+        }
+
+        // Main CMS Component
+        function PortfolioCMS() {
+            const [token, setToken] = useState('');
+            const [isAuthenticated, setIsAuthenticated] = useState(false);
+            const [user, setUser] = useState(null);
+            const [loading, setLoading] = useState(false);
+            const [error, setError] = useState('');
+            const [activeTab, setActiveTab] = useState('blogs');
+            const [content, setContent] = useState({});
+            const [editingItem, setEditingItem] = useState(null);
+            const [showModal, setShowModal] = useState(false);
+            const [api, setApi] = useState(null);
+
+            useEffect(() => {
+                const savedToken = localStorage.getItem('github-token');
+                if (savedToken) {
+                    setToken(savedToken);
+                    handleAuthentication(savedToken);
+                }
+            }, []);
+
+            const handleAuthentication = async (authToken) => {
+                setLoading(true);
+                setError('');
+                
+                try {
+                    const githubAPI = new GitHubAPI(authToken);
+                    const userData = await githubAPI.testConnection();
+                    
+                    setUser(userData);
+                    setIsAuthenticated(true);
+                    setApi(githubAPI);
+                    localStorage.setItem('github-token', authToken);
+                    
+                    await loadContent(githubAPI);
+                    
+                } catch (err) {
+                    setError(`Authentication failed: ${err.message}`);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            const loadContent = async (githubAPI) => {
+                const contentData = {};
+                
+                for (const [type, config] of Object.entries(CONTENT_TYPES)) {
+                    try {
+                        const files = await githubAPI.listFiles(config.folder);
+                        const items = [];
+                        
+                        for (const file of files) {
+                            const fileData = await githubAPI.getFile(file.path);
+                            if (fileData) {
+                                items.push({
+                                    ...fileData.content,
+                                    _filename: file.name,
+                                    _path: file.path,
+                                    _sha: fileData.sha
+                                });
+                            }
+                        }
+                        
+                        contentData[type] = items;
+                    } catch (err) {
+                        console.error(`Error loading ${type}:`, err);
+                        contentData[type] = [];
+                    }
+                }
+                
+                setContent(contentData);
+            };
+
+            const handleSave = async (formData) => {
+                setLoading(true);
+                try {
+                    const contentType = CONTENT_TYPES[activeTab];
+                    const filename = `${formData.slug || Date.now()}.json`;
+                    const path = `${contentType.folder}/${filename}`;
+                    
+                    await api.saveFile(path, formData, editingItem?._sha);
+                    
+                    await loadContent(api);
+                    
+                    setShowModal(false);
+                    setEditingItem(null);
+                    
+                } catch (err) {
+                    setError(`Save failed: ${err.message}`);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            const handleDelete = async (item) => {
+                if (!confirm(`Are you sure you want to delete "${item.title || item.name}"?`)) {
+                    return;
+                }
+                
+                setLoading(true);
+                try {
+                    await api.deleteFile(item._path, item._sha);
+                    await loadContent(api);
+                } catch (err) {
+                    setError(`Delete failed: ${err.message}`);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            if (!isAuthenticated) {
+                return React.createElement(AuthForm, {
+                    token: token,
+                    setToken: setToken,
+                    onAuth: handleAuthentication,
+                    loading: loading,
+                    error: error
+                });
+            }
+
+            return React.createElement('div', { className: 'min-h-screen' }, [
+                React.createElement(Header, {
+                    key: 'header',
+                    user: user,
+                    onLogout: () => {
+                        localStorage.removeItem('github-token');
+                        window.location.reload();
+                    }
+                }),
+                
+                React.createElement('div', { key: 'main', className: 'container' }, [
+                    React.createElement(TabNavigation, {
+                        key: 'tabs',
+                        activeTab: activeTab,
+                        setActiveTab: setActiveTab,
+                        contentTypes: CONTENT_TYPES
+                    }),
+                    
+                    React.createElement(ContentGrid, {
+                        key: 'grid',
+                        contentType: activeTab,
+                        items: content[activeTab] || [],
+                        onEdit: (item) => {
+                            setEditingItem(item);
+                            setShowModal(true);
+                        },
+                        onDelete: handleDelete,
+                        onCreate: () => {
+                            setEditingItem(null);
+                            setShowModal(true);
+                        }
+                    }),
+                    
+                    showModal && React.createElement(ContentModal, {
+                        key: 'modal',
+                        contentType: activeTab,
+                        item: editingItem,
+                        onSave: handleSave,
+                        onClose: () => {
+                            setShowModal(false);
+                            setEditingItem(null);
+                        },
+                        loading: loading
+                    }),
+                    
+                    error && React.createElement(ErrorNotification, {
+                        key: 'error',
+                        message: error,
+                        onClose: () => setError('')
+                    })
+                ])
+            ]);
+        }
+
+        // Auth Form Component
+        function AuthForm({ token, setToken, onAuth, loading, error }) {
+            return React.createElement('div', { className: 'min-h-screen flex items-center justify-center' },
+                React.createElement('div', { className: 'card', style: { maxWidth: '400px', width: '100%' } }, [
+                    React.createElement('div', { key: 'header', className: 'text-center mb-6' }, [
+                        React.createElement('i', { key: 'icon', className: 'fas fa-lock text-3xl mb-4 text-blue-400' }),
+                        React.createElement('h1', { key: 'title', className: 'text-2xl font-bold mb-2' }, 'Portfolio CMS'),
+                        React.createElement('p', { key: 'subtitle', className: 'text-gray-300' }, 'Enter your GitHub token to continue')
+                    ]),
+                    
+                    error && React.createElement('div', { 
+                        key: 'error', 
+                        className: 'card mb-4',
+                        style: { background: '#dc2626', borderColor: '#b91c1c' }
+                    }, error),
+                    
+                    React.createElement('div', { key: 'form', className: 'space-y-4' }, [
+                        React.createElement('input', {
+                            key: 'input',
+                            type: 'password',
+                            value: token,
+                            onChange: (e) => setToken(e.target.value),
+                            placeholder: 'ghp_xxxxxxxxxxxxxxxxxxxx',
+                            className: 'w-full',
+                            onKeyPress: (e) => e.key === 'Enter' && !loading && onAuth(token)
+                        }),
+                        
+                        React.createElement('button', {
+                            key: 'button',
+                            onClick: () => onAuth(token),
+                            disabled: loading || !token,
+                            className: 'w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50'
+                        }, loading ? 'Authenticating...' : 'Access CMS')
+                    ]),
+                    
+                    React.createElement('div', { key: 'help', className: 'text-center mt-6 pt-6', style: { borderTop: '1px solid #404040' } }, [
+                        React.createElement('p', { key: 'text', className: 'text-sm text-gray-400 mb-2' }, 'Need a token?'),
+                        React.createElement('a', {
+                            key: 'link',
+                            href: 'https://github.com/settings/tokens/new',
+                            target: '_blank',
+                            className: 'text-blue-400 hover:text-blue-300 text-sm'
+                        }, 'Create GitHub Personal Access Token →')
+                    ])
+                ])
+            );
+        }
+
+        // Header Component
+        function Header({ user, onLogout }) {
+            return React.createElement('div', { className: 'card' }, [
+                React.createElement('div', { key: 'content', className: 'flex justify-between items-center' }, [
+                    React.createElement('div', { key: 'title' }, [
+                        React.createElement('h1', { key: 'h1', className: 'text-3xl font-bold mb-2' }, 'Portfolio CMS'),
+                        React.createElement('p', { key: 'p', className: 'text-gray-300' }, 'Content Management System')
+                    ]),
+                    React.createElement('div', { key: 'user', className: 'flex items-center space-x-4' }, [
+                        React.createElement('div', { key: 'info', className: 'text-right' }, [
+                            React.createElement('p', { key: 'name', className: 'font-semibold' }, user.name || user.login),
+                            user.email && React.createElement('p', { key: 'email', className: 'text-sm text-gray-300' }, user.email)
+                        ]),
+                        user.avatar_url && React.createElement('img', {
+                            key: 'avatar',
+                            src: user.avatar_url,
+                            alt: 'Avatar',
+                            className: 'w-12 h-12 rounded-full'
+                        }),
+                        React.createElement('button', {
+                            key: 'logout',
+                            onClick: onLogout,
+                            className: 'bg-red-600 hover:bg-red-700'
+                        }, React.createElement('i', { className: 'fas fa-sign-out-alt' }))
+                    ])
+                ])
+            ]);
+        }
+
+        // Tab Navigation
+        function TabNavigation({ activeTab, setActiveTab, contentTypes }) {
+            return React.createElement('div', { className: 'tab-nav' },
+                Object.entries(contentTypes).map(([key, config]) =>
+                    React.createElement('button', {
+                        key: key,
+                        onClick: () => setActiveTab(key),
+                        className: `tab-button ${activeTab === key ? 'active' : ''}`
+                    }, [
+                        React.createElement('i', { key: 'icon', className: config.icon }),
+                        React.createElement('span', { key: 'label' }, ' ' + config.label)
+                    ])
+                )
+            );
+        }
+
+        // Content Grid
+        function ContentGrid({ contentType, items, onEdit, onDelete, onCreate }) {
+            const config = CONTENT_TYPES[contentType];
+            
+            return React.createElement('div', null, [
+                React.createElement('div', { key: 'header', className: 'flex justify-between items-center mb-6' }, [
+                    React.createElement('h2', { key: 'title', className: 'text-2xl font-bold' }, 
+                        `${config.label} (${items.length})`
+                    ),
+                    React.createElement('button', {
+                        key: 'create',
+                        onClick: onCreate,
+                        className: 'bg-green-600 hover:bg-green-700'
+                    }, [
+                        React.createElement('i', { key: 'icon', className: 'fas fa-plus' }),
+                        React.createElement('span', { key: 'text' }, ` New ${config.label.slice(0, -1)}`)
+                    ])
+                ]),
+                
+                items.length === 0 
+                    ? React.createElement('div', { key: 'empty', className: 'card text-center' }, [
+                        React.createElement('i', { key: 'icon', className: `${config.icon} text-6xl text-gray-400 mb-4` }),
+                        React.createElement('h3', { key: 'title', className: 'text-xl font-semibold mb-2' }, `No ${config.label} Yet`),
+                        React.createElement('p', { key: 'desc', className: 'text-gray-400 mb-6' }, `Create your first ${config.label.toLowerCase()} to get started`),
+                        React.createElement('button', {
+                            key: 'button',
+                            onClick: onCreate,
+                            className: 'bg-blue-600 hover:bg-blue-700'
+                        }, `Create ${config.label.slice(0, -1)}`)
+                    ])
+                    : React.createElement('div', { key: 'grid', className: 'grid grid-cols-3' },
+                        items.map((item, index) =>
+                            React.createElement(ContentCard, {
+                                key: item._filename || index,
+                                item: item,
+                                contentType: contentType,
+                                onEdit: () => onEdit(item),
+                                onDelete: () => onDelete(item)
+                            })
+                        )
+                    )
+            ]);
+        }
+
+        // Content Card
+        function ContentCard({ item, contentType, onEdit, onDelete }) {
+            const getStatusClass = (status) => {
+                if (!status) return 'bg-gray-600';
+                return `status-${status.toLowerCase()}`;
+            };
+
+            return React.createElement('div', { className: 'content-card' }, [
+                React.createElement('div', { key: 'header', className: 'h-32 bg-gray-600 relative', style: { background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)' } }, [
+                    (item.image || item.icon) 
+                        ? React.createElement('img', {
+                            key: 'img',
+                            src: item.image || item.icon,
+                            alt: item.title || item.name,
+                            className: 'w-full h-full',
+                            style: { objectFit: 'cover' }
+                        })
+                        : React.createElement('div', { key: 'placeholder', className: 'w-full h-full flex items-center justify-center' },
+                            React.createElement('i', { className: `${CONTENT_TYPES[contentType].icon} text-4xl text-white` })
+                        ),
+                    
+                    item.status && React.createElement('div', {
+                        key: 'status',
+                        className: `absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-bold text-white ${getStatusClass(item.status)}`,
+                        style: { top: '12px', right: '12px' }
+                    }, item.status.toUpperCase())
+                ]),
+                
+                React.createElement('div', { key: 'content', className: 'p-6' }, [
+                    React.createElement('h3', { key: 'title', className: 'text-lg font-bold mb-2 line-clamp-2' },
+                        item.title || item.name
+                    ),
+                    item.category && React.createElement('span', {
+                        key: 'category',
+                        className: 'tag mb-2',
+                        style: { display: 'inline-block' }
+                    }, item.category),
+                    
+                    React.createElement('p', { key: 'desc', className: 'text-gray-300 text-sm mb-4 line-clamp-3' },
+                        item.excerpt || item.description || 'No description available'
+                    ),
+                    
+                    React.createElement('div', { key: 'actions', className: 'flex space-x-2' }, [
+                        React.createElement('button', {
+                            key: 'edit',
+                            onClick: onEdit,
+                            className: 'flex-1 bg-blue-600 hover:bg-blue-700 text-sm'
+                        }, [
+                            React.createElement('i', { key: 'icon', className: 'fas fa-edit' }),
+                            React.createElement('span', { key: 'text' }, ' Edit')
+                        ]),
+                        React.createElement('button', {
+                            key: 'delete',
+                            onClick: onDelete,
+                            className: 'bg-red-600 hover:bg-red-700 text-sm px-3'
+                        }, React.createElement('i', { className: 'fas fa-trash' }))
+                    ])
+                ])
+            ]);
+        }
+
+        // Content Modal
+        function ContentModal({ contentType, item, onSave, onClose, loading }) {
+            const config = CONTENT_TYPES[contentType];
+            const [formData, setFormData] = useState(item || {});
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                onSave(formData);
+            };
+
+            return React.createElement('div', { className: 'modal-overlay' },
+                React.createElement('div', { className: 'modal-content' }, [
+                    React.createElement('div', { key: 'header', className: 'p-6', style: { borderBottom: '1px solid #404040' } },
+                        React.createElement('div', { className: 'flex justify-between items-center' }, [
+                            React.createElement('h2', { key: 'title', className: 'text-2xl font-bold' }, 
+                                `${item ? 'Edit' : 'Create'} ${config.label.slice(0, -1)}`
+                            ),
+                            React.createElement('button', {
+                                key: 'close',
+                                onClick: onClose,
+                                className: 'bg-gray-600 hover:bg-gray-700 px-3 py-2'
+                            }, React.createElement('i', { className: 'fas fa-times' }))
+                        ])
+                    ),
+                    
+                    React.createElement('form', { key: 'form', onSubmit: handleSubmit }, [
+                        React.createElement('div', { key: 'fields', className: 'p-6 space-y-6', style: { maxHeight: '60vh', overflowY: 'auto' } },
+                            config.fields.map((field) =>
+                                React.createElement(FormField, {
+                                    key: field.name,
+                                    field: field,
+                                    value: formData[field.name] || field.default || '',
+                                    onChange: (value) => setFormData({
+                                        ...formData,
+                                        [field.name]: value
+                                    })
+                                })
+                            )
+                        ),
+                        
+                        React.createElement('div', { key: 'actions', className: 'p-6 flex space-x-3', style: { borderTop: '1px solid #404040' } }, [
+                            React.createElement('button', {
+                                key: 'save',
+                                type: 'submit',
+                                disabled: loading,
+                                className: 'flex-1 bg-green-600 hover:bg-green-700 disabled:opacity-50'
+                            }, loading ? 'Saving...' : 'Save Changes'),
+                            React.createElement('button', {
+                                key: 'cancel',
+                                type: 'button',
+                                onClick: onClose,
+                                className: 'bg-gray-600 hover:bg-gray-700'
+                            }, 'Cancel')
+                        ])
+                    ])
+                ])
+            );
+        }
+
+        // Form Field
+        function FormField({ field, value, onChange }) {
+            let inputElement;
+            
+            switch (field.type) {
+                case 'textarea':
+                    inputElement = React.createElement('textarea', {
+                        value: value || '',
+                        onChange: (e) => onChange(e.target.value),
+                        rows: 3,
+                        className: 'w-full',
+                        required: field.required
+                    });
+                    break;
+                    
+                case 'markdown':
+                    inputElement = React.createElement('textarea', {
+                        value: value || '',
+                        onChange: (e) => onChange(e.target.value),
+                        rows: 12,
+                        className: 'w-full',
+                        placeholder: 'Write your content in Markdown...',
+                        required: field.required,
+                        style: { fontFamily: 'Monaco, monospace' }
+                    });
+                    break;
+                    
+                case 'select':
+                    inputElement = React.createElement('select', {
+                        value: value || '',
+                        onChange: (e) => onChange(e.target.value),
+                        className: 'w-full',
+                        required: field.required
+                    }, [
+                        React.createElement('option', { key: 'default', value: '' }, `Select ${field.label}`),
+                        ...field.options.map(option =>
+                            React.createElement('option', { key: option, value: option }, option)
+                        )
+                    ]);
+                    break;
+                    
+                case 'tags':
+                    inputElement = React.createElement(TagsInput, {
+                        value: Array.isArray(value) ? value : [],
+                        onChange: onChange,
+                        placeholder: `Add ${field.label.toLowerCase()}...`
+                    });
+                    break;
+                    
+                case 'list':
+                    inputElement = React.createElement(ListInput, {
+                        value: Array.isArray(value) ? value : [],
+                        onChange: onChange,
+                        placeholder: `Add ${field.label.toLowerCase()}...`
+                    });
+                    break;
+                    
+                default:
+                    inputElement = React.createElement('input', {
+                        type: field.type || 'text',
+                        value: value || '',
+                        onChange: (e) => onChange(e.target.value),
+                        className: 'w-full',
+                        required: field.required
+                    });
+                    break;
+            }
+
+            return React.createElement('div', null, [
+                React.createElement('label', { key: 'label', className: 'block text-sm font-semibold mb-2' }, [
+                    field.label,
+                    field.required && React.createElement('span', { key: 'required', className: 'text-red-400 ml-1' }, '*')
+                ]),
+                React.createElement('div', { key: 'input' }, inputElement)
+            ]);
+        }
+
+        // Tags Input
+        function TagsInput({ value, onChange, placeholder }) {
+            const [input, setInput] = useState('');
+
+            const addTag = () => {
+                if (input.trim() && !value.includes(input.trim())) {
+                    onChange([...value, input.trim()]);
+                    setInput('');
+                }
+            };
+
+            const removeTag = (tagToRemove) => {
+                onChange(value.filter(tag => tag !== tagToRemove));
+            };
+
+            return React.createElement('div', null, [
+                React.createElement('div', { key: 'tags', className: 'flex flex-wrap gap-2 mb-2' },
+                    value.map((tag, index) =>
+                        React.createElement('span', { key: index, className: 'tag' }, [
+                            React.createElement('span', { key: 'text' }, tag),
+                            React.createElement('button', {
+                                key: 'remove',
+                                type: 'button',
+                                onClick: () => removeTag(tag),
+                                className: 'text-red-400 hover:text-red-300 ml-1'
+                            }, '×')
+                        ])
+                    )
+                ),
+                React.createElement('div', { key: 'input', className: 'flex space-x-2' }, [
+                    React.createElement('input', {
+                        key: 'field',
+                        type: 'text',
+                        value: input,
+                        onChange: (e) => setInput(e.target.value),
+                        onKeyPress: (e) => e.key === 'Enter' && (e.preventDefault(), addTag()),
+                        placeholder: placeholder,
+                        className: 'flex-1'
+                    }),
+                    React.createElement('button', {
+                        key: 'button',
+                        type: 'button',
+                        onClick: addTag,
+                        className: 'bg-blue-600 hover:bg-blue-700'
+                    }, '+')
+                ])
+            ]);
+        }
+
+        // List Input  
+        function ListInput({ value, onChange, placeholder }) {
+            const [input, setInput] = useState('');
+
+            const addItem = () => {
+                if (input.trim()) {
+                    onChange([...value, input.trim()]);
+                    setInput('');
+                }
+            };
+
+            const removeItem = (index) => {
+                onChange(value.filter((_, i) => i !== index));
+            };
+
+            return React.createElement('div', null, [
+                React.createElement('div', { key: 'items', className: 'space-y-2 mb-2' },
+                    value.map((item, index) =>
+                        React.createElement('div', { key: index, className: 'flex items-center space-x-2 card' }, [
+                            React.createElement('span', { key: 'text', className: 'flex-1' }, item),
+                            React.createElement('button', {
+                                key: 'remove',
+                                type: 'button',
+                                onClick: () => removeItem(index),
+                                className: 'text-red-400 hover:text-red-300'
+                            }, '×')
+                        ])
+                    )
+                ),
+                React.createElement('div', { key: 'input', className: 'flex space-x-2' }, [
+                    React.createElement('input', {
+                        key: 'field',
+                        type: 'text',
+                        value: input,
+                        onChange: (e) => setInput(e.target.value),
+                        onKeyPress: (e) => e.key === 'Enter' && (e.preventDefault(), addItem()),
+                        placeholder: placeholder,
+                        className: 'flex-1'
+                    }),
+                    React.createElement('button', {
+                        key: 'button',
+                        type: 'button',
+                        onClick: addItem,
+                        className: 'bg-blue-600 hover:bg-blue-700'
+                    }, '+')
+                ])
+            ]);
+        }
+
+        // Error Notification
+        function ErrorNotification({ message, onClose }) {
+            return React.createElement('div', { className: 'error-notification' },
+                React.createElement('div', { className: 'flex justify-between items-start' }, [
+                    React.createElement('div', { key: 'content' }, [
+                        React.createElement('h4', { key: 'title', className: 'font-semibold mb-1' }, 'Error'),
+                        React.createElement('p', { key: 'message', className: 'text-sm' }, message)
+                    ]),
+                    React.createElement('button', {
+                        key: 'close',
+                        onClick: onClose,
+                        className: 'ml-4 text-red-200 hover:text-white'
+                    }, '×')
+                ])
+            );
+        }
+
+        // Render the app using createRoot (React 18)
+        const container = document.getElementById('cms-root');
+        const root = ReactDOM.createRoot(container);
+        root.render(React.createElement(PortfolioCMS));
+    </script>
+</body>
+</html>
