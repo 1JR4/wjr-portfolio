@@ -7,7 +7,14 @@
   "date": "2024-03-10",
   "readTime": "22 min read",
   "category": "Technology & Innovation",
-  "tags": ["Technology", "Innovation", "IoT", "Blockchain", "Quantum Computing", "Digital Twins"],
+  "tags": [
+    "Technology",
+    "Innovation",
+    "IoT",
+    "Blockchain",
+    "Quantum Computing",
+    "Digital Twins"
+  ],
   "image": "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&q=80",
   "tldr": [
     "The physical and digital worlds remain largely disconnected despite technological advances",
@@ -19,27 +26,106 @@
     "Success requires not just technology but industry collaboration and governance"
   ],
   "tableOfContents": [
-    { "id": "introduction", "title": "Introduction", "level": 2 },
-    { "id": "applications-of-a-physical-digital-bridge", "title": "Applications of a Physical-Digital Bridge", "level": 2 },
-    { "id": "product-authentication-and-anti-counterfeiting", "title": "Product Authentication and Anti-Counterfeiting", "level": 3 },
-    { "id": "supply-chain-asset-tracking", "title": "Supply Chain & Asset Tracking", "level": 3 },
-    { "id": "art-collectibles-and-nfts", "title": "Art, Collectibles and NFTs", "level": 3 },
-    { "id": "manufacturing-and-digital-twins", "title": "Manufacturing and Digital Twins", "level": 3 },
-    { "id": "technologies-and-approaches", "title": "Technologies and Approaches", "level": 2 },
-    { "id": "embedded-cryptographic-tags-rfid-nfc", "title": "Embedded Cryptographic Tags (RFID/NFC)", "level": 3 },
-    { "id": "computer-vision-and-ai-recognition", "title": "Computer Vision and AI Recognition", "level": 3 },
-    { "id": "3d-scanning-and-digital-twins", "title": "3D Scanning and Digital Twins", "level": 3 },
-    { "id": "blockchain-digital-records-and-nfts", "title": "Blockchain Digital Records and NFTs", "level": 3 },
-    { "id": "past-attempts-and-current-status", "title": "Past Attempts and Current Status", "level": 2 },
-    { "id": "fashion-and-luxury-goods", "title": "Fashion and Luxury Goods", "level": 3 },
-    { "id": "art-and-collectibles", "title": "Art and Collectibles", "level": 3 },
-    { "id": "industrial-applications", "title": "Industrial Applications", "level": 3 },
-    { "id": "future-outlook-quantum-technology-s-impact", "title": "Future Outlook: Quantum Technology's Impact", "level": 2 },
-    { "id": "the-quantum-threat", "title": "The Quantum Threat", "level": 3 },
-    { "id": "quantum-solutions", "title": "Quantum Solutions", "level": 3 },
-    { "id": "conclusion", "title": "Conclusion", "level": 2 }
+    {
+      "id": "introduction",
+      "title": "Introduction",
+      "level": 2
+    },
+    {
+      "id": "applications-of-a-physical-digital-bridge",
+      "title": "Applications of a Physical-Digital Bridge",
+      "level": 2
+    },
+    {
+      "id": "product-authentication-and-anti-counterfeiting",
+      "title": "Product Authentication and Anti-Counterfeiting",
+      "level": 3
+    },
+    {
+      "id": "supply-chain-asset-tracking",
+      "title": "Supply Chain & Asset Tracking",
+      "level": 3
+    },
+    {
+      "id": "art-collectibles-and-nfts",
+      "title": "Art, Collectibles and NFTs",
+      "level": 3
+    },
+    {
+      "id": "manufacturing-and-digital-twins",
+      "title": "Manufacturing and Digital Twins",
+      "level": 3
+    },
+    {
+      "id": "technologies-and-approaches",
+      "title": "Technologies and Approaches",
+      "level": 2
+    },
+    {
+      "id": "embedded-cryptographic-tags-rfid-nfc",
+      "title": "Embedded Cryptographic Tags (RFID/NFC)",
+      "level": 3
+    },
+    {
+      "id": "computer-vision-and-ai-recognition",
+      "title": "Computer Vision and AI Recognition",
+      "level": 3
+    },
+    {
+      "id": "3d-scanning-and-digital-twins",
+      "title": "3D Scanning and Digital Twins",
+      "level": 3
+    },
+    {
+      "id": "blockchain-digital-records-and-nfts",
+      "title": "Blockchain Digital Records and NFTs",
+      "level": 3
+    },
+    {
+      "id": "past-attempts-and-current-status",
+      "title": "Past Attempts and Current Status",
+      "level": 2
+    },
+    {
+      "id": "fashion-and-luxury-goods",
+      "title": "Fashion and Luxury Goods",
+      "level": 3
+    },
+    {
+      "id": "art-and-collectibles",
+      "title": "Art and Collectibles",
+      "level": 3
+    },
+    {
+      "id": "industrial-applications",
+      "title": "Industrial Applications",
+      "level": 3
+    },
+    {
+      "id": "future-outlook-quantum-technology-s-impact",
+      "title": "Future Outlook: Quantum Technology's Impact",
+      "level": 2
+    },
+    {
+      "id": "the-quantum-threat",
+      "title": "The Quantum Threat",
+      "level": 3
+    },
+    {
+      "id": "quantum-solutions",
+      "title": "Quantum Solutions",
+      "level": 3
+    },
+    {
+      "id": "conclusion",
+      "title": "Conclusion",
+      "level": 2
+    }
   ],
-  "relatedArticles": ["from-good-to-great-pm-in-ai", "rigged-by-design"],
+  "relatedArticles": [
+    "from-good-to-great-pm-in-ai",
+    "rigged-by-design"
+  ],
   "resources": [
     {
       "title": "Aura Blockchain Consortium",
@@ -51,5 +137,8 @@
       "url": "https://veritx.com",
       "type": "link"
     }
-  ]
+  ],
+  "_filename": "bridging-atoms-and-bits.json",
+  "_path": "contents/blogs/bridging-atoms-and-bits.json",
+  "_sha": "c6ce5b487c4da30c53d66fc13c1c91cc800d1386"
 }
