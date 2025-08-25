@@ -59,6 +59,14 @@ interface Product {
   currentImageIndex?: number;
 }
 
+// App icons mapping for each product (same as products page)
+const appIcons: { [key: string]: string } = {
+  'bitnbolt': 'https://img.icons8.com/fluency/200/web.png',
+  'conductor': 'https://img.icons8.com/fluency/200/project-management.png', 
+  'nimbus': 'https://img.icons8.com/fluency/200/crystal-ball.png',
+  'arcadia': 'https://img.icons8.com/fluency/200/news.png'
+};
+
 // Icon mapping for products
 const getProductIcon = (index: number) => {
   const icons = [Rocket, Zap, Settings];
@@ -78,7 +86,7 @@ const productsData: Product[] = PRODUCTS.map((product, index) => ({
   title: product.name,
   description: product.description,
   category: product.category || "SaaS",
-  icon: product.icon || `https://images.unsplash.com/photo-${1614680376593 + index * 100000}?w=200&q=80`,
+  icon: appIcons[product.slug] || product.icon || `https://images.unsplash.com/photo-${1614680376593 + index * 100000}?w=200&q=80`,
   image: product.image || `https://images.unsplash.com/photo-${1551288049 + index * 1000}?w=800&q=80`,
   gallery: product.gallery || generatePlaceholderImages(5),
   technologies: product.technologies || ["AI/ML", "React", "TypeScript", "Next.js", "TailwindCSS"],

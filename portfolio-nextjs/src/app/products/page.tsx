@@ -40,31 +40,43 @@ interface Product {
   };
 }
 
-// Convert products data
+// App icons mapping for each product
+const appIcons: { [key: string]: string } = {
+  'bitnbolt': 'https://img.icons8.com/fluency/200/web.png',
+  'conductor': 'https://img.icons8.com/fluency/200/project-management.png', 
+  'nimbus': 'https://img.icons8.com/fluency/200/crystal-ball.png',
+  'arcadia': 'https://img.icons8.com/fluency/200/news.png'
+};
+
+// Convert products data with actual status/category values
 const productsData = PRODUCTS.map((product, index) => ({
   id: index + 1,
   title: product.name,
   slug: product.slug,
   description: product.description,
-  longDescription: `${product.description}. This innovative solution demonstrates cutting-edge technology implementation and strategic product thinking.`,
-  category: "Product Development",
-  status: "Active Development",
-  image: `https://images.unsplash.com/photo-${1677442136019 + index}?w=800&q=80`,
-  gallery: [
-    `https://images.unsplash.com/photo-${1677442136019 + index}?w=800&q=80`,
+  longDescription: product.fullDescription || `${product.description}. This innovative solution demonstrates cutting-edge technology implementation and strategic product thinking.`,
+  category: product.category,
+  status: product.status === 'live' ? 'Live' : product.status === 'mvp' ? 'MVP' : product.status === 'development' ? 'In Development' : 'Concept',
+  image: appIcons[product.slug] || product.icon || `https://images.unsplash.com/photo-${1677442136019 + index}?w=800&q=80`,
+  gallery: product.gallery || [
+    appIcons[product.slug] || product.icon || `https://images.unsplash.com/photo-${1677442136019 + index}?w=800&q=80`,
     `https://images.unsplash.com/photo-${1677442136020 + index}?w=800&q=80`,
     `https://images.unsplash.com/photo-${1677442136021 + index}?w=800&q=80`
   ],
-  tags: ["AI", "Product Management", "Innovation", "Technology"],
-  kpis: [
+  tags: product.technologies?.slice(0, 4) || ["AI", "Product Management", "Innovation", "Technology"],
+  kpis: product.kpis?.map((kpi: any) => ({
+    label: kpi.label,
+    value: kpi.value,
+    icon: kpi.label.toLowerCase().includes('user') ? Rocket : kpi.label.toLowerCase().includes('revenue') || kpi.label.toLowerCase().includes('growth') ? Zap : Settings
+  })) || [
     { label: "Users", value: "10K+", icon: Rocket },
     { label: "Growth", value: "+150%", icon: Zap },
     { label: "Features", value: "25+", icon: Settings }
   ],
   links: {
-    github: "#",
-    demo: "#",
-    website: "#"
+    github: product.github || "#",
+    demo: product.demo || "#",
+    website: product.link || "#"
   },
   sections: {
     description: {
@@ -157,54 +169,90 @@ export default function ProductsPage() {
               whileHover={{ y: -4 }}
               transition={{ duration: 0.2 }}
             >
-              <div className="bg-black/5 dark:bg-white/10 backdrop-blur-xl border border-gray-200 dark:border-white/20 rounded-xl p-6 transition-all duration-300 hover:bg-black/10 dark:hover:bg-white/20 h-full">
-                {/* Status Badge */}
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="px-3 py-1 bg-green-500/10 text-green-400 border border-green-500/20 rounded-full text-xs font-medium">
-                    {product.status}
-                  </span>
-                  <span className="px-3 py-1 bg-black/10 dark:bg-white/10 backdrop-blur-sm border border-gray-200 dark:border-white/20 text-gray-700 dark:text-white rounded-full text-xs font-medium">
-                    {product.category}
-                  </span>
-                </div>
-
-                {/* Title */}
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3 transition-colors duration-300">
-                  {product.title}
-                </h3>
-
-                {/* Description */}
-                <p className="text-gray-600 dark:text-white/70 text-sm line-clamp-3 mb-4">
-                  {product.description}
-                </p>
-
-                {/* KPIs */}
-                <div className="grid grid-cols-3 gap-2 mb-4">
-                  {product.kpis.map((kpi, idx) => (
-                    <div key={idx} className="text-center p-2 bg-black/5 dark:bg-white/5 rounded-lg">
-                      <div className="text-lg font-bold text-gray-900 dark:text-white">
-                        {kpi.value}
+              <div className="bg-black/5 dark:bg-white/10 backdrop-blur-xl border border-gray-200 dark:border-white/20 rounded-xl p-6 transition-all duration-300 hover:bg-black/10 dark:hover:bg-white/20 h-full overflow-hidden">
+                <div className="relative z-10 h-full">
+                  {/* App Icon - Top Left */}
+                  <div className="absolute top-0 left-0 w-12 h-12 rounded-lg overflow-hidden shadow-md">
+                    {appIcons[product.slug] ? (
+                      <img 
+                        src={appIcons[product.slug]} 
+                        alt={`${product.title} icon`}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          const parent = target.parentElement;
+                          if (parent) {
+                            parent.innerHTML = `
+                              <div class="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                                <span class="text-white font-bold text-lg">${product.title.charAt(0)}</span>
+                              </div>
+                            `;
+                          }
+                        }}
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                        <span className="text-white font-bold text-lg">{product.title.charAt(0)}</span>
                       </div>
-                      <div className="text-xs text-gray-600 dark:text-white/60">
-                        {kpi.label}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Footer */}
-                <div className="flex justify-between items-center">
-                  <div className="flex gap-2">
-                    {product.links.github && (
-                      <Github className="w-4 h-4 text-gray-400 hover:text-gray-600 dark:hover:text-white transition-colors" />
-                    )}
-                    {product.links.demo && (
-                      <ExternalLink className="w-4 h-4 text-gray-400 hover:text-gray-600 dark:hover:text-white transition-colors" />
                     )}
                   </div>
-                  <span className="text-xs text-gray-500 dark:text-white/60">
-                    {product.tags.slice(0, 2).join(", ")}
-                  </span>
+
+                  {/* Product Details - Adjusted padding for icon */}
+                  <div className="pl-14 pr-2">
+                    {/* Header with Title and Pills */}
+                    <div className="flex items-start justify-between mb-2">
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white line-clamp-1 transition-colors duration-300 pr-2">
+                        {product.title}
+                      </h3>
+                      <div className="flex flex-col gap-1 flex-shrink-0 items-end">
+                        <span className={cn(
+                          "px-2 py-1 rounded-full text-xs font-medium",
+                          product.status === "Live" 
+                            ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800"
+                            : product.status === "In Development"
+                            ? "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 border border-yellow-200 dark:border-yellow-800"
+                            : product.status === "MVP"
+                            ? "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800"
+                            : "bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-800"
+                        )}>
+                          {product.status}
+                        </span>
+                        <span className={cn(
+                          "px-2 py-1 rounded-full text-xs font-medium text-center",
+                          "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800"
+                        )}>
+                          {product.category.split('/')[0]}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Description */}
+                    <p className="text-gray-600 dark:text-white/70 text-sm line-clamp-2 mb-3">
+                      {product.description}
+                    </p>
+
+                    {/* Technologies */}
+                    <div className="flex flex-wrap gap-1 mb-3">
+                      {product.tags.slice(0, 2).map((tech) => (
+                        <span
+                          key={tech}
+                          className="px-2 py-1 bg-black/10 dark:bg-white/10 backdrop-blur-sm border border-gray-200 dark:border-white/20 text-gray-700 dark:text-white/80 rounded text-xs"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                      {product.tags.length > 2 && (
+                        <span className="px-2 py-1 bg-black/10 dark:bg-white/10 backdrop-blur-sm border border-gray-200 dark:border-white/20 text-gray-700 dark:text-white/80 rounded text-xs">
+                          +{product.tags.length - 2}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Footer */}
+                    <div className="flex justify-end">
+                      <ExternalLink className="w-4 h-4 text-white/60 group-hover:text-white transition-colors duration-300" />
+                    </div>
+                  </div>
                 </div>
               </div>
             </motion.div>

@@ -2,26 +2,89 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: images
-public_folder: /images
+# Where uploaded images are stored
+media_folder: "portfolio-nextjs/public/images"
+public_folder: "/images"
+
+# Enable editorial workflow for drafts
+publish_mode: editorial_workflow
 
 collections:
-  - name: blog
-    label: Blog Posts
-    folder: blog
+  - name: "blog"
+    label: "Blog Posts"
+    folder: "contents/blogs"
     create: true
-    slug: '{{slug}}'
+    slug: "{{slug}}"
+    extension: "json"
+    format: "json"
     fields:
-      - {label: Title, name: title, widget: string}
-      - {label: Date, name: date, widget: datetime}
-      - {label: Body, name: body, widget: markdown}
-  
-  - name: products
-    label: Products
-    folder: products
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Excerpt", name: "excerpt", widget: "text"}
+      - {label: "Slug", name: "slug", widget: "string"}
+      - {label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD"}
+      - {label: "Read Time", name: "readTime", widget: "string", default: "5 min read"}
+      - {label: "Category", name: "category", widget: "select", options: ["AI & Engineering", "Technology & Innovation", "Product Management", "Finance & Technology", "Nature & Technology", "AI & Business", "Test"]}
+      - {label: "Author", name: "author", widget: "string", default: "Wonjae Ra"}
+      - {label: "Featured Image", name: "image", widget: "string", hint: "URL to header image"}
+      - {label: "Tags", name: "tags", widget: "list", default: ["Technology"]}
+      - {label: "TL;DR", name: "tldr", widget: "list", field: {label: "Point", name: "point", widget: "string"}}
+      - {label: "Content", name: "content", widget: "markdown"}
+      - label: "Table of Contents"
+        name: "tableOfContents"
+        widget: "list"
+        fields:
+          - {label: "ID", name: "id", widget: "string"}
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Level", name: "level", widget: "number", default: 2, min: 1, max: 6}
+      - label: "Resources"
+        name: "resources"
+        widget: "list"
+        required: false
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "URL", name: "url", widget: "string"}
+          - {label: "Type", name: "type", widget: "select", options: ["link", "pdf", "video"]}
+
+  - name: "products"
+    label: "Products"
+    folder: "contents/products"
     create: true
-    slug: '{{slug}}'
+    slug: "{{slug}}"
+    extension: "json"
+    format: "json"
     fields:
-      - {label: Name, name: title, widget: string}
-      - {label: Description, name: description, widget: text}
-      - {label: Content, name: body, widget: markdown}
+      - {label: "Name", name: "name", widget: "string"}
+      - {label: "Description", name: "description", widget: "text"}
+      - {label: "Slug", name: "slug", widget: "string"}
+      - {label: "Full Description", name: "fullDescription", widget: "text"}
+      - {label: "Status", name: "status", widget: "select", options: ["live", "mvp", "development", "concept"]}
+      - {label: "Category", name: "category", widget: "string"}
+      - {label: "Icon URL", name: "icon", widget: "string", required: false, hint: "URL to product icon/logo"}
+      - {label: "Type", name: "type", widget: "string", default: "web-app"}
+      - {label: "Image URL", name: "image", widget: "string", required: false}
+      - {label: "Gallery", name: "gallery", widget: "list", field: {label: "Image URL", name: "url", widget: "string"}, required: false}
+      - {label: "Technologies", name: "technologies", widget: "list", default: ["React", "TypeScript"]}
+      - {label: "Platforms", name: "platforms", widget: "list", default: ["Web"]}
+      - {label: "Version", name: "version", widget: "string", required: false}
+      - {label: "Link", name: "link", widget: "string", required: false}
+      - {label: "GitHub", name: "github", widget: "string", required: false}
+      - {label: "Documentation", name: "documentation", widget: "string", required: false}
+      - {label: "Demo", name: "demo", widget: "string", required: false}
+      - label: "KPIs"
+        name: "kpis"
+        widget: "list"
+        required: false
+        fields:
+          - {label: "Label", name: "label", widget: "string"}
+          - {label: "Value", name: "value", widget: "string"}
+          - {label: "Trend", name: "trend", widget: "select", options: ["up", "down", "neutral"], required: false}
+      - label: "FAQ"
+        name: "faq"
+        widget: "list"
+        required: false
+        fields:
+          - {label: "Question", name: "question", widget: "string"}
+          - {label: "Answer", name: "answer", widget: "text"}
+      - {label: "Created At", name: "createdAt", widget: "datetime", format: "YYYY-MM-DD", required: false}
+      - {label: "Updated At", name: "updatedAt", widget: "datetime", format: "YYYY-MM-DD", required: false}
+      - {label: "Launch Date", name: "launchDate", widget: "datetime", format: "YYYY-MM-DD", required: false}
