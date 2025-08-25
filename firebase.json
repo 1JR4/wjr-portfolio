@@ -22,6 +22,10 @@
       {
         "source": "/products",
         "destination": "/products.html"
+      },
+      {
+        "source": "/cms",
+        "destination": "/cms/index.html"
       }
     ],
     "headers": [
@@ -131,6 +135,10 @@
         {
           "source": "/products",
           "destination": "/products.html"
+        },
+        {
+          "source": "/cms",
+          "destination": "/cms/index.html"
         }
       ],
       "headers": [
