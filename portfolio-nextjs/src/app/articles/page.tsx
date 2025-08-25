@@ -76,66 +76,68 @@ const articlesData = BLOG_POSTS.map((post, index) => ({
   relatedArticles: []
 }));
 
-// Enhanced function to get TOC ID for a heading with better matching
-const getTocId = (headingTitle: string, tableOfContents: TableOfContentsItem[]): string => {
-  console.log(`Looking for TOC ID for heading: "${headingTitle}"`);
-  
-  // Strategy 1: Exact title match
-  const exactMatch = tableOfContents.find(item => 
-    item.title.toLowerCase() === headingTitle.toLowerCase()
+// Convert markdown content to HTML with proper TOC IDs from JSON
+const renderMarkdownWithTocIds = (content: string, tableOfContents: TableOfContentsItem[]): string => {
+  const lines = content.split('\n');
+  const tocTitleToId = new Map(
+    tableOfContents.map(item => [item.title.toLowerCase(), item.id])
   );
-  if (exactMatch) {
-    console.log(`✅ Exact match found: ${exactMatch.id}`);
-    return exactMatch.id;
-  }
-
-  // Strategy 2: Clean title match (remove numbers, punctuation)
-  const cleanHeading = headingTitle
-    .replace(/^\d+\.\s*/, '') // Remove leading numbers like "1. "
-    .replace(/[()]/g, '') // Remove parentheses
-    .trim()
-    .toLowerCase();
   
-  console.log(`Clean heading: "${cleanHeading}"`);
+  console.log('TOC Title-to-ID mapping:', Array.from(tocTitleToId.entries()));
   
-  const cleanMatch = tableOfContents.find(item => {
-    const cleanTocTitle = item.title
-      .replace(/^\d+\.\s*/, '')
-      .replace(/[()]/g, '')
-      .trim()
-      .toLowerCase();
-    console.log(`  Comparing with TOC "${item.title}" -> "${cleanTocTitle}"`);
-    return cleanTocTitle === cleanHeading;
-  });
-  if (cleanMatch) {
-    console.log(`✅ Clean match found: ${cleanMatch.id}`);
-    return cleanMatch.id;
-  }
-
-  // Strategy 3: Partial match using key words
-  const keyWords = cleanHeading.split(/\s+/).filter(word => word.length > 3);
-  console.log(`Key words: [${keyWords.join(', ')}]`);
-  
-  const partialMatch = tableOfContents.find(item => {
-    const tocWords = item.title.toLowerCase().split(/\s+/);
-    const hasMatch = keyWords.some(word => 
-      tocWords.some(tocWord => tocWord.includes(word) || word.includes(tocWord))
-    );
-    if (hasMatch) console.log(`  Partial match candidate: ${item.title}`);
-    return hasMatch;
-  });
-  if (partialMatch) {
-    console.log(`✅ Partial match found: ${partialMatch.id}`);
-    return partialMatch.id;
-  }
-
-  // Strategy 4: Fallback - generate ID from heading
-  const fallbackId = headingTitle.toLowerCase()
-    .replace(/^\d+\.\s*/, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-  console.log(`⚠️ No match found, using fallback ID: ${fallbackId}`);
-  return fallbackId;
+  return lines.map(line => {
+    if (line.startsWith('# ')) {
+      const title = line.substring(2).trim();
+      const id = tocTitleToId.get(title.toLowerCase()) || 
+        title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+      console.log(`H1: "${title}" -> ID: "${id}"`);
+      return `<h1 id="${id}" class="text-3xl font-bold text-white mt-8 mb-4 scroll-mt-20">${title}</h1>`;
+    } else if (line.startsWith('## ')) {
+      const title = line.substring(3).trim();
+      const id = tocTitleToId.get(title.toLowerCase()) || 
+        title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+      console.log(`H2: "${title}" -> ID: "${id}"`);
+      return `<h2 id="${id}" class="text-2xl font-bold text-white mt-6 mb-3 scroll-mt-20">${title}</h2>`;
+    } else if (line.startsWith('### ')) {
+      const title = line.substring(4).trim();
+      const id = tocTitleToId.get(title.toLowerCase()) || 
+        title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+      console.log(`H3: "${title}" -> ID: "${id}"`);
+      return `<h3 id="${id}" class="text-xl font-semibold text-white mt-5 mb-2 scroll-mt-20">${title}</h3>`;
+    } else if (line.startsWith('#### ')) {
+      const title = line.substring(5).trim();
+      const id = tocTitleToId.get(title.toLowerCase()) || 
+        title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+      return `<h4 id="${id}" class="text-lg font-semibold text-white mt-4 mb-2 scroll-mt-20">${title}</h4>`;
+    } else if (line.startsWith('```')) {
+      return line.includes('python') ? '<pre class="bg-gray-800 p-4 rounded-lg overflow-x-auto my-4"><code class="text-green-400">' :
+             line.includes('yaml') ? '<pre class="bg-gray-800 p-4 rounded-lg overflow-x-auto my-4"><code class="text-blue-400">' :
+             line.includes('javascript') ? '<pre class="bg-gray-800 p-4 rounded-lg overflow-x-auto my-4"><code class="text-yellow-400">' :
+             line.includes('sql') ? '<pre class="bg-gray-800 p-4 rounded-lg overflow-x-auto my-4"><code class="text-purple-400">' :
+             line.includes('bash') ? '<pre class="bg-gray-800 p-4 rounded-lg overflow-x-auto my-4"><code class="text-gray-300">' :
+             line === '```' ? '</code></pre>' :
+             '<pre class="bg-gray-800 p-4 rounded-lg overflow-x-auto my-4"><code class="text-gray-300">';
+    } else if (line.startsWith('**') && line.endsWith('**')) {
+      const text = line.substring(2, line.length - 2);
+      return `<p class="font-bold text-white mt-4 mb-2">${text}</p>`;
+    } else if (line.startsWith('*') && line.endsWith('*') && !line.startsWith('**')) {
+      const text = line.substring(1, line.length - 1);
+      return `<p class="italic text-white/80 text-center mb-4">${text}</p>`;
+    } else if (line.startsWith('- ')) {
+      const text = line.substring(2);
+      return `<li class="text-white/80 mb-1">${text}</li>`;
+    } else if (line.trim() === '') {
+      return '<br>';
+    } else {
+      // Regular paragraph
+      let processedLine = line
+        .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-semibold">$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em class="text-blue-400">$1</em>')
+        .replace(/`(.*?)`/g, '<code class="bg-gray-800 text-green-400 px-2 py-1 rounded">$1</code>');
+      
+      return `<p class="text-white/80 leading-relaxed mb-4">${processedLine}</p>`;
+    }
+  }).join('\n');
 };
 
 export default function ArticlesPage() {
@@ -437,30 +439,7 @@ export default function ArticlesPage() {
                     <div 
                       className="text-white/80 leading-relaxed"
                       dangerouslySetInnerHTML={{
-                        __html: selectedArticle.content
-                          .split('\n')
-                          .map(line => {
-                            if (line.startsWith('# ')) {
-                              const title = line.substring(2).trim();
-                              const id = getTocId(title, selectedArticle.tableOfContents);
-                              return `<h1 id="${id}" class="text-2xl font-bold text-white mt-6 mb-3 scroll-mt-20">${title}</h1>`;
-                            } else if (line.startsWith('## ')) {
-                              const title = line.substring(3).trim();
-                              const id = getTocId(title, selectedArticle.tableOfContents);
-                              return `<h2 id="${id}" class="text-xl font-semibold text-white mt-5 mb-2 scroll-mt-20">${title}</h2>`;
-                            } else if (line.startsWith('### ')) {
-                              const title = line.substring(4).trim();
-                              const id = getTocId(title, selectedArticle.tableOfContents);
-                              return `<h3 id="${id}" class="text-lg font-medium text-white mt-4 mb-2 scroll-mt-20">${title}</h3>`;
-                            } else if (line.startsWith('- ')) {
-                              return `<li class="text-white/70 ml-4">${line.substring(2)}</li>`;
-                            } else if (line.trim() === '') {
-                              return '';
-                            } else {
-                              return `<p class="text-white/70 mb-1 leading-relaxed">${line}</p>`;
-                            }
-                          })
-                          .join('')
+                        __html: renderMarkdownWithTocIds(selectedArticle.content, selectedArticle.tableOfContents)
                       }}
                     />
                   </div>
@@ -640,30 +619,7 @@ export default function ArticlesPage() {
                     <div 
                       className="text-white/80 leading-relaxed"
                       dangerouslySetInnerHTML={{
-                        __html: selectedArticle.content
-                          .split('\n')
-                          .map(line => {
-                            if (line.startsWith('# ')) {
-                              const title = line.substring(2).trim();
-                              const id = getTocId(title, selectedArticle.tableOfContents);
-                              return `<h1 id="${id}" class="text-2xl font-bold text-white mt-6 mb-3 scroll-mt-20">${title}</h1>`;
-                            } else if (line.startsWith('## ')) {
-                              const title = line.substring(3).trim();
-                              const id = getTocId(title, selectedArticle.tableOfContents);
-                              return `<h2 id="${id}" class="text-xl font-semibold text-white mt-5 mb-2 scroll-mt-20">${title}</h2>`;
-                            } else if (line.startsWith('### ')) {
-                              const title = line.substring(4).trim();
-                              const id = getTocId(title, selectedArticle.tableOfContents);
-                              return `<h3 id="${id}" class="text-lg font-medium text-white mt-4 mb-2 scroll-mt-20">${title}</h3>`;
-                            } else if (line.startsWith('- ')) {
-                              return `<li class="text-white/70 ml-4">${line.substring(2)}</li>`;
-                            } else if (line.trim() === '') {
-                              return '';
-                            } else {
-                              return `<p class="text-white/70 mb-1 leading-relaxed">${line}</p>`;
-                            }
-                          })
-                          .join('')
+                        __html: renderMarkdownWithTocIds(selectedArticle.content, selectedArticle.tableOfContents)
                       }}
                     />
                   </div>
