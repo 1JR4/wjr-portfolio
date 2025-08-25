@@ -1,5 +1,5 @@
 {
-  "name": "test product",
+  "name": "test product pizza",
   "description": "short description test",
   "fullDescription": "long descp test",
   "slug": "slug-working-or-not",
@@ -8,5 +8,8 @@
   "technologies": [
     "basil",
     "dough"
-  ]
+  ],
+  "_filename": "slug-working-or-not.json",
+  "_path": "contents/products/slug-working-or-not.json",
+  "_sha": "1f4610c1a1e18eafe869d6a7cc2f0f6126372be3"
 }
